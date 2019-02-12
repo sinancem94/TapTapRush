@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BlockAnimation : MonoBehaviour {
 
+
+
     public IEnumerator Fall(Vector2 distance)
     {
         this.transform.Translate(distance, Space.World);
@@ -34,6 +36,7 @@ public class BlockAnimation : MonoBehaviour {
 
         while(!slided)
         {
+			
             this.transform.position += translationVector * 0.15f;
             distance = toPosition - this.transform.position.x;
 
