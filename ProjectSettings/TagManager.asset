@@ -10,6 +10,10 @@ TagManager:
   - Lines
   - Background
   - Road
+  - StartingPanel
+  - GameOverPanel
+  - Point
+  - InfoText
   layers:
   - Default
   - TransparentFX
@@ -24,7 +28,7 @@ TagManager:
   - Lines
   - Blocks
   - Runner
-  - PostProcessing
+  - 
   - 
   - 
   - 
@@ -61,7 +65,4 @@ TagManager:
     locked: 0
   - name: Runner
     uniqueID: 2891553825
-    locked: 0
-  - name: ParticleSys
-    uniqueID: 2650437413
     locked: 0
