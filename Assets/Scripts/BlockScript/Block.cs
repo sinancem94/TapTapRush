@@ -51,11 +51,6 @@ public class Block : MonoBehaviour {
 
         type = BlockData.blockType.normal;
 
-        if (!Data.isAngled) //for mode trial
-        {
-            transform.GetChild(0).gameObject.SetActive(false);
-        }
-
     }
 
     private void Update()
