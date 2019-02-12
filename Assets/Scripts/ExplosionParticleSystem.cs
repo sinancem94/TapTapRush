@@ -2,24 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplosionParticleSystem : MonoBehaviour {
+public class ExplosionParticleSystem : MonoBehaviour
+{
 
-	private ParticleSystem explosionSystem;
+    private ParticleSystem explosionSystem;
 
-	// Use this for initialization
-	void Start () {
-		
-		explosionSystem = gameObject.GetComponent<ParticleSystem> ();
+    // Use this for initialization
+    void Start()
+    {
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        explosionSystem = gameObject.GetComponent<ParticleSystem>();
 
-	public void Explode(Vector3 explosionArea){
-		explosionSystem.transform.position = explosionArea;
-		explosionSystem.Play ();
-	}
+    }
+
+    public void Explode(Vector3 explosionArea)
+    {
+        explosionSystem.transform.position = explosionArea;
+        explosionSystem.Play();
+    }
 }

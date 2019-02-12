@@ -10,6 +10,10 @@ TagManager:
   - Lines
   - Background
   - Road
+  - StartingPanel
+  - GameOverPanel
+  - Point
+  - InfoText
   layers:
   - Default
   - TransparentFX
