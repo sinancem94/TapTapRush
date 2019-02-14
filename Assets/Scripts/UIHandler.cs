@@ -63,8 +63,8 @@ public class UIHandler : MonoBehaviour {
 
     public void Restart()
     {
-        Data.isAngled = false;//for mode change kaldırılcak
-        SceneManager.LoadScene("RunHelper",LoadSceneMode.Single);
+        //Data.isAngled = false;//for mode change kaldırılcak
+        SceneManager.LoadScene("RunHelper");
     }
 	
     public void ChangeMode() //for mode
@@ -72,13 +72,13 @@ public class UIHandler : MonoBehaviour {
         if(!Data.isAngled)
         {
             Data.isAngled = true;
-            modeButton.GetComponentInChildren<Text>().text = "açılı";
+            //modeButton.GetComponentInChildren<Text>().text = "açılı";
             Platform.instance.ChangeMode();
         }
         else
         {
             Data.isAngled = false;
-            modeButton.GetComponentInChildren<Text>().text = "açısız";
+            //modeButton.GetComponentInChildren<Text>().text = "açısız";
             Platform.instance.ChangeMode();
         }
 
