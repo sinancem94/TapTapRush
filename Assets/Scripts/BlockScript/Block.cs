@@ -20,7 +20,7 @@ public class Block : MonoBehaviour {
 
     public int limit;
 
-    private void Start()
+    private void OnEnable()
     {
         BlockSprites = new List<SpriteRenderer>();
 
@@ -31,7 +31,7 @@ public class Block : MonoBehaviour {
             sp.sprite = BlockData.normalBlock;
             sp.color = BlockData.normalColor;
         }
-
+        Debug.Log(BlockSprites.Count);
         outlineSize = BlockSprites[0].material.GetFloat("_OutlineSize");
 
        /* blockSprite = GetComponent<SpriteRenderer>();

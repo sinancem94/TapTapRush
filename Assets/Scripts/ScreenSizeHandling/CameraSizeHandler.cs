@@ -29,21 +29,21 @@ public class CameraSizeHandler : SizeHandler {
         while(Platform.instance.game.state == GameHandler.GameState.GameRunning)
         {
             //Debug.Log(Platform.instance.straightRoadLenght);
-            if ((Platform.instance.straightRoadLenght) > roadMiddleReferencePoint + 1f) //genişlicekse
+            if ((Platform.instance.straightRoadLenght) > roadMiddleReferencePoint) //genişlicekse
             {
                 //Debug.Log("genişlicek bu kadar : " + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint))));
 
                 // ne kadar genişlemesi gerektiği
                 float newCamSize  = camSize + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint)));
 
-                //ona doğru git
-                if(Camera.main.fieldOfView <  newCamSize)
+                //genişle
+                if(Camera.main.fieldOfView < newCamSize && Camera.main.fieldOfView < Upperlimit)
                 {
                     camSizeChange = ChangeSizeTo(0.1f, camSizeChange);
                     //Camera.main.fieldOfView += camSizeChange;
                     Camera.main.fieldOfView += 0.1f;
-                }
-                else if(Camera.main.fieldOfView > newCamSize + 0.5f)
+                }//daral
+                else if(Camera.main.fieldOfView > newCamSize)
                 {
                     camSizeChange = ChangeSizeTo(-0.1f, camSizeChange);
                     //Camera.main.fieldOfView += camSizeChange;
@@ -52,21 +52,21 @@ public class CameraSizeHandler : SizeHandler {
 
                 //Camera.main.fieldOfView = camSize + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint)));
             }
-            else if (Platform.instance.straightRoadLenght <= roadMiddleReferencePoint - 1f) // daralcaksa
+            else if (Platform.instance.straightRoadLenght <= roadMiddleReferencePoint) // daralcaksa
             {
                 //Debug.Log("daralcak  bu kadar : " + (camDiffLowBounds * ((roadMiddleReferencePoint - Platform.instance.straightRoadLenght) / (roadMiddleReferencePoint - roadLengthLowerLimit))));
 
                 // ne kadar daralması gerektiği
                 float newCamSize = camSize - (camDiffLowBounds * ((roadMiddleReferencePoint - Platform.instance.straightRoadLenght) / (roadMiddleReferencePoint - roadLengthLowerLimit)));
 
-                //ona doğru git
-                if(Camera.main.fieldOfView > newCamSize)
+                //daral
+                if(Camera.main.fieldOfView > newCamSize && Camera.main.fieldOfView > LowerLimit)
                 {
                     camSizeChange = ChangeSizeTo(-0.1f, camSizeChange);
                     //Camera.main.fieldOfView += camSizeChange;
                     Camera.main.fieldOfView -= 0.1f;
-                }
-                else if(Camera.main.fieldOfView < newCamSize -0.5f)
+                }//genişle
+                else if(Camera.main.fieldOfView < newCamSize)
                 {
                     camSizeChange = ChangeSizeTo(0.1f, camSizeChange);
                     //Camera.main.fieldOfView += camSizeChange;
@@ -80,7 +80,7 @@ public class CameraSizeHandler : SizeHandler {
                 Camera.main.fieldOfView = camSize;
             }*/
 
-            yield return new WaitForSeconds(0.001f);
+            yield return new WaitForSeconds(0.01f);
         }
     }
 

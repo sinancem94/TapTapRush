@@ -20,6 +20,8 @@ public class CameraMovement : MonoBehaviour {
 
         cameraSizeHandler = new CameraSizeHandler();
 
+        Platform.instance.ChangeMode(); //set cam and blocks for angle. for mode
+
         StartCoroutine(cameraSizeHandler.DynamicCameraMovement(OrthographicUpperSize,OrthographicLowerSize));
 	}
 	

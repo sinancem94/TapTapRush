@@ -14,11 +14,13 @@ public class Platform : MonoBehaviour
     private PlatformSizeHandler platformSizeHandler;
     private UIHandler uI;
 
+    private ExplosionParticleSystem explosionParticleSystem;
+
     public GameObject block; //kırmızı bloklar
     public GameObject runner; //koşan arkadaş artık neyse
     public GameObject lines;
 	public GameObject road;//düz yol 
-	//public GameObject background; //rengi değişen bok
+	public GameObject background; //rengi değişen bok
 
     public List<GameObject> platfotmTiles; //blokları barındıran liste
 
@@ -64,16 +66,20 @@ public class Platform : MonoBehaviour
 
         uI = (UIHandler)FindObjectOfType(typeof(UIHandler));
 
+        explosionParticleSystem = (ExplosionParticleSystem)FindObjectOfType(typeof(ExplosionParticleSystem));
+
 		block = GameObject.FindWithTag("Block");
         runner = GameObject.FindWithTag("Runner");
 		lines = GameObject.FindWithTag("Lines");
 		road = GameObject.FindWithTag("Road");
-		//background = GameObject.FindWithTag("Background");
+		background = GameObject.FindWithTag("Background");
 
         distBetweenBlock = platformSizeHandler.ArrangeSize(road.transform,lines.transform,block.transform,runner.transform);
-
-        lines.transform.position = new Vector2(0f, runner.transform.position.y + (5 * distBetweenBlock));
-        road.transform.position = new Vector2(0f, runner.transform.position.y + (5 * distBetweenBlock));
+        background.transform.position = new Vector3(0f, 6.5f, 0f);
+        //road.transform.position = new Vector3(road.transform.position.x, road.transform.position.y + (road.transform.localScale.y / 3), 0f);
+        //road.transform.position = new Vector3(road.transform.position.x, road.transform.position.y + (road.transform.localScale.y / 3), 0f);
+        lines.transform.position = new Vector2(0f, runner.transform.position.y + (lines.transform.GetChild(0).localScale.y / 3));//(5 * distBetweenBlock));
+        road.transform.position = new Vector2(0f, runner.transform.position.y + (road.transform.localScale.y / 3));//(5 * distBetweenBlock));
 		//background.transform.position = new Vector2(0f, runner.transform.position.y + 5);
 
         platfotmTiles = new List<GameObject>();
@@ -129,8 +135,8 @@ public class Platform : MonoBehaviour
     {
         if(runner.transform.position.y >= platfotmTiles[pushBlockForward].transform.position.y + (10 * distBetweenBlock))
         {
-            lines.transform.position = new Vector2(0f, runner.transform.position.y + 3);
-			road.transform.position = new Vector2(0f, runner.transform.position.y + 3);
+            lines.transform.position = new Vector2(0f, runner.transform.position.y + (10 * distBetweenBlock));
+            road.transform.position = new Vector2(0f, runner.transform.position.y + (10 * distBetweenBlock));
 			//background.transform.position = new Vector2(0f, runner.transform.position.y + 3);
 
             platfotmTiles[pushBlockForward].transform.position = BlockPositioner(distBetweenBlock);
@@ -175,6 +181,10 @@ public class Platform : MonoBehaviour
             {
                 if (platfotmTiles[blockToSlide].transform.position.x > 0 )//Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, BlockPos[1])) // if pressed right and next tile is on right
                 {
+                    if(explosionParticleSystem != null)
+                    {
+                        explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
+                    }
                     StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(0));
                     blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
                     point += gainedPoint;
@@ -193,6 +203,10 @@ public class Platform : MonoBehaviour
             {
                 if (platfotmTiles[blockToSlide].transform.position.x < 0 )//Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, BlockPos[0])) // if pressed left and tile is on left
                 {
+                    if (explosionParticleSystem != null)
+                    {
+                        explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
+                    }
                     StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(0));
                     blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
                     point += gainedPoint;
@@ -214,6 +228,10 @@ public class Platform : MonoBehaviour
             {
                 if (platfotmTiles[blockToSlide].transform.position.x < 0 )//Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, BlockPos[0])) // if pressed right tile is on left
                 {
+                    if (explosionParticleSystem != null)
+                    {
+                        explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
+                    }
                     StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(0));
                     blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
                     point += gainedPoint;
@@ -232,6 +250,10 @@ public class Platform : MonoBehaviour
             {
                 if (platfotmTiles[blockToSlide].transform.position.x > 0)//Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, BlockPos[1])) // if pressed left tile is on right
                 {
+                    if (explosionParticleSystem != null)
+                    {
+                        explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
+                    }
                     StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(0));
                     blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
                     point += gainedPoint;
