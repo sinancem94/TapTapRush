@@ -13,13 +13,17 @@ public class PlatformSizeHandler : SizeHandler{
 
         //Arrange road scale according to screen
         float roadWidth = gameScreenWidth / (float)(5f/3f);
+        float roadLength = 50f;
         //Debug.Log(width + " " + roadWidth);
-        road.localScale = new Vector3(roadWidth, 20f, 1f);
+        road.localScale = new Vector3(roadWidth, roadLength, 1f);
 
         //Arrange line positions according to roads size
         float linePosition = (/*Platform.instance.*/road.transform.localScale.x / 2);
         lines.GetChild(0).localPosition = new Vector3(linePosition, 0f, 0f);
+        lines.GetChild(0).localScale = new Vector3(lines.GetChild(0).localScale.x, roadLength, 0f);
+
         lines.GetChild(1).localPosition = new Vector3(linePosition * -1,0f,0f);
+        lines.GetChild(1).localScale = new Vector3(lines.GetChild(1).localScale.x, roadLength, 0f);
 
         //Arrange block scale according to roads scale. 1.8f for 3 lines , 3f for 5 lines
         float blockScale = roadWidth / 1.8f; // 3f;//1.8f; 
