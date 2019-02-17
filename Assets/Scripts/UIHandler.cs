@@ -26,7 +26,7 @@ public class UIHandler : MonoBehaviour {
     {
         point.text = pnt.ToString();
     }
-
+    
 
     public IEnumerator GiveInfo(float time,string message)
     {

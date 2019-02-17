@@ -41,7 +41,6 @@ public class Runner : MonoBehaviour {
             }
             else if(isStrike) // kombo varsa hızlan, zorlaştır
             {
-                //sprite.material.SetColor("_OutlineColor", Color.black);
                 if(Platform.instance.straightRoadLenght >= Platform.instance.distBetweenBlock * 3) // eğer bu kadar daraldıysa yol yavaşla
                 {
                     this.transform.Translate(0f, speed * Time.deltaTime * 1.5f, 0f, Space.World);

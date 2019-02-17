@@ -40,14 +40,14 @@ public class CameraSizeHandler : SizeHandler {
                 if(Camera.main.fieldOfView < newCamSize && Camera.main.fieldOfView < Upperlimit)
                 {
                     camSizeChange = ChangeSizeTo(0.1f, camSizeChange);
-                    //Camera.main.fieldOfView += camSizeChange;
-                    Camera.main.fieldOfView += 0.1f;
+                    Camera.main.fieldOfView += camSizeChange;
+                    //Camera.main.fieldOfView += 0.1f;
                 }//daral
                 else if(Camera.main.fieldOfView > newCamSize)
                 {
                     camSizeChange = ChangeSizeTo(-0.1f, camSizeChange);
-                    //Camera.main.fieldOfView += camSizeChange;
-                    Camera.main.fieldOfView -= 0.1f;
+                    Camera.main.fieldOfView += camSizeChange;
+                    //Camera.main.fieldOfView -= 0.1f;
                 }
 
                 //Camera.main.fieldOfView = camSize + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint)));
@@ -63,16 +63,15 @@ public class CameraSizeHandler : SizeHandler {
                 if(Camera.main.fieldOfView > newCamSize && Camera.main.fieldOfView > LowerLimit)
                 {
                     camSizeChange = ChangeSizeTo(-0.1f, camSizeChange);
-                    //Camera.main.fieldOfView += camSizeChange;
-                    Camera.main.fieldOfView -= 0.1f;
+                    Camera.main.fieldOfView += camSizeChange;
+                    //Camera.main.fieldOfView -= 0.1f;
                 }//genişle
                 else if(Camera.main.fieldOfView < newCamSize)
                 {
                     camSizeChange = ChangeSizeTo(0.1f, camSizeChange);
-                    //Camera.main.fieldOfView += camSizeChange;
-                    Camera.main.fieldOfView += 0.1f;
+                    Camera.main.fieldOfView += camSizeChange;
+                    //Camera.main.fieldOfView += 0.1f;
                 }
-
                 //Camera.main.fieldOfView = camSize - (camDiffLowBounds * ((roadMiddleReferencePoint - Platform.instance.straightRoadLenght) / (roadMiddleReferencePoint - roadLengthLowerLimit)));
             }
             /*else // düz 60
@@ -87,11 +86,10 @@ public class CameraSizeHandler : SizeHandler {
     // change camera size forward to
         float ChangeSizeTo(float direction, float changeSize)
         {
-
-
+        
             if (direction > 0)
             {
-                changeSize = (changeSize < direction) ? changeSize + 0.01f : changeSize = .01f;
+                changeSize = (changeSize < direction) ? changeSize + 0.01f : changeSize = 0.1f;
             }
             else if(direction < 0)
             {
