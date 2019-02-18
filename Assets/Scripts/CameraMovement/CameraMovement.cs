@@ -9,6 +9,7 @@ public class CameraMovement : MonoBehaviour {
     private Vector3 initPos; //for mode
 
     private CameraSizeHandler cameraSizeHandler;
+    private bool isChanging;
 
     public float OrthographicUpperSize;
     public float OrthographicLowerSize;
@@ -17,17 +18,19 @@ public class CameraMovement : MonoBehaviour {
     {
         initPos = Platform.instance.runner.transform.position; //for mode
         offset = initPos - new Vector3(0f, Platform.instance.runner.transform.position.y - 3f,  10f); //transform.position - initPos;
-
         cameraSizeHandler = new CameraSizeHandler();
-
-        Platform.instance.ChangeMode(); //set cam and blocks for angle. for mode
-
-        StartCoroutine(cameraSizeHandler.DynamicCameraMovement(OrthographicUpperSize,OrthographicLowerSize));
+        isChanging = false;
+        Platform.instance.ChangeAngle(); //set cam and blocks for angle. for mode
+        //StartCoroutine(cameraSizeHandler.DynamicCameraMovement(OrthographicUpperSize,OrthographicLowerSize));
 	}
 	
 
 	void LateUpdate () 
     {
+        if(!isChanging && Platform.instance.game.state == GameHandler.GameState.GameRunning)
+        {
+            StartCamera();
+        }
        // Camera.main.orthographicSize += .1f;
         transform.position = Platform.instance.runner.transform.position + offset;
 	}
@@ -36,6 +39,13 @@ public class CameraMovement : MonoBehaviour {
     {
         offset = pos - initPos;
     }
+
+    void StartCamera()
+    {
+        isChanging = true;
+        StartCoroutine(cameraSizeHandler.DynamicCameraMovement(OrthographicUpperSize, OrthographicLowerSize));
+    }
+
 
    /* IEnumerator DynamicCamMovement()
     {

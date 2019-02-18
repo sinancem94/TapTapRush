@@ -14,6 +14,7 @@ TagManager:
   - GameOverPanel
   - Point
   - InfoText
+  - PostProcessing
   layers:
   - Default
   - TransparentFX

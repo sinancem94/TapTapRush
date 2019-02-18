@@ -31,7 +31,7 @@ public class Block : MonoBehaviour {
             sp.sprite = BlockData.normalBlock;
             sp.color = BlockData.normalColor;
         }
-        Debug.Log(BlockSprites.Count);
+//        Debug.Log(BlockSprites.Count);
         outlineSize = BlockSprites[0].material.GetFloat("_OutlineSize");
 
        /* blockSprite = GetComponent<SpriteRenderer>();
@@ -83,8 +83,8 @@ public class Block : MonoBehaviour {
 
     public void SetBlock()
     {
-
-        int r = Random.Range(0, 10);
+        
+        int r = Random.Range(2, 10);// 2 yaptım başını hiç ters olmasın diye
         //TODO: Create a random reverse generator that deals reverse positions 
         if (type == BlockData.blockType.reverse){
             BlockData.ChangeBlockType(ref type, BlockSprites);

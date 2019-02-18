@@ -85,7 +85,11 @@ public class Platform : MonoBehaviour
         platfotmTiles = new List<GameObject>();
         platfotmTiles.Add(block);
 
-        BlockPos = new float[] {/*-2 * distBetweenBlock,*/-1 * distBetweenBlock, distBetweenBlock/*,2 * distBetweenBlock*/};
+        if(Data.is5Line)
+            BlockPos = new float[] {-2 * distBetweenBlock,-1 * distBetweenBlock, distBetweenBlock,2 * distBetweenBlock};
+        else
+            BlockPos = new float[] {  -1 * distBetweenBlock, distBetweenBlock };
+        
         distance = -5f; // Start from -5
 
         int levelStartStraightLine = 7; // start from third block to give full road
@@ -101,7 +105,7 @@ public class Platform : MonoBehaviour
 
         }
 
-        blockNum = 20;
+        blockNum = 28; //total block number is = levelStartghtLine + block num
 
         for (int i = 0; i < blockNum; i++)
         {
@@ -157,7 +161,7 @@ public class Platform : MonoBehaviour
             if (ınput.directions.Count != 0)
             {
                 ınput.dirr = ınput.directions.Dequeue();
-                MoveTile();
+                MoveTile((int)ınput.dirr);
             }
 
             straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
@@ -171,27 +175,187 @@ public class Platform : MonoBehaviour
         }
     }
 
-
-
-    private void MoveTile()
+    private void MoveTile(int direction)
     {
-        if (platfotmTiles[blockToSlide].GetComponent<Block>().type == BlockData.blockType.normal)
+        float toPos = 0;
+
+        if (!Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, 0f)) // eğer zaten ortada değilse
+        {
+            if (explosionParticleSystem != null)
+            {
+                explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
+            }
+
+            toPos = platfotmTiles[blockToSlide].transform.position.x + (direction * distBetweenBlock); // nereye gitcek onu hesapla
+
+            if (toPos < BlockPos[0] || toPos > BlockPos[BlockPos.Length - 1]) //en uçta yanlış yöne basıldıysa düş
+            {
+                game.GameOver();
+                StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().Fall(new Vector2(direction, 0)));
+
+                uI.GameOver();
+            }
+            else //yoksa o yöne doğru git
+            {
+                StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(toPos));
+
+                if (Mathf.Approximately(toPos, 0)) // eğer 0 a geldiysen bi sonraki bloğa geç
+                {
+                    blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
+                    point += gainedPoint;
+                    uI.SetPoint(point);
+                }
+            }
+        }
+    }
+  
+    // blokları konumlandıran fonksiyon
+    private Vector2 BlockPositioner(float rate)
+    {
+        int tempEx = exRand;
+       
+        exRand = RandomPos.RandomPosition(exRand, sameLine,BlockPos.Length);
+        sameLine = (tempEx == exRand) ? sameLine += 1 : sameLine = 0;
+        distance += rate;
+
+        return new Vector2(BlockPos[exRand], distance);
+    }
+
+    public void ChangeAngle() //for mode //new Vector3(0f,0f,-10f)new Vector3(0f, -6f, -10f)
+    {
+        if(!Data.isAngled)
+        {
+            foreach(GameObject g in platfotmTiles)
+            {
+            g.transform.GetChild(0).gameObject.SetActive(false);
+            }
+            Camera.main.gameObject.transform.eulerAngles = Vector3.zero;
+            Camera.main.gameObject.GetComponent<CameraMovement>().CalculateOffset(runner.transform.position + new Vector3(0f, 3f, -10f));
+            if(Data.is5Line)
+            {
+                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
+                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 80f;
+            }
+            else
+            {
+                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
+                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 90f;
+            }
+
+            //Camera.main.gameObject.transform.position = Vector3.zero;
+        }
+        else
+        {
+            foreach (GameObject g in platfotmTiles)
+            {
+                g.transform.GetChild(0).gameObject.SetActive(true);
+            }
+            Camera.main.gameObject.transform.eulerAngles = new Vector3(-30f, 0f, 0f);
+            Camera.main.gameObject.GetComponent<CameraMovement>().CalculateOffset(runner.transform.position + new Vector3(0f, -3f, -10f));
+            if (Data.is5Line)
+            {
+                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
+                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 70f;
+            }
+            else
+            {
+                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
+                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 75f;
+            }
+            //Camera.main.gameObject.transform.position = new Vector3(0f, 6f, 0f);
+        }
+    }
+
+    public void ChangeMode()
+    {
+        distBetweenBlock = platformSizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform);
+
+        if(Data.is5Line)
+        {
+            BlockPos = new float[] { -2 * distBetweenBlock, -1 * distBetweenBlock, distBetweenBlock, 2 * distBetweenBlock };
+        }
+        else
+        {
+            BlockPos = new float[] {-1 * distBetweenBlock, distBetweenBlock };
+        }
+
+        distance = -5f; // Start from -5
+
+        for (int i = 1; i < platfotmTiles.Count;i++ )
+        {
+            Destroy(platfotmTiles[i]);
+        }
+        platfotmTiles.Clear();
+        platfotmTiles.Add(block);
+        platfotmTiles[0].GetComponent<Block>().SetBlock();
+
+        int levelStartStraightLine = 7; // start from third block to give full road
+
+        platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
+
+
+        for (int i = 0; i < levelStartStraightLine; i++)
+        {
+            distance += distBetweenBlock;
+            platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
+            platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
+
+        }
+
+        blockNum = 28; //total block number is = levelStartghtLine + block num
+
+        for (int i = 0; i < blockNum; i++)
+        {
+            platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
+            platfotmTiles[platfotmTiles.Count - 1].transform.position = BlockPositioner(distBetweenBlock);
+        }
+
+        runner.transform.position = instance.platfotmTiles[4].transform.position; //Runner starts from 4rd tile
+
+        blockToSlide = levelStartStraightLine + 1;
+        pushBlockForward = 0;
+        initialStraightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
+        straightRoadLenght = initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
+
+        Debug.Log("Initial length is : " + initialStraightRoadLenght);
+    }
+
+    public void GiveMessage(float time,string message)
+    {
+        StartCoroutine(uI.GiveInfo(time,message));
+    }
+
+}
+
+
+/* private void MoveTile(int direction)
+    {
+        float toPos = 0;
+
+
+        if (platfotmTiles[blockToSlide].GetComponent<Block>().type == BlockData.blockType.normal) //if block is normal
         {
             if (ınput.dirr == InputManager.direction.right)
             {
-                if (platfotmTiles[blockToSlide].transform.position.x > 0 )//Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, BlockPos[1])) // if pressed right and next tile is on right
+                if (platfotmTiles[blockToSlide].transform.position.x > 0 ) // if pressed right and next tile is on right
                 {
                     if(explosionParticleSystem != null)
                     {
                         explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
                     }
-                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(0));
-                    blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
+                    toPos = platfotmTiles[blockToSlide].transform.position.x - distBetweenBlock;//(!Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, 0)) ? platfotmTiles[blockToSlide].transform.position.x - distBetweenBlock : 0;
+                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(toPos));
+                    blockToSlide = (blockToSlide + 1 < platfotmTiles.Count  && Mathf.Approximately(toPos,0)) ? blockToSlide += 1 : blockToSlide;
                     point += gainedPoint;
                     uI.SetPoint(point);
                     //platfotmTiles[blockToSlide].transform.position = new Vector2(platfotmTiles[blockToSlide].transform.position.x - distBetweenBlock, platfotmTiles[blockToSlide].transform.position.y);
                 }
-                else // if pressed Right but tile is on left
+                else if(Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x,BlockPos[1])) //if pressed Right but tile is on left
+                {
+                    toPos = platfotmTiles[blockToSlide].transform.position.x - distBetweenBlock;
+                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(toPos));
+                }
+                else // if pressed Right but tile is on leftmost
                 {
                     game.GameOver();
                     StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().Fall(new Vector2(-1f, 0)));
@@ -201,19 +365,25 @@ public class Platform : MonoBehaviour
             }
             else if (ınput.dirr == InputManager.direction.left)
             {
-                if (platfotmTiles[blockToSlide].transform.position.x < 0 )//Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, BlockPos[0])) // if pressed left and tile is on left
+                if (platfotmTiles[blockToSlide].transform.position.x < 0 ) // if pressed left and tile is on left
                 {
                     if (explosionParticleSystem != null)
                     {
                         explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
                     }
-                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(0));
-                    blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
+                    toPos = platfotmTiles[blockToSlide].transform.position.x + distBetweenBlock;//(!Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, 0)) ? platfotmTiles[blockToSlide].transform.position.x + distBetweenBlock : 0;
+                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(toPos));
+                    blockToSlide = (blockToSlide + 1 < platfotmTiles.Count && Mathf.Approximately(toPos,0)) ? blockToSlide += 1 : blockToSlide;
                     point += gainedPoint;
                     uI.SetPoint(point);
                     //platfotmTiles[blockToSlide].transform.position = new Vector2(platfotmTiles[blockToSlide].transform.position.x + distBetweenBlock, platfotmTiles[blockToSlide].transform.position.y);
                 }
-                else // if pressed left but tile is on right
+                else if (Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, BlockPos[2])) // if pressed left but tile is on right most
+                {
+                    toPos = platfotmTiles[blockToSlide].transform.position.x + distBetweenBlock;
+                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(toPos));
+                }
+                else // if pressed left but tile is on right most
                 {
                     game.GameOver();
                     StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().Fall(new Vector2(1f, 0)));
@@ -222,7 +392,7 @@ public class Platform : MonoBehaviour
                 }
             }
         }
-        else // if block is reverse 
+        else // if block is reverse NOT usigin DELETE!!!!
         {
             if (ınput.dirr == InputManager.direction.right)
             {
@@ -232,8 +402,9 @@ public class Platform : MonoBehaviour
                     {
                         explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
                     }
-                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(0));
-                    blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
+                    toPos = (!Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, 0)) ? platfotmTiles[blockToSlide].transform.position.x + distBetweenBlock : 0;
+                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(toPos));
+                    //blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
                     point += gainedPoint;
                     uI.SetPoint(point);
                     //platfotmTiles[blockToSlide].transform.position = new Vector2(platfotmTiles[blockToSlide].transform.position.x + distBetweenBlock, platfotmTiles[blockToSlide].transform.position.y);
@@ -254,8 +425,9 @@ public class Platform : MonoBehaviour
                     {
                         explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
                     }
-                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(0));
-                    blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
+                    toPos = (!Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, 0)) ? platfotmTiles[blockToSlide].transform.position.x - distBetweenBlock : 0;
+                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(toPos));
+                    //blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
                     point += gainedPoint;
                     uI.SetPoint(point);
                     //platfotmTiles[blockToSlide].transform.position = new Vector2(platfotmTiles[blockToSlide].transform.position.x - distBetweenBlock, platfotmTiles[blockToSlide].transform.position.y);
@@ -268,48 +440,6 @@ public class Platform : MonoBehaviour
                 }
             }
         }
-    }
+        Debug.Log(toPos);
+    }*/
 
-    // blokları konumlandıran fonksiyon
-    private Vector2 BlockPositioner(float rate)
-    {
-        int tempEx = exRand;
-        exRand = RandomPos.RandomPosition(exRand, sameLine,BlockPos.Length);
-        sameLine = (tempEx == exRand) ? sameLine += 1 : sameLine = 0;
-        distance += rate;
-
-        return new Vector2(BlockPos[exRand], distance);
-    }
-
-    public void ChangeMode() //for mode //new Vector3(0f,0f,-10f)new Vector3(0f, -6f, -10f)
-    {
-        if(!Data.isAngled)
-        {
-            foreach(GameObject g in platfotmTiles)
-            {
-            g.transform.GetChild(0).gameObject.SetActive(false);
-            }
-            Camera.main.gameObject.transform.eulerAngles = Vector3.zero;
-            Camera.main.gameObject.GetComponent<CameraMovement>().CalculateOffset(runner.transform.position + new Vector3(0f, 3f, -10f));
-            //Camera.main.gameObject.transform.position = Vector3.zero;
-        }
-        else
-        {
-            foreach (GameObject g in platfotmTiles)
-            {
-                g.transform.GetChild(0).gameObject.SetActive(true);
-            }
-            Camera.main.gameObject.transform.eulerAngles = new Vector3(-30f, 0f, 0f);
-            Camera.main.gameObject.GetComponent<CameraMovement>().CalculateOffset(runner.transform.position + new Vector3(0f, -3f, -10f));
-            //Camera.main.gameObject.transform.position = new Vector3(0f, 6f, 0f);
-        }
-
-    }
-
-
-    public void GiveMessage(float time,string message)
-    {
-        StartCoroutine(uI.GiveInfo(time,message));
-    }
-
-}
