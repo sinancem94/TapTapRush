@@ -5,14 +5,17 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Block : MonoBehaviour {
-
+    
     public BlockData.blockType type;
+    private BlockAnimation blockAnimation;
 
     private List<SpriteRenderer> BlockSprites;
 
     private float outlineSize;
 
     bool isShined;
+
+    public bool isMoving;
 
    // private SpriteRenderer blockSprite;
    // private SpriteRenderer ChildBlockSprite;
@@ -22,6 +25,7 @@ public class Block : MonoBehaviour {
 
     private void OnEnable()
     {
+        blockAnimation = this.GetComponent<BlockAnimation>();
         BlockSprites = new List<SpriteRenderer>();
 
         foreach(SpriteRenderer sp in this.GetComponentsInChildren<SpriteRenderer>())
@@ -48,6 +52,7 @@ public class Block : MonoBehaviour {
         limit = 1;
 
         isShined = false;
+        isMoving = false;
 
         type = BlockData.blockType.normal;
 
@@ -100,6 +105,15 @@ public class Block : MonoBehaviour {
         outlineSize = BlockSprites[0].material.GetFloat("_OutlineSize");
 
         isShined = false;
+    }
+
+    public void MoveTile(float toPosition)
+    {
+        if(!isMoving)
+        {
+            isMoving = true;
+            StartCoroutine(blockAnimation.MoveTile(toPosition));
+        }
     }
 
     public void ChangeLimit(int num)
