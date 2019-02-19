@@ -1,2 +1,0 @@
-# TapTapRush
-RunBoreRun

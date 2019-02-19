@@ -31,7 +31,7 @@ public class CameraSizeHandler : SizeHandler {
             //Debug.Log(Platform.instance.straightRoadLenght);
             if ((Platform.instance.straightRoadLenght) > roadMiddleReferencePoint) //genişlicekse
             {
-                //Debug.Log("genişlicek bu kadar : " + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint))));
+                Debug.Log("genişlicek bu kadar : " + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint))));
 
                 // ne kadar genişlemesi gerektiği
                 float newCamSize  = camSize + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint)));
@@ -40,21 +40,21 @@ public class CameraSizeHandler : SizeHandler {
                 if(Camera.main.fieldOfView < newCamSize && Camera.main.fieldOfView < Upperlimit)
                 {
                     camSizeChange = ChangeSizeTo(0.1f, camSizeChange);
-                    //Camera.main.fieldOfView += camSizeChange;
-                    Camera.main.fieldOfView += 0.1f;
+                    Camera.main.fieldOfView += camSizeChange;
+                    //Camera.main.fieldOfView += 0.1f;
                 }//daral
-                else if(Camera.main.fieldOfView > newCamSize)
+                else if(Camera.main.fieldOfView > newCamSize + 0.5f)
                 {
                     camSizeChange = ChangeSizeTo(-0.1f, camSizeChange);
-                    //Camera.main.fieldOfView += camSizeChange;
-                    Camera.main.fieldOfView -= 0.1f;
+                    Camera.main.fieldOfView += camSizeChange;
+                    //Camera.main.fieldOfView -= 0.1f;
                 }
 
                 //Camera.main.fieldOfView = camSize + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint)));
             }
             else if (Platform.instance.straightRoadLenght <= roadMiddleReferencePoint) // daralcaksa
             {
-                //Debug.Log("daralcak  bu kadar : " + (camDiffLowBounds * ((roadMiddleReferencePoint - Platform.instance.straightRoadLenght) / (roadMiddleReferencePoint - roadLengthLowerLimit))));
+                Debug.Log("daralcak  bu kadar : " + (camDiffLowBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint ) / (roadMiddleReferencePoint - roadLengthLowerLimit))));
 
                 // ne kadar daralması gerektiği
                 float newCamSize = camSize - (camDiffLowBounds * ((roadMiddleReferencePoint - Platform.instance.straightRoadLenght) / (roadMiddleReferencePoint - roadLengthLowerLimit)));
@@ -63,16 +63,15 @@ public class CameraSizeHandler : SizeHandler {
                 if(Camera.main.fieldOfView > newCamSize && Camera.main.fieldOfView > LowerLimit)
                 {
                     camSizeChange = ChangeSizeTo(-0.1f, camSizeChange);
-                    //Camera.main.fieldOfView += camSizeChange;
-                    Camera.main.fieldOfView -= 0.1f;
+                    Camera.main.fieldOfView += camSizeChange;
+                    //Camera.main.fieldOfView -= 0.1f;
                 }//genişle
-                else if(Camera.main.fieldOfView < newCamSize)
+                else if(Camera.main.fieldOfView < newCamSize - 0.5f)
                 {
                     camSizeChange = ChangeSizeTo(0.1f, camSizeChange);
-                    //Camera.main.fieldOfView += camSizeChange;
-                    Camera.main.fieldOfView += 0.1f;
+                    Camera.main.fieldOfView += camSizeChange;
+                    //Camera.main.fieldOfView += 0.1f;
                 }
-
                 //Camera.main.fieldOfView = camSize - (camDiffLowBounds * ((roadMiddleReferencePoint - Platform.instance.straightRoadLenght) / (roadMiddleReferencePoint - roadLengthLowerLimit)));
             }
             /*else // düz 60
@@ -84,18 +83,17 @@ public class CameraSizeHandler : SizeHandler {
         }
     }
 
-    // change camera size forward to
+    //change camera size forward to
         float ChangeSizeTo(float direction, float changeSize)
         {
-
-
+        
             if (direction > 0)
             {
-                changeSize = (changeSize < direction) ? changeSize + 0.01f : changeSize = .01f;
+                changeSize = (changeSize < direction) ? changeSize + 0.02f : changeSize = 0.1f;
             }
             else if(direction < 0)
             {
-                changeSize = (changeSize > direction) ? changeSize - 0.01f : changeSize = -0.1f;
+                changeSize = (changeSize > direction) ? changeSize - 0.02f : changeSize = -0.1f;
             }
             
             return changeSize;

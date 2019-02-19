@@ -26,12 +26,28 @@ public class PlatformSizeHandler : SizeHandler{
         lines.GetChild(1).localScale = new Vector3(lines.GetChild(1).localScale.x, roadLength, 0f);
 
         //Arrange block scale according to roads scale. 1.8f for 3 lines , 3f for 5 lines
-        float blockScale = roadWidth / 1.8f; // 3f;//1.8f; 
+        float blockScale = roadWidth / 1.8f;
+        if(Data.is5Line)
+        {
+            blockScale = roadWidth / 3f;//1.8f; 
+        }
+        else
+        {
+            blockScale = roadWidth / 1.8f; 
+        }
+
+
         block.localScale = new Vector3(blockScale,blockScale,1f);
 
         //Arrange runner size
         runner.localScale = new Vector3(blockScale * 2 / 4, blockScale * 2 / 4, 1f);
         //return the distance between blocks. 3f for 3 lines, 5f for 5 lines
-        return roadWidth / 3f;//5f;//3f;
+        if(Data.is5Line){
+            return roadWidth / 5f;//3f;
+        }
+        else{
+            return roadWidth / 3f;
+        }
+
 	}
 }

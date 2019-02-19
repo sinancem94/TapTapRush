@@ -11,8 +11,8 @@ public class InputManager
 
     public enum direction
     {
-        right,
-        left,
+        right = -1,
+        left = 1,
         none
     }
 

@@ -17,7 +17,7 @@ public class Runner : MonoBehaviour {
     void Start () {
         gameTime = 0f;
         timer = 4f;
-        speed = 2f;
+        //speed = 2f;
         isStrike = false;
         sprite = this.GetComponent<SpriteRenderer>();
        // this.transform.position = Platform.instance.platfotmTiles[5].transform.position; // start from 3rd tile // platform da yapılıyor ki aradaki fark hemen hesaplanabilsin
@@ -41,8 +41,7 @@ public class Runner : MonoBehaviour {
             }
             else if(isStrike) // kombo varsa hızlan, zorlaştır
             {
-                //sprite.material.SetColor("_OutlineColor", Color.black);
-                if(Platform.instance.straightRoadLenght >= Platform.instance.distBetweenBlock * 3) // eğer bu kadar daraldıysa yol yavaşla
+                if(Platform.instance.straightRoadLenght >= Platform.instance.distBetweenBlock * 5) // eğer bu kadar daraldıysa yol yavaşla
                 {
                     this.transform.Translate(0f, speed * Time.deltaTime * 1.5f, 0f, Space.World);
                 }
@@ -60,7 +59,7 @@ public class Runner : MonoBehaviour {
             gameTime += Time.deltaTime;
             if (gameTime > timer)
             {
-                speed += .5f;
+                speed += .3f;
                 timer += 4f;
             }
         }

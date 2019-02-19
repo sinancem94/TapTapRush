@@ -34,17 +34,18 @@ public class BlockAnimation : MonoBehaviour {
 
         while(!slided)
         {
+            //this.transform.Translate(translationVector * Time.deltaTime);
             this.transform.position += translationVector * 0.15f;
             distance = toPosition - this.transform.position.x;
 
-            if((from == 1 && distance < toPosition ) || (from == -1 && distance > toPosition))
+            if((from == 1 && distance <= 0 ) || (from == -1 && distance >= 0))
             {
                 slided = true;
             }
 
             yield return new WaitForSeconds(0.01f);
         }
-        this.transform.position = new Vector3(0f,transform.position.y,0f);
+        this.transform.position = new Vector3(toPosition,transform.position.y,0f);
 
     }
 
