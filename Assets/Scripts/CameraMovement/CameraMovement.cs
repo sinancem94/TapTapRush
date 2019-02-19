@@ -31,13 +31,13 @@ public class CameraMovement : MonoBehaviour {
         {
             StartCamera();
         }
-       // Camera.main.orthographicSize += .1f;
+      
         transform.position = Platform.instance.runner.transform.position + offset;
 	}
 
     public void CalculateOffset(Vector3 pos) //for mode
     {
-        offset = pos - initPos;
+        offset = - pos + Platform.instance.runner.transform.position;
     }
 
     void StartCamera()

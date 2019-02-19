@@ -230,7 +230,7 @@ public class Platform : MonoBehaviour
             g.transform.GetChild(0).gameObject.SetActive(false);
             }
             Camera.main.gameObject.transform.eulerAngles = Vector3.zero;
-            Camera.main.gameObject.GetComponent<CameraMovement>().CalculateOffset(runner.transform.position + new Vector3(0f, 3f, -10f));
+            Camera.main.gameObject.GetComponent<CameraMovement>().CalculateOffset(runner.transform.position + new Vector3(0f, -3f, 10f));
             if(Data.is5Line)
             {
                 Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
@@ -251,7 +251,7 @@ public class Platform : MonoBehaviour
                 g.transform.GetChild(0).gameObject.SetActive(true);
             }
             Camera.main.gameObject.transform.eulerAngles = new Vector3(-30f, 0f, 0f);
-            Camera.main.gameObject.GetComponent<CameraMovement>().CalculateOffset(runner.transform.position + new Vector3(0f, -3f, -10f));
+            Camera.main.gameObject.GetComponent<CameraMovement>().CalculateOffset(runner.transform.position + new Vector3(0f, 3f, 10f));
             if (Data.is5Line)
             {
                 Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
@@ -312,8 +312,9 @@ public class Platform : MonoBehaviour
 
         runner.transform.position = instance.platfotmTiles[4].transform.position; //Runner starts from 4rd tile
 
+        //ChangeAngle();
+
         blockToSlide = levelStartStraightLine + 1;
-        pushBlockForward = 0;
         initialStraightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
         straightRoadLenght = initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
 
