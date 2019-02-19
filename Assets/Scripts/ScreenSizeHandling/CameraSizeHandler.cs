@@ -31,7 +31,7 @@ public class CameraSizeHandler : SizeHandler {
             //Debug.Log(Platform.instance.straightRoadLenght);
             if ((Platform.instance.straightRoadLenght) > roadMiddleReferencePoint) //genişlicekse
             {
-                Debug.Log("genişlicek bu kadar : " + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint))));
+                //Debug.Log("genişlicek bu kadar : " + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint))));
 
                 // ne kadar genişlemesi gerektiği
                 float newCamSize  = camSize + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint)));
@@ -54,7 +54,7 @@ public class CameraSizeHandler : SizeHandler {
             }
             else if (Platform.instance.straightRoadLenght <= roadMiddleReferencePoint) // daralcaksa
             {
-                Debug.Log("daralcak  bu kadar : " + (camDiffLowBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint ) / (roadMiddleReferencePoint - roadLengthLowerLimit))));
+                //Debug.Log("daralcak  bu kadar : " + (camDiffLowBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint ) / (roadMiddleReferencePoint - roadLengthLowerLimit))));
 
                 // ne kadar daralması gerektiği
                 float newCamSize = camSize - (camDiffLowBounds * ((roadMiddleReferencePoint - Platform.instance.straightRoadLenght) / (roadMiddleReferencePoint - roadLengthLowerLimit)));

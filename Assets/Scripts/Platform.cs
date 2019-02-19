@@ -197,7 +197,7 @@ public class Platform : MonoBehaviour
             }
             else //yoksa o yöne doğru git
             {
-                StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(toPos));
+                platfotmTiles[blockToSlide].GetComponent<Block>().MoveTile(toPos);
 
                 if (Mathf.Approximately(toPos, 0)) // eğer 0 a geldiysen bi sonraki bloğa geç
                 {

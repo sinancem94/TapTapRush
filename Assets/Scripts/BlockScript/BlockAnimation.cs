@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class BlockAnimation : MonoBehaviour {
 
+    private Block block;
+
+    private void Start()
+    {
+        block = this.GetComponent<Block>();
+    }
+
     public IEnumerator Fall(Vector2 distance)
     {
         this.transform.Translate(distance, Space.World);
@@ -47,6 +54,8 @@ public class BlockAnimation : MonoBehaviour {
         }
         this.transform.position = new Vector3(toPosition,transform.position.y,0f);
 
+        block.isMoving = false;
+        StopCoroutine(MoveTile(toPosition));
     }
 
     /*private Sprite blockSprite;
