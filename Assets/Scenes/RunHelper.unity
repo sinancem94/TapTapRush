@@ -377,7 +377,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: fa1c9d763927646ffab3081557c4ebf5, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -400,7 +400,6 @@ GameObject:
   - component: {fileID: 261983530}
   - component: {fileID: 261983529}
   - component: {fileID: 261983533}
-  - component: {fileID: 261983534}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -492,18 +491,6 @@ RectTransform:
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &261983533
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 261983528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b10095e60a59489094312bb22b4b74b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &261983534
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -636,7 +623,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 261983534}
+      objectReference: {fileID: 0}
     - target: {fileID: 6419100091106235811, guid: 3209428e57039443b8b946fa8b43c015,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -783,7 +770,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: fa1c9d763927646ffab3081557c4ebf5, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_Color: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 0.78431374}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1020,7 +1007,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: fa1c9d763927646ffab3081557c4ebf5, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
+  m_Color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 0.78431374}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1100,7 +1087,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 46b7929ed77674745a6abafe2b153068, type: 3}
-  m_Color: {r: 0.735849, g: 0.35056958, b: 0.35056958, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1397,7 +1384,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: fa1c9d763927646ffab3081557c4ebf5, type: 3}
-  m_Color: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
+  m_Color: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1528,7 +1515,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 261983534}
+      objectReference: {fileID: 0}
     - target: {fileID: 6419100091106235811, guid: 3209428e57039443b8b946fa8b43c015,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -1967,7 +1954,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!199 &1933571972
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -2044,7 +2031,7 @@ ParticleSystem:
   cullingMode: 1
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0
@@ -2282,7 +2269,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.3
+      scalar: 0.2
       minScalar: 0.3
       maxCurve:
         serializedVersion: 2
@@ -6746,6 +6733,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2019476966}
   - component: {fileID: 2019476965}
+  - component: {fileID: 2019476967}
   m_Layer: 13
   m_Name: PostProcessingVolume
   m_TagString: PostProcessing
@@ -6784,6 +6772,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2019476967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2019476964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05b49699d02abc14db51db3a6e65a145, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2033782069
 GameObject:
   m_ObjectHideFlags: 0
@@ -7035,8 +7035,8 @@ SpriteRenderer:
   m_SortingLayerID: -1453913755
   m_SortingLayer: 4
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 475d59ba07003be4ba16709142fb81b2, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: fa1c9d763927646ffab3081557c4ebf5, type: 3}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -7055,7 +7055,7 @@ Transform:
   m_GameObject: {fileID: 2125352534}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -8, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2033782070}
   m_Father: {fileID: 369643770}
@@ -7209,7 +7209,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 261983534}
+      objectReference: {fileID: 0}
     - target: {fileID: 6419100091106235811, guid: 3209428e57039443b8b946fa8b43c015,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
