@@ -9,8 +9,8 @@ public class TrialButtons : MonoBehaviour
     private void Start()
     {
         postProcessing = GameObject.FindGameObjectWithTag("PostProcessing");
-        //if(!Data.isPostProcessing)
-           // postProcessing.SetActive(false);
+        if(!Data.isPostProcessing)
+            postProcessing.SetActive(false);
     }
 
 
