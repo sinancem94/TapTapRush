@@ -116,6 +116,11 @@ public class Block : MonoBehaviour {
         }
     }
 
+    public void Fall(Vector2 fallTo)
+    {
+        StartCoroutine(blockAnimation.Fall(fallTo));
+    }
+
     public void ChangeLimit(int num)
     {
         limit += num; 

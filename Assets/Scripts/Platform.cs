@@ -92,7 +92,7 @@ public class Platform : MonoBehaviour
         
         distance = -5f; // Start from -5
 
-        int levelStartStraightLine = 7; // start from third block to give full road
+        int levelStartStraightLine = 5; // first straight line
 
         platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
 
@@ -121,12 +121,12 @@ public class Platform : MonoBehaviour
             }
         }*/
 
-        runner.transform.position = instance.platfotmTiles[4].transform.position; //Runner starts from 4rd tile
+        runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner starts from 4rd tile
 
         blockToSlide = levelStartStraightLine + 1;
         pushBlockForward = 0;
-        initialStraightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
-        straightRoadLenght = initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
+        initialStraightRoadLenght = 3 * distBetweenBlock;//platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
+        straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y;//initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
 
         Debug.Log("Initial length is : " + initialStraightRoadLenght);
 
@@ -191,7 +191,8 @@ public class Platform : MonoBehaviour
             if (toPos < BlockPos[0] || toPos > BlockPos[BlockPos.Length - 1]) //en uçta yanlış yöne basıldıysa düş
             {
                 game.GameOver();
-                StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().Fall(new Vector2(direction, 0)));
+                platfotmTiles[blockToSlide].GetComponent<Block>().Fall(new Vector2(direction, 0));
+                //StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().Fall(new Vector2(direction, 0)));
 
                 uI.GameOver();
             }
@@ -289,7 +290,7 @@ public class Platform : MonoBehaviour
         platfotmTiles.Add(block);
         platfotmTiles[0].GetComponent<Block>().SetBlock();
 
-        int levelStartStraightLine = 7; // start from third block to give full road
+        int levelStartStraightLine = 5; // start from third block to give full road
 
         platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
 
@@ -314,9 +315,12 @@ public class Platform : MonoBehaviour
 
         //ChangeAngle();
 
+        runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner starts from 4rd tile
+
         blockToSlide = levelStartStraightLine + 1;
-        initialStraightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
-        straightRoadLenght = initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
+
+        initialStraightRoadLenght = 3 * distBetweenBlock;//platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
+        straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y;//initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
 
         Debug.Log("Initial length is : " + initialStraightRoadLenght);
     }

@@ -9,9 +9,8 @@ public class CameraSizeHandler : SizeHandler {
         float camSize = Camera.main.fieldOfView;
 
         //Şimdilik 9.5 la falan başlıyor ilk yolun mesafesi. ondan hardcoded değiştirilcek ama sonra
-        float roadLenghtUpperLimit = Platform.instance.initialStraightRoadLenght + 4f;
-        float roadLengthLowerLimit = Platform.instance.initialStraightRoadLenght - 4f;
-
+        float roadLenghtUpperLimit = Platform.instance.initialStraightRoadLenght + (Platform.instance.distBetweenBlock * 3);
+        float roadLengthLowerLimit = Platform.instance.initialStraightRoadLenght - (Platform.instance.distBetweenBlock * 2);
         //Debug.Log(Platform.instance.initialStraightRoadLenght);
         float roadMiddleReferencePoint = Platform.instance.initialStraightRoadLenght;
 
@@ -43,7 +42,7 @@ public class CameraSizeHandler : SizeHandler {
                     Camera.main.fieldOfView += camSizeChange;
                     //Camera.main.fieldOfView += 0.1f;
                 }//daral
-                else if(Camera.main.fieldOfView > newCamSize + 0.5f)
+                else if(Camera.main.fieldOfView > newCamSize )
                 {
                     camSizeChange = ChangeSizeTo(-0.1f, camSizeChange);
                     Camera.main.fieldOfView += camSizeChange;
@@ -66,7 +65,7 @@ public class CameraSizeHandler : SizeHandler {
                     Camera.main.fieldOfView += camSizeChange;
                     //Camera.main.fieldOfView -= 0.1f;
                 }//genişle
-                else if(Camera.main.fieldOfView < newCamSize - 0.5f)
+                else if(Camera.main.fieldOfView < newCamSize )
                 {
                     camSizeChange = ChangeSizeTo(0.1f, camSizeChange);
                     Camera.main.fieldOfView += camSizeChange;
@@ -89,11 +88,11 @@ public class CameraSizeHandler : SizeHandler {
         
             if (direction > 0)
             {
-                changeSize = (changeSize < direction) ? changeSize + 0.02f : changeSize = 0.1f;
+                changeSize = (changeSize < direction) ? changeSize + 0.02f : changeSize = 0.15f;
             }
             else if(direction < 0)
             {
-                changeSize = (changeSize > direction) ? changeSize - 0.02f : changeSize = -0.1f;
+                changeSize = (changeSize > direction) ? changeSize - 0.02f : changeSize = -0.15f;
             }
             
             return changeSize;
