@@ -4,8 +4,9 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Block : MonoBehaviour {
-    
+public class Block : MonoBehaviour
+{
+
     public BlockData.blockType type;
     private BlockAnimation blockAnimation;
 
@@ -17,8 +18,8 @@ public class Block : MonoBehaviour {
 
     public bool isMoving;
 
-   // private SpriteRenderer blockSprite;
-   // private SpriteRenderer ChildBlockSprite;
+    // private SpriteRenderer blockSprite;
+    // private SpriteRenderer ChildBlockSprite;
     private Text limitText;
 
     public int limit;
@@ -28,26 +29,22 @@ public class Block : MonoBehaviour {
         blockAnimation = this.GetComponent<BlockAnimation>();
         BlockSprites = new List<SpriteRenderer>();
 
-        foreach(SpriteRenderer sp in this.GetComponentsInChildren<SpriteRenderer>())
+        foreach (SpriteRenderer sp in this.GetComponentsInChildren<SpriteRenderer>())
         {
             BlockSprites.Add(sp);
 
             sp.sprite = BlockData.normalBlock;
             sp.color = BlockData.normalColor;
         }
-//        Debug.Log(BlockSprites.Count);
+        //        Debug.Log(BlockSprites.Count);
         outlineSize = BlockSprites[0].material.GetFloat("_OutlineSize");
 
-       /* blockSprite = GetComponent<SpriteRenderer>();
-        ChildBlockSprite = GetComponentInChildren<SpriteRenderer>();
-
-
-
-        blockSprite.sprite = BlockData.normalBlock;
-        blockSprite.color = BlockData.normalColor;
-
-        ChildBlockSprite.sprite = BlockData.normalBlock;
-        ChildBlockSprite.color = BlockData.normalColor;*/
+        /* blockSprite = GetComponent<SpriteRenderer>();
+         ChildBlockSprite = GetComponentInChildren<SpriteRenderer>();
+         blockSprite.sprite = BlockData.normalBlock;
+         blockSprite.color = BlockData.normalColor;
+         ChildBlockSprite.sprite = BlockData.normalBlock;
+         ChildBlockSprite.color = BlockData.normalColor;*/
 
         limit = 1;
 
@@ -65,15 +62,15 @@ public class Block : MonoBehaviour {
 
     private void Update()
     {
-        if(Mathf.Approximately(this.transform.position.x, 0) && !isShined)
+        if (Mathf.Approximately(this.transform.position.x, 0) && !isShined)
         {
-            if(outlineSize < 10f)
+            if (outlineSize < 10f)
             {
                 outlineSize += 0.5f;
                 foreach (SpriteRenderer sr in BlockSprites)
                 {
                     sr.material.SetFloat("_OutlineSize", outlineSize);
-                }    
+                }
             }
             else //if outlineSize >= 10
             {
@@ -81,23 +78,25 @@ public class Block : MonoBehaviour {
                 foreach (SpriteRenderer sr in BlockSprites)
                 {
                     sr.material.SetFloat("_OutlineSize", 10);
-                }    
+                }
             }
         }
     }
 
     public void SetBlock()
     {
-        
+
         int r = Random.Range(2, 10);// 2 yaptım başını hiç ters olmasın diye
         //TODO: Create a random reverse generator that deals reverse positions 
-        if (type == BlockData.blockType.reverse){
+        if (type == BlockData.blockType.reverse)
+        {
             BlockData.ChangeBlockType(ref type, BlockSprites);
         }
-        else if (r < 2){
+        else if (r < 2)
+        {
             BlockData.ChangeBlockType(ref type, BlockSprites);
         }
-            
+
         foreach (SpriteRenderer sr in BlockSprites)
         {
             sr.material.SetFloat("_OutlineSize", 1);
@@ -109,15 +108,20 @@ public class Block : MonoBehaviour {
 
     public void MoveTile(float toPosition)
     {
-        if(!isMoving)
+        if (!isMoving)
         {
             isMoving = true;
             StartCoroutine(blockAnimation.MoveTile(toPosition));
         }
     }
 
+    public void Fall(Vector2 fallTo)
+    {
+        StartCoroutine(blockAnimation.Fall(fallTo));
+    }
+
     public void ChangeLimit(int num)
     {
-        limit += num; 
+        limit += num;
     }
 }

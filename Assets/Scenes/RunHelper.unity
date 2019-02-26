@@ -400,6 +400,7 @@ GameObject:
   - component: {fileID: 261983530}
   - component: {fileID: 261983529}
   - component: {fileID: 261983533}
+  - component: {fileID: 261983534}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -502,6 +503,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b10095e60a59489094312bb22b4b74b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &261983534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261983528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6057868d3f2b97342872510611aa5996, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  postProcessing: {fileID: 0}
 --- !u!1001 &324834483
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -623,7 +637,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 261983534}
     - target: {fileID: 6419100091106235811, guid: 3209428e57039443b8b946fa8b43c015,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -1515,17 +1529,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6419100091106235811, guid: 3209428e57039443b8b946fa8b43c015,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChangeMode
-      objectReference: {fileID: 0}
-    - target: {fileID: 6419100090897206994, guid: 3209428e57039443b8b946fa8b43c015,
-        type: 3}
-      propertyPath: m_Text
-      value: Change Mode
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 261983534}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3209428e57039443b8b946fa8b43c015, type: 3}
 --- !u!224 &1057033435 stripped
@@ -11746,7 +11750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787d8951f99c148748308c352200321e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 2
   isStrike: 0
 --- !u!95 &2120997778
 Animator:
@@ -11997,7 +12001,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 261983534}
     - target: {fileID: 6419100091106235811, guid: 3209428e57039443b8b946fa8b43c015,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName

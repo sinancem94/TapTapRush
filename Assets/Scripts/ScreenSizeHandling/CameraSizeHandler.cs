@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraSizeHandler : SizeHandler {
+public class CameraSizeHandler : SizeHandler
+{
 
-    public IEnumerator DynamicCameraMovement(float Upperlimit,float LowerLimit)
+    public IEnumerator DynamicCameraMovement(float Upperlimit, float LowerLimit)
     {
         float camSize = Camera.main.fieldOfView;
 
         //Şimdilik 9.5 la falan başlıyor ilk yolun mesafesi. ondan hardcoded değiştirilcek ama sonra
-        float roadLenghtUpperLimit = Platform.instance.initialStraightRoadLenght + 4f;
-        float roadLengthLowerLimit = Platform.instance.initialStraightRoadLenght - 4f;
-
+        float roadLenghtUpperLimit = Platform.instance.initialStraightRoadLenght + (Platform.instance.distBetweenBlock * 3);
+        float roadLengthLowerLimit = Platform.instance.initialStraightRoadLenght - (Platform.instance.distBetweenBlock * 2);
         //Debug.Log(Platform.instance.initialStraightRoadLenght);
         float roadMiddleReferencePoint = Platform.instance.initialStraightRoadLenght;
 
@@ -26,7 +26,7 @@ public class CameraSizeHandler : SizeHandler {
 
         yield return new WaitUntil(() => Platform.instance.game.state == GameHandler.GameState.GameRunning);
 
-        while(Platform.instance.game.state == GameHandler.GameState.GameRunning)
+        while (Platform.instance.game.state == GameHandler.GameState.GameRunning)
         {
             //Debug.Log(Platform.instance.straightRoadLenght);
             if ((Platform.instance.straightRoadLenght) > roadMiddleReferencePoint) //genişlicekse
@@ -34,16 +34,16 @@ public class CameraSizeHandler : SizeHandler {
                 //Debug.Log("genişlicek bu kadar : " + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint))));
 
                 // ne kadar genişlemesi gerektiği
-                float newCamSize  = camSize + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint)));
+                float newCamSize = camSize + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint)));
 
                 //genişle
-                if(Camera.main.fieldOfView < newCamSize && Camera.main.fieldOfView < Upperlimit)
+                if (Camera.main.fieldOfView < newCamSize && Camera.main.fieldOfView < Upperlimit)
                 {
                     camSizeChange = ChangeSizeTo(0.1f, camSizeChange);
                     Camera.main.fieldOfView += camSizeChange;
                     //Camera.main.fieldOfView += 0.1f;
                 }//daral
-                else if(Camera.main.fieldOfView > newCamSize + 0.5f)
+                else if (Camera.main.fieldOfView > newCamSize)
                 {
                     camSizeChange = ChangeSizeTo(-0.1f, camSizeChange);
                     Camera.main.fieldOfView += camSizeChange;
@@ -60,13 +60,13 @@ public class CameraSizeHandler : SizeHandler {
                 float newCamSize = camSize - (camDiffLowBounds * ((roadMiddleReferencePoint - Platform.instance.straightRoadLenght) / (roadMiddleReferencePoint - roadLengthLowerLimit)));
 
                 //daral
-                if(Camera.main.fieldOfView > newCamSize && Camera.main.fieldOfView > LowerLimit)
+                if (Camera.main.fieldOfView > newCamSize && Camera.main.fieldOfView > LowerLimit)
                 {
                     camSizeChange = ChangeSizeTo(-0.1f, camSizeChange);
                     Camera.main.fieldOfView += camSizeChange;
                     //Camera.main.fieldOfView -= 0.1f;
                 }//genişle
-                else if(Camera.main.fieldOfView < newCamSize - 0.5f)
+                else if (Camera.main.fieldOfView < newCamSize)
                 {
                     camSizeChange = ChangeSizeTo(0.1f, camSizeChange);
                     Camera.main.fieldOfView += camSizeChange;
@@ -84,19 +84,19 @@ public class CameraSizeHandler : SizeHandler {
     }
 
     //change camera size forward to
-        float ChangeSizeTo(float direction, float changeSize)
+    float ChangeSizeTo(float direction, float changeSize)
+    {
+
+        if (direction > 0)
         {
-        
-            if (direction > 0)
-            {
-                changeSize = (changeSize < direction) ? changeSize + 0.02f : changeSize = 0.1f;
-            }
-            else if(direction < 0)
-            {
-                changeSize = (changeSize > direction) ? changeSize - 0.02f : changeSize = -0.1f;
-            }
-            
-            return changeSize;
-        } 
+            changeSize = (changeSize < direction) ? changeSize + 0.02f : changeSize = 0.15f;
+        }
+        else if (direction < 0)
+        {
+            changeSize = (changeSize > direction) ? changeSize - 0.02f : changeSize = -0.15f;
+        }
+
+        return changeSize;
+    }
 
 }

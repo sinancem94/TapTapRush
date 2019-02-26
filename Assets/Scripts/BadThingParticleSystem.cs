@@ -17,11 +17,12 @@ public class BadThingParticleSystem : MonoBehaviour
     void Update()
     {
 		Vector3 tempVec = bore.transform.position;
-		tempVec.y = tempVec.y - 3f;
+		tempVec.y = tempVec.y - 5f;
 		nightmareChase (tempVec);
     }
 
-	public void nightmareChase(Vector3 nightmarePos){
+	public void nightmareChase(Vector3 nightmarePos)
+    {
 		nightmareParticleSys.transform.position = nightmarePos;
 	}
 }
