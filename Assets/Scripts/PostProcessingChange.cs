@@ -10,7 +10,7 @@ public class PostProcessingChange : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		PostProcessVolume postProcessVolume = GetComponent<PostProcessVolume> (); 
+		PostProcessVolume postProcessVolume = GetComponent<PostProcessVolume> ();  
 		if (postProcessVolume.profile == null) {
 			enabled = false;
 			Debug.Log ("Cant load PostProcess volume");
@@ -27,6 +27,11 @@ public class PostProcessingChange : MonoBehaviour
 		vignette.roundness.value = 1; //change value of vignette
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
 }
 
 
