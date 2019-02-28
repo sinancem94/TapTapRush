@@ -18,7 +18,7 @@ public class CameraMovement : MonoBehaviour
     void Start()
     {
         initPos = Platform.instance.runner.transform.position; //for mode
-        offset = initPos - new Vector3(0f, Platform.instance.runner.transform.position.y - 3f, 10f); //transform.position - initPos;
+        //offset = initPos - new Vector3(0f, Platform.instance.runner.transform.position.y - 3f, 10f); //transform.position - initPos;
         cameraSizeHandler = new CameraSizeHandler();
         isChanging = false;
         Platform.instance.ChangeAngle(); //set cam and blocks for angle. for mode
@@ -36,6 +36,7 @@ public class CameraMovement : MonoBehaviour
         //if (!Platform.instance.runner.GetComponent<Runner>().isStrike)
         transform.position = Platform.instance.runner.transform.position + offset;
     }
+
 
     public void CalculateOffset(Vector3 pos) //for mode
     {
