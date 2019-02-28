@@ -34,12 +34,17 @@ public class CameraMovement : MonoBehaviour
         }
 
         //if (!Platform.instance.runner.GetComponent<Runner>().isStrike)
-            transform.position = Platform.instance.runner.transform.position + offset;
+        transform.position = Platform.instance.runner.transform.position + offset;
     }
 
     public void CalculateOffset(Vector3 pos) //for mode
     {
         offset = -pos + Platform.instance.runner.transform.position;
+    }
+
+    public Vector3 GetOffset()
+    {
+        return offset;
     }
 
     void StartCamera()
