@@ -57,6 +57,6 @@ public class TrialButtons : MonoBehaviour
         {
             Data.is5Line = true;
         }
-        Platform.instance.ChangeMode();
+        Platform.instance.CreatePlatform();
     }
 }

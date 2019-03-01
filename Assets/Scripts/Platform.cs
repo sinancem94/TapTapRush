@@ -21,6 +21,7 @@ public class Platform : MonoBehaviour
     public GameObject lines;
     public GameObject road;//düz yol 
     public GameObject background; //rengi değişen bok
+    public GameObject Nightmare;
 
     public List<GameObject> platfotmTiles; //blokları barındıran liste
 
@@ -38,6 +39,10 @@ public class Platform : MonoBehaviour
 
     private int point;
     public int gainedPoint;
+
+    public bool isBoost;
+    private float boostTimer;
+    private float boostLimit;
 
     public int pushBlockForward; // sıranın en sonuna atılcak blok. en arkada kalan blok
 
@@ -73,17 +78,30 @@ public class Platform : MonoBehaviour
         lines = GameObject.FindWithTag("Lines");
         road = GameObject.FindWithTag("Road");
         background = GameObject.FindWithTag("Background");
+        Nightmare = GameObject.FindWithTag("Nightmare");
 
-        distBetweenBlock = platformSizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform);
         background.transform.position = new Vector3(0f, 6.5f, 0f);
         //road.transform.position = new Vector3(road.transform.position.x, road.transform.position.y + (road.transform.localScale.y / 3), 0f);
         //road.transform.position = new Vector3(road.transform.position.x, road.transform.position.y + (road.transform.localScale.y / 3), 0f);
         lines.transform.position = new Vector2(0f, runner.transform.position.y + (lines.transform.GetChild(0).localScale.y / 3));//(5 * distBetweenBlock));
         road.transform.position = new Vector2(0f, runner.transform.position.y + (road.transform.localScale.y / 3));//(5 * distBetweenBlock));
-                                                                                                                   //background.transform.position = new Vector2(0f, runner.transform.position.y + 5);
+              
+        //background.transform.position = new Vector2(0f, runner.transform.position.y + 5);
 
         platfotmTiles = new List<GameObject>();
-        platfotmTiles.Add(block);
+        //platfotmTiles.Add(block);
+
+        point = 0;
+        gainedPoint = 1;
+        pushBlockForward = 0;
+
+        isBoost = false;
+        boostTimer = 0f;
+        boostLimit = 10f;
+
+        CreatePlatform();
+
+       /* distBetweenBlock = platformSizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform);
 
         if (Data.is5Line)
             BlockPos = new float[] { -2 * distBetweenBlock, -1 * distBetweenBlock, distBetweenBlock, 2 * distBetweenBlock };
@@ -113,25 +131,16 @@ public class Platform : MonoBehaviour
             platfotmTiles[platfotmTiles.Count - 1].transform.position = BlockPositioner(distBetweenBlock);
         }
 
-        /* if (!Data.isAngled)
-         {
-             foreach (GameObject g in platfotmTiles)
-             {
-                 g.transform.GetChild(0).gameObject.SetActive(false);
-             }
-         }*/
-
         runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner starts from 4rd tile
 
         blockToSlide = levelStartStraightLine + 1;
-        pushBlockForward = 0;
+
         initialStraightRoadLenght = 3 * distBetweenBlock;//platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
         straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y;//initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
 
-        Debug.Log("Initial length is : " + initialStraightRoadLenght);
+        Debug.Log("Initial length is : " + initialStraightRoadLenght);*/
 
-        point = 0;
-        gainedPoint = 1;
+
     }
 
     //runner bloktan öndeyse bloğu ileri at + lines ı bir ileri taşı
@@ -151,7 +160,7 @@ public class Platform : MonoBehaviour
         }
     }
 
-    // kaycak bloğa karar ver, input al, input varsa ona göre haraket et
+    // kaycak bloğa karar ver, input al, input varsa ona göre haraket et, yol hesapla, boost moda giriyor mu ona bak
     private void Update()
     {
         if (game.state == GameHandler.GameState.GameRunning)
@@ -167,6 +176,26 @@ public class Platform : MonoBehaviour
             straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
 
             //Debug.Log(straightRoadLenght);
+
+            if (runner.transform.position.y - Nightmare.transform.position.y > 15f && !isBoost) //kombo var mı hesapla
+            {
+                isBoost = true;
+                boostTimer = 0f;
+                gainedPoint += 1;
+                GiveMessage(1f, "Speed Up!!");
+                Debug.LogWarning("BOOST !! at : " + Time.unscaledTime);
+            }
+            else if(isBoost)
+            {
+                boostTimer += Time.deltaTime;
+                if(boostTimer >= boostLimit)
+                {
+                    isBoost = false;
+                    GiveMessage(1f, "Speed Down!!");
+                    Debug.LogWarning("Boost finished... at : " + Time.unscaledTime);
+                }
+
+            }
 
             /*if (Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, 0f)) //kaycak bloğa karar veriyor. MoveTile de kayar kaymaz yapılıyor artık
             {
@@ -188,7 +217,32 @@ public class Platform : MonoBehaviour
 
             toPos = platfotmTiles[blockToSlide].transform.position.x + (direction * distBetweenBlock); // nereye gitcek onu hesapla
 
-            if (toPos < BlockPos[0] || toPos > BlockPos[BlockPos.Length - 1]) //en uçta yanlış yöne basıldıysa düş
+            if(toPos > BlockPos[0] || toPos < BlockPos[BlockPos.Length - 1] || isBoost)
+            {
+                if(isBoost)
+                {
+                    toPos = 0;
+                }
+
+                platfotmTiles[blockToSlide].GetComponent<Block>().MoveTile(toPos);
+
+                if (Mathf.Approximately(toPos, 0)) // eğer 0 a geliyorsa bi sonraki bloğa geç
+                {
+                    blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
+                    point += gainedPoint;
+                    uI.SetPoint(point);
+                }
+            }
+            else
+            {
+                game.GameOver();
+                platfotmTiles[blockToSlide].GetComponent<Block>().Fall(new Vector2(direction, 0));
+                //StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().Fall(new Vector2(direction, 0)));
+
+                uI.GameOver();
+            }
+
+         /*   if (toPos < BlockPos[0] || toPos > BlockPos[BlockPos.Length - 1]) //en uçta yanlış yöne basıldıysa düş
             {
                 game.GameOver();
                 platfotmTiles[blockToSlide].GetComponent<Block>().Fall(new Vector2(direction, 0));
@@ -200,13 +254,13 @@ public class Platform : MonoBehaviour
             {
                 platfotmTiles[blockToSlide].GetComponent<Block>().MoveTile(toPos);
 
-                if (Mathf.Approximately(toPos, 0)) // eğer 0 a geldiysen bi sonraki bloğa geç
+                if (Mathf.Approximately(toPos, 0)) // eğer 0 a geliyorsa bi sonraki bloğa geç
                 {
                     blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
                     point += gainedPoint;
                     uI.SetPoint(point);
                 }
-            }
+            }*/
         }
     }
 
@@ -267,7 +321,7 @@ public class Platform : MonoBehaviour
         }
     }
 
-    public void ChangeMode()
+    public void CreatePlatform()
     {
         distBetweenBlock = platformSizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform);
 
@@ -288,7 +342,7 @@ public class Platform : MonoBehaviour
         }
         platfotmTiles.Clear();
         platfotmTiles.Add(block);
-        platfotmTiles[0].GetComponent<Block>().SetBlock();
+        //platfotmTiles[0].GetComponent<Block>().SetBlock();
 
         int levelStartStraightLine = 5; // start from third block to give full road
 

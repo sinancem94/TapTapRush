@@ -11,7 +11,6 @@ public class BadThingParticleSystem : MonoBehaviour
     private Camera mainCam; //Camera which partsys follows
     private CameraMovement cameraMovement;
 
-    Vector3 tempVec;
     private float distanceBetweenCamera;
 
     float speed;
@@ -22,24 +21,24 @@ public class BadThingParticleSystem : MonoBehaviour
         nightmareParticleSys = gameObject.GetComponent<ParticleSystem>();
         mainCam = Camera.main;
         cameraMovement = mainCam.GetComponent<CameraMovement>();
-        distanceBetweenCamera = 5f;
+        distanceBetweenCamera = 8f;
 
-        tempVec = mainCam.transform.position;
-        tempVec.y = tempVec.y - distanceBetweenCamera;
-        tempVec.z = 0;
-        transform.position = tempVec;
+        transform.position = new Vector3(mainCam.transform.position.x,mainCam.transform.position.y - distanceBetweenCamera,0f);
 
-        speed = 2f;
+        speed = 4f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        NightmareChase(tempVec);
+       /* tempVec = mainCam.transform.position;
+        tempVec.y = tempVec.y - distanceBetweenCamera;
+        tempVec.z = 0;*/
+		    NightmareChase ();
     }
 
     //When distance between Camera and bore move particle system to closer
-    public void NightmareChase(Vector3 nightmarePos)
+	  public void NightmareChase()
     {
        // if(bore.transform.position.y - transform.position.y > 10f)
         //transform.position = nightmarePos;
