@@ -1759,7 +1759,7 @@ GameObject:
   - component: {fileID: 1460985070}
   m_Layer: 12
   m_Name: BadThingParticleSys
-  m_TagString: Untagged
+  m_TagString: Nightmare
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2454,7 +2454,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 0
-    angle: 25
+    angle: 50
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
@@ -11750,8 +11750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787d8951f99c148748308c352200321e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
-  isStrike: 0
+  CharacterSpeed: 1.5
 --- !u!95 &2120997778
 Animator:
   serializedVersion: 3

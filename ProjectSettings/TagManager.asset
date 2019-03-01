@@ -15,6 +15,7 @@ TagManager:
   - Point
   - InfoText
   - PostProcessing
+  - Nightmare
   layers:
   - Default
   - TransparentFX
