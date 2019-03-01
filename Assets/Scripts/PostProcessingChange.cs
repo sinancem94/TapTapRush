@@ -26,12 +26,6 @@ public class PostProcessingChange : MonoBehaviour
 
 		vignette.roundness.value = 1; //change value of vignette
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
 
 

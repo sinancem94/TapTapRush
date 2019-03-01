@@ -35,16 +35,13 @@ public class BadThingParticleSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /* tempVec = mainCam.transform.position;
-         tempVec.y = tempVec.y - distanceBetweenCamera;
-         tempVec.z = 0;*/
         NightmareChase(tempVec);
     }
 
     //When distance between Camera and bore move particle system to closer
     public void NightmareChase(Vector3 nightmarePos)
     {
-        // if(bore.transform.position.y - transform.position.y > 10f)
+       // if(bore.transform.position.y - transform.position.y > 10f)
         //transform.position = nightmarePos;
         if (Platform.instance.game.state == GameHandler.GameState.GameRunning)
             this.transform.Translate(0f, speed * Time.deltaTime, 0f, Space.World);
