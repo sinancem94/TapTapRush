@@ -41,7 +41,7 @@ public class Runner : MonoBehaviour
                 Debug.Log("STRİKE!!");
             }
 
-            //speed = Platform.instance.straightRoadLenght; 
+            speed = Platform.instance.straightRoadLenght * 2;
 
             if (Platform.instance.straightRoadLenght >= 1f && !isStrike)// && !Mathf.Approximately(platform.transform.GetChild(platform.GetComponent<Platform>().blockToSlide).position.y,0))
             {
