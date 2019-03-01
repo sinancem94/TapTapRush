@@ -32,7 +32,10 @@ public class CameraMovement : MonoBehaviour
         {
             StartCamera();
         }
-
+        else if(isChanging && Platform.instance.game.state == GameHandler.GameState.GameOver)
+        {
+            StopCamera();
+        }
         //if (!Platform.instance.runner.GetComponent<Runner>().isStrike)
             transform.position = Platform.instance.runner.transform.position + offset;
     }
@@ -47,6 +50,12 @@ public class CameraMovement : MonoBehaviour
     {
         isChanging = true;
         StartCoroutine(cameraSizeHandler.DynamicCameraMovement(OrthographicUpperSize, OrthographicLowerSize));
+    }
+
+    void StopCamera()
+    {
+        isChanging = false;
+        StopCoroutine(cameraSizeHandler.DynamicCameraMovement(OrthographicUpperSize, OrthographicLowerSize));
     }
 
 

@@ -16,6 +16,7 @@ TagManager:
   - InfoText
   - PostProcessing
   - Nightmare
+  - DistanceText
   layers:
   - Default
   - TransparentFX

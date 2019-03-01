@@ -19,7 +19,8 @@ public class GameHandler {
     public void GameOver()
     {
         state = GameState.GameOver;
-        Platform.instance.runner.GetComponent<Runner>().enabled = false;
+
+        //Platform.instance.runner.GetComponent<Runner>().enabled = false;
     }
     public void StartGame()
     {

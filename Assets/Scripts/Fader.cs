@@ -20,7 +20,7 @@ public class Fader : MonoBehaviour
 	// Update is called once per frame
 	void Update () {
 		time += Time.deltaTime * speed;
-		textColor.a = Mathf.PingPong (time, changeAmount);
+		textColor.a = 1 - Mathf.PingPong (time, changeAmount);
 		texttoFade.color = textColor;
 
 	}

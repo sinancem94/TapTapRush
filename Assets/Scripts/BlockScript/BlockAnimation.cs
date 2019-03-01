@@ -38,11 +38,11 @@ public class BlockAnimation : MonoBehaviour {
         bool slided = false;
 
         int from = (distance < 0) ? -1 : 1;
-
         while(!slided)
         {
             //this.transform.Translate(translationVector * Time.deltaTime);
             this.transform.position += translationVector * 0.15f;
+
             distance = toPosition - this.transform.position.x;
 
             if((from == 1 && distance <= 0 ) || (from == -1 && distance >= 0))

@@ -33,7 +33,7 @@ public class Runner : MonoBehaviour
 
       //  boostLimit = 5f;
       //  boostCounter = 0f;
-        // this.transform.position = Platform.instance.platfotmTiles[5].transform.position; // start from 3rd tile // platform da yapılıyor ki aradaki fark hemen hesaplanabilsin
+        //this.transform.position = Platform.instance.platfotmTiles[5].transform.position; // start from 3rd tile // platform da yapılıyor ki aradaki fark hemen hesaplanabilsin
     }
 
     void Update()
@@ -46,14 +46,6 @@ public class Runner : MonoBehaviour
             {
                 this.transform.Translate(0f, speed * Time.deltaTime, 0f, Space.World);
             }
-           
-            //TODO: Add a speed changer to runner according to players tapping speed
-            /*  gameTime += Time.deltaTime;
-              if (gameTime > timer)
-              {
-                  speed += .3f;
-                  timer += 4f;
-              }*/
         }
     }
 }

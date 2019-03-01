@@ -1,8 +1,9 @@
-﻿ using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
 
 public class UIHandler : MonoBehaviour {
 
@@ -25,7 +26,6 @@ public class UIHandler : MonoBehaviour {
     {
         point.text = pnt.ToString();
     }
-    
 
     public IEnumerator GiveInfo(float time,string message)
     {
@@ -36,12 +36,15 @@ public class UIHandler : MonoBehaviour {
             yield return new WaitForSeconds(.01f);
         }
         infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 1);
+
         yield return new WaitForSeconds(time);
+
         while (infoText.color.a > 0)
         {
             infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, infoText.color.a - 0.1f);
             yield return new WaitForSeconds(.01f);
         }
+
         infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 0);
 
         StopCoroutine(GiveInfo(time, message));

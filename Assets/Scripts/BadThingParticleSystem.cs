@@ -13,7 +13,8 @@ public class BadThingParticleSystem : MonoBehaviour
 
     private float distanceBetweenCamera;
 
-    float speed;
+    public float monsterSpeed;
+    public float speed;
 
     // Start is called before the first frame update
     void Start()
@@ -21,28 +22,30 @@ public class BadThingParticleSystem : MonoBehaviour
         nightmareParticleSys = gameObject.GetComponent<ParticleSystem>();
         mainCam = Camera.main;
         cameraMovement = mainCam.GetComponent<CameraMovement>();
-        distanceBetweenCamera = 8f;
+        distanceBetweenCamera = 6f;
 
         transform.position = new Vector3(mainCam.transform.position.x,mainCam.transform.position.y - distanceBetweenCamera,0f);
 
-        speed = 4f;
+        //monsterSpeed = 4f;
     }
 
     // Update is called once per frame
     void Update()
     {
-       /* tempVec = mainCam.transform.position;
-        tempVec.y = tempVec.y - distanceBetweenCamera;
-        tempVec.z = 0;*/
-		    NightmareChase ();
+        if (Platform.instance.game.state == GameHandler.GameState.GameRunning)
+        {
+            if(!Platform.instance.isBoost)
+                speed = ((Platform.instance.distanceBtwRunner * 3) / 4) * monsterSpeed; //speed whithout boost 
+            else
+                speed = ((Platform.instance.distanceBtwRunner) * 4f) * monsterSpeed; // speed with boost
+
+            NightmareChase(speed);
+        }
     }
 
     //When distance between Camera and bore move particle system to closer
-	  public void NightmareChase()
+	public void NightmareChase(float spd)
     {
-       // if(bore.transform.position.y - transform.position.y > 10f)
-        //transform.position = nightmarePos;
-        if (Platform.instance.game.state == GameHandler.GameState.GameRunning)
-            this.transform.Translate(0f, speed * Time.deltaTime, 0f, Space.World);
+          this.transform.Translate(0f, spd * Time.deltaTime, 0f, Space.World);
     }
 }
