@@ -29,7 +29,7 @@ public class Runner : MonoBehaviour
         //toPos = Vector3.zero;
        // isBoost = false;
         sprite = this.GetComponent<SpriteRenderer>();
-
+        //CharacterSpeed = Data.charSpeed;
 
       //  boostLimit = 5f;
       //  boostCounter = 0f;
