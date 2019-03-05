@@ -10,12 +10,14 @@ Blokları yaratıyor, konumlandırıyor input alarak kaydırıp yanlış input g
 public class Platform : MonoBehaviour
 {
     //Scripts
-    private InputManager ınput;
     public GameHandler game;
+    private GetData GameData; 
+    private InputManager ınput;
     private PlatformSizeHandler platformSizeHandler;
     private UIHandler uI;
     private ExplosionParticleSystem explosionParticleSystem;
     private BoostScript Boost;
+
 
     //GameObjects
     public GameObject block; //kırmızı bloklar
@@ -70,11 +72,14 @@ public class Platform : MonoBehaviour
 
     private void Start()
     {
-        ınput = new InputManager();
-
         game = new GameHandler(GameHandler.GameState.BeginingPage);
 
+        GameData = new GetData();
+
+        ınput = new InputManager();
+
         platformSizeHandler = new PlatformSizeHandler();
+
         Boost = (BoostScript)FindObjectOfType(typeof(BoostScript));
 
         uI = (UIHandler)FindObjectOfType(typeof(UIHandler));
@@ -105,6 +110,11 @@ public class Platform : MonoBehaviour
         platfotmTiles = new List<GameObject>();
         //platfotmTiles.Add(block);
 
+        GameData.GetParameters();
+        GameData.SetParameters(runner.GetComponent<Runner>(),Nightmare.GetComponent<BadThingParticleSystem>());
+
+        uI.OpenUIPanel();
+
         point = 0;
         gainedPoint = 1;
         pushBlockForward = 0;
@@ -114,9 +124,6 @@ public class Platform : MonoBehaviour
         boostLimit = 10f;
 
         CreatePlatform();
-
-       
-
 
     }
 
