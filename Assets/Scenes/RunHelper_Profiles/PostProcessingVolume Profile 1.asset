@@ -68,10 +68,10 @@ MonoBehaviour:
     overrideState: 0
     value: 1
   temperature:
-    overrideState: 0
+    overrideState: 1
     value: 0
   tint:
-    overrideState: 0
+    overrideState: 1
     value: 0
   colorFilter:
     overrideState: 0
@@ -1354,10 +1354,10 @@ MonoBehaviour:
     value: {x: 0.5, y: 0.5}
   intensity:
     overrideState: 1
-    value: 0.724
+    value: 0.523
   smoothness:
     overrideState: 1
-    value: 0.121
+    value: 0.464
   roundness:
     overrideState: 1
     value: 1

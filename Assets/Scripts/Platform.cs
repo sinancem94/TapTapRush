@@ -9,7 +9,6 @@ Blokları yaratıyor, konumlandırıyor input alarak kaydırıp yanlış input g
 
 public class Platform : MonoBehaviour
 {
-    //Scripts
     private InputManager ınput;
     public GameHandler game;
     private PlatformSizeHandler platformSizeHandler;
@@ -17,7 +16,6 @@ public class Platform : MonoBehaviour
     private ExplosionParticleSystem explosionParticleSystem;
     private BoostScript Boost;
 
-    //GameObjects
     public GameObject block; //kırmızı bloklar
     public GameObject runner; //koşan arkadaş artık neyse
     public GameObject lines;
@@ -27,7 +25,6 @@ public class Platform : MonoBehaviour
 
     public List<GameObject> platfotmTiles; //blokları barındıran liste
 
-    //Parameters
     private float distance; //bi sonraki bloğun gelceği y mesafesi.  habire artıyor
     public float distBetweenBlock; //bloklar arası x mesafesi
 
@@ -88,16 +85,10 @@ public class Platform : MonoBehaviour
         background = GameObject.FindWithTag("Background");
         Nightmare = GameObject.FindWithTag("Nightmare");
 
-        if (background)
-            background.transform.position = new Vector3(0f, 6.5f, 0f);
-        else
-            Debug.LogError("Could not find GameObject Background");
+        background.transform.position = new Vector3(0f, 6.5f, 0f);
         //road.transform.position = new Vector3(road.transform.position.x, road.transform.position.y + (road.transform.localScale.y / 3), 0f);
         //road.transform.position = new Vector3(road.transform.position.x, road.transform.position.y + (road.transform.localScale.y / 3), 0f);
-        if (lines)
-            lines.transform.position = new Vector2(0f, runner.transform.position.y + (lines.transform.GetChild(0).localScale.y / 3));//(5 * distBetweenBlock));
-        else
-            Debug.LogError("Lines are empty");
+        lines.transform.position = new Vector2(0f, runner.transform.position.y + (lines.transform.GetChild(0).localScale.y / 3));//(5 * distBetweenBlock));
         road.transform.position = new Vector2(0f, runner.transform.position.y + (road.transform.localScale.y / 3));//(5 * distBetweenBlock));
               
         //background.transform.position = new Vector2(0f, runner.transform.position.y + 5);
@@ -156,7 +147,7 @@ public class Platform : MonoBehaviour
 
             distanceBtwRunner = runner.transform.position.y - Nightmare.transform.position.y;
 
-            if (distanceBtwRunner > 12f && !boostLock) //kombo var mı hesapla
+            if (distanceBtwRunner > 7f && !boostLock) //kombo var mı hesapla
             {
                 boostLock = true;
 
@@ -195,7 +186,7 @@ public class Platform : MonoBehaviour
         {
             if (explosionParticleSystem != null)
             {
-                explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
+                //explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
             }
 
             if (!isBoost)
