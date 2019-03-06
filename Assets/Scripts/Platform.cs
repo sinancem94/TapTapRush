@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,13 +9,17 @@ Blokları yaratıyor, konumlandırıyor input alarak kaydırıp yanlış input g
 
 public class Platform : MonoBehaviour
 {
-    private InputManager ınput;
+    //Scripts
     public GameHandler game;
+    private GetData GameData; 
+    private InputManager ınput;
     private PlatformSizeHandler platformSizeHandler;
     private UIHandler uI;
     private ExplosionParticleSystem explosionParticleSystem;
     private BoostScript Boost;
 
+
+    //GameObjects
     public GameObject block; //kırmızı bloklar
     public GameObject runner; //koşan arkadaş artık neyse
     public GameObject lines;
@@ -25,6 +29,7 @@ public class Platform : MonoBehaviour
 
     public List<GameObject> platfotmTiles; //blokları barındıran liste
 
+    //Parameters
     private float distance; //bi sonraki bloğun gelceği y mesafesi.  habire artıyor
     public float distBetweenBlock; //bloklar arası x mesafesi
 
@@ -67,11 +72,14 @@ public class Platform : MonoBehaviour
 
     private void Start()
     {
-        ınput = new InputManager();
-
         game = new GameHandler(GameHandler.GameState.BeginingPage);
 
+        GameData = new GetData();
+
+        ınput = new InputManager();
+
         platformSizeHandler = new PlatformSizeHandler();
+
         Boost = (BoostScript)FindObjectOfType(typeof(BoostScript));
 
         uI = (UIHandler)FindObjectOfType(typeof(UIHandler));
@@ -85,16 +93,27 @@ public class Platform : MonoBehaviour
         background = GameObject.FindWithTag("Background");
         Nightmare = GameObject.FindWithTag("Nightmare");
 
-        background.transform.position = new Vector3(0f, 6.5f, 0f);
+        if (background)
+            background.transform.position = new Vector3(0f, 6.5f, 0f);
+        else
+            Debug.LogError("Could not find GameObject Background");
         //road.transform.position = new Vector3(road.transform.position.x, road.transform.position.y + (road.transform.localScale.y / 3), 0f);
         //road.transform.position = new Vector3(road.transform.position.x, road.transform.position.y + (road.transform.localScale.y / 3), 0f);
-        lines.transform.position = new Vector2(0f, runner.transform.position.y + (lines.transform.GetChild(0).localScale.y / 3));//(5 * distBetweenBlock));
+        if (lines)
+            lines.transform.position = new Vector2(0f, runner.transform.position.y + (lines.transform.GetChild(0).localScale.y / 3));//(5 * distBetweenBlock));
+        else
+            Debug.LogError("Lines are empty");
         road.transform.position = new Vector2(0f, runner.transform.position.y + (road.transform.localScale.y / 3));//(5 * distBetweenBlock));
               
         //background.transform.position = new Vector2(0f, runner.transform.position.y + 5);
 
         platfotmTiles = new List<GameObject>();
         //platfotmTiles.Add(block);
+
+        GameData.GetParameters();
+        GameData.SetParameters(runner.GetComponent<Runner>(),Nightmare.GetComponent<BadThingParticleSystem>());
+
+        uI.OpenUIPanel();
 
         point = 0;
         gainedPoint = 1;
@@ -105,9 +124,6 @@ public class Platform : MonoBehaviour
         boostLimit = 10f;
 
         CreatePlatform();
-
-       
-
 
     }
 
@@ -147,7 +163,7 @@ public class Platform : MonoBehaviour
 
             distanceBtwRunner = runner.transform.position.y - Nightmare.transform.position.y;
 
-            if (distanceBtwRunner > 7f && !boostLock) //kombo var mı hesapla
+            if (distanceBtwRunner > 12f && !boostLock) //kombo var mı hesapla
             {
                 boostLock = true;
 
@@ -186,7 +202,7 @@ public class Platform : MonoBehaviour
         {
             if (explosionParticleSystem != null)
             {
-                //explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
+                explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
             }
 
             if (!isBoost)
@@ -220,13 +236,11 @@ public class Platform : MonoBehaviour
                 game.GameOver();
                 platfotmTiles[blockToSlide].GetComponent<Block>().Fall(new Vector2(direction, 0));
                 //StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().Fall(new Vector2(direction, 0)));
-
                 uI.GameOver();
             }
             else //yoksa o yöne doğru git
             {
                 platfotmTiles[blockToSlide].GetComponent<Block>().MoveTile(toPos);
-
                 if (Mathf.Approximately(toPos, 0)) // eğer 0 a geliyorsa bi sonraki bloğa geç
                 {
                     blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
@@ -482,40 +496,28 @@ public class Platform : MonoBehaviour
 
 
 /* distBetweenBlock = platformSizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform);
-
         if (Data.is5Line)
             BlockPos = new float[] { -2 * distBetweenBlock, -1 * distBetweenBlock, distBetweenBlock, 2 * distBetweenBlock };
         else
             BlockPos = new float[] { -1 * distBetweenBlock, distBetweenBlock };
-
         distance = -5f; // Start from -5
-
         int levelStartStraightLine = 5; // first straight line
-
         platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
-
-
         for (int i = 0; i < levelStartStraightLine; i++)
         {
             distance += distBetweenBlock;
             platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
             platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
-
         }
-
         blockNum = 28; //total block number is = levelStartghtLine + block num
-
         for (int i = 0; i < blockNum; i++)
         {
             platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
             platfotmTiles[platfotmTiles.Count - 1].transform.position = BlockPositioner(distBetweenBlock);
         }
-
         runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner starts from 4rd tile
-
         blockToSlide = levelStartStraightLine + 1;
-
         initialStraightRoadLenght = 3 * distBetweenBlock;//platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
         straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y;//initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
-
         Debug.Log("Initial length is : " + initialStraightRoadLenght);*/
+
