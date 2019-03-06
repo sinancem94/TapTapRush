@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -202,7 +202,7 @@ public class Platform : MonoBehaviour
         {
             if (explosionParticleSystem != null)
             {
-                explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
+                //explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
             }
 
             if (!isBoost)
@@ -236,13 +236,11 @@ public class Platform : MonoBehaviour
                 game.GameOver();
                 platfotmTiles[blockToSlide].GetComponent<Block>().Fall(new Vector2(direction, 0));
                 //StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().Fall(new Vector2(direction, 0)));
-
                 uI.GameOver();
             }
             else //yoksa o yöne doğru git
             {
                 platfotmTiles[blockToSlide].GetComponent<Block>().MoveTile(toPos);
-
                 if (Mathf.Approximately(toPos, 0)) // eğer 0 a geliyorsa bi sonraki bloğa geç
                 {
                     blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
@@ -498,40 +496,28 @@ public class Platform : MonoBehaviour
 
 
 /* distBetweenBlock = platformSizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform);
-
         if (Data.is5Line)
             BlockPos = new float[] { -2 * distBetweenBlock, -1 * distBetweenBlock, distBetweenBlock, 2 * distBetweenBlock };
         else
             BlockPos = new float[] { -1 * distBetweenBlock, distBetweenBlock };
-
         distance = -5f; // Start from -5
-
         int levelStartStraightLine = 5; // first straight line
-
         platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
-
-
         for (int i = 0; i < levelStartStraightLine; i++)
         {
             distance += distBetweenBlock;
             platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
             platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
-
         }
-
         blockNum = 28; //total block number is = levelStartghtLine + block num
-
         for (int i = 0; i < blockNum; i++)
         {
             platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
             platfotmTiles[platfotmTiles.Count - 1].transform.position = BlockPositioner(distBetweenBlock);
         }
-
         runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner starts from 4rd tile
-
         blockToSlide = levelStartStraightLine + 1;
-
         initialStraightRoadLenght = 3 * distBetweenBlock;//platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
         straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y;//initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
-
         Debug.Log("Initial length is : " + initialStraightRoadLenght);*/
+

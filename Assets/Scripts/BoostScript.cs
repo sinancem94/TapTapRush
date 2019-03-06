@@ -4,15 +4,33 @@ using UnityEngine;
 
 public class BoostScript : MonoBehaviour
 {
+	//public ParticleSystem explosionParticleSys;
+	private ExplosionParticleSystem explosionParticleSystem;
+	private PostProcessingChange postProcessingChange;
+
+	public Color newVignetteColor;
+	public Color oldVignetteColor;
+
+	private void Start(){
+		explosionParticleSystem = (ExplosionParticleSystem)FindObjectOfType(typeof(ExplosionParticleSystem));
+		postProcessingChange = (PostProcessingChange)FindObjectOfType (typeof(PostProcessingChange));
+	}
+
     public void StartBoost(float timeChangeSpeed)
     {
         StartCoroutine(SlowTime(timeChangeSpeed, true));
+		//explosionParticleSys.gameObject.SetActive (true);
+		explosionParticleSystem.EnteringBoost();
+		StartCoroutine (postProcessingChange.BoostVignetteSettings (true));
     }
    
 
     public void StopBoost(float timeChangeSpeed)
     {
         StartCoroutine(SlowTime(timeChangeSpeed, false));
+		//explosionParticleSys.gameObject.SetActive (false);
+		explosionParticleSystem.ExitingBoost();
+		StartCoroutine (postProcessingChange.BoostVignetteSettings (false));
     }
 
     private IEnumerator SlowTime(float changeSpeed, bool isStarted)
