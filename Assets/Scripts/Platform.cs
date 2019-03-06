@@ -202,7 +202,7 @@ public class Platform : MonoBehaviour
         {
             if (explosionParticleSystem != null)
             {
-                explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
+                //explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
             }
 
             if (!isBoost)
