@@ -55,13 +55,14 @@ public class PostProcessingChange : MonoBehaviour
 			colorGrading.saturation.value = 100f;
 
 			vignette.color.value = vignetteOldColor;
-			while (vignette.intensity.value < .6f) {
+			while (vignette.intensity.value < .3f) {
 				vignette.intensity.value += vignetteChange;
 				yield return new WaitForSeconds (vignetteIntensityTimer);
 			}
 		} else {
 			colorGrading.temperature.value = 0f;
 			colorGrading.tint.value = 0f;
+			colorGrading.saturation.value = -54f;
 
 			while (vignette.intensity.value > 0.2f) {
 				vignette.intensity.value -= vignetteChange;
