@@ -11,15 +11,20 @@ public class UIHandler : MonoBehaviour {
     GameObject StartingPanel;
     GameObject EndingPanel;
     Text infoText;
-    //called from starting button.
+    TrialButtons trialButtons;
 
     private void Start()
     {
         StartingPanel = GameObject.FindWithTag("StartingPanel"); //this.transform.GetChild(0).gameObject;
+        StartingPanel.SetActive(false);
         EndingPanel = GameObject.FindWithTag("GameOverPanel");//this.transform.GetChild(1).gameObject;
         EndingPanel.SetActive(false);
         point = GameObject.FindWithTag("Point").GetComponent<Text>();//this.transform.GetChild(2).GetComponent<Text>();
         infoText = GameObject.FindWithTag("InfoText").GetComponent<Text>();
+        infoText.gameObject.SetActive(false);
+
+        trialButtons = GetComponent<TrialButtons>();
+        trialButtons.enabled = false;
     }
 
     public void SetPoint(int pnt)
@@ -50,13 +55,21 @@ public class UIHandler : MonoBehaviour {
         StopCoroutine(GiveInfo(time, message));
     }
 
+    public void OpenUIPanel()
+    {
+        StartingPanel.SetActive(true);
+        trialButtons.enabled = true;
+    }
+
+    //called from starting button.
     public void StartGame()
     {
         Platform.instance.game.StartGame();
         StartingPanel.SetActive(false);
+        infoText.gameObject.SetActive(true);
     }
 
-    //called from platform.gamehandler and runner
+    //called from platform.gamehandler 
     public void GameOver()
     {
         Debug.Log("game over");

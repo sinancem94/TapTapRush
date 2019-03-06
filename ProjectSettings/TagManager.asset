@@ -17,6 +17,9 @@ TagManager:
   - PostProcessing
   - Nightmare
   - DistanceText
+  - ChangeCharSpeed
+  - ChangeMonsSpeed
+  - ErrorText
   layers:
   - Default
   - TransparentFX

@@ -6,27 +6,29 @@ using UnityEngine;
 
 public class BadThingParticleSystem : MonoBehaviour
 {
-    public GameObject bore;
+    //public GameObject bore;
     private ParticleSystem nightmareParticleSys;
+
     private Camera mainCam; //Camera which partsys follows
-    private CameraMovement cameraMovement;
+    //private CameraMovement cameraMovement;
 
     private float distanceBetweenCamera;
 
     public float monsterSpeed;
-    public float speed;
+    private float speed;
 
     // Start is called before the first frame update
     void Start()
     {
         nightmareParticleSys = gameObject.GetComponent<ParticleSystem>();
+
         mainCam = Camera.main;
-        cameraMovement = mainCam.GetComponent<CameraMovement>();
+        //cameraMovement = mainCam.GetComponent<CameraMovement>();
         distanceBetweenCamera = 6f;
 
         transform.position = new Vector3(mainCam.transform.position.x,mainCam.transform.position.y - distanceBetweenCamera,0f);
 
-        //monsterSpeed = 4f;
+        //monsterSpeed = Data.monsSpeed;
     }
 
     // Update is called once per frame
