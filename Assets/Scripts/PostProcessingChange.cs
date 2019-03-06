@@ -52,17 +52,19 @@ public class PostProcessingChange : MonoBehaviour
 
 			colorGrading.temperature.value = 50f;
 			colorGrading.tint.value = 25f;
+			colorGrading.saturation.value = 100f;
 
 			vignette.color.value = vignetteOldColor;
-			while (vignette.intensity.value < 1f) {
+			while (vignette.intensity.value < .3f) {
 				vignette.intensity.value += vignetteChange;
 				yield return new WaitForSeconds (vignetteIntensityTimer);
 			}
 		} else {
 			colorGrading.temperature.value = 0f;
 			colorGrading.tint.value = 0f;
+			colorGrading.saturation.value = -54f;
 
-			while (vignette.intensity.value > 0.5f) {
+			while (vignette.intensity.value > 0.2f) {
 				vignette.intensity.value -= vignetteChange;
 				yield return new WaitForSeconds (vignetteIntensityTimer);
 			}
@@ -74,3 +76,7 @@ public class PostProcessingChange : MonoBehaviour
 // Change Post Processing via scripting
 
 //temperature 100, tint 60
+
+//vignette basta bu renk 680000
+
+//badthingsparticlesystem radiusu 1 di onu boostta 10 yapabiliriz

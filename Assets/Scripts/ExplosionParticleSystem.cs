@@ -13,7 +13,7 @@ public class ExplosionParticleSystem : MonoBehaviour
     void Start()
     {
 		particleSystemArray = gameObject.GetComponentsInChildren<ParticleSystem> ();
-		explosionSystemRight = particleSystemArray [0];
+		explosionSystemRight = particleSystemArray [0]; //sanırım bunların böyle alınmaması gerekiyo
 		explosionSystemLeft = particleSystemArray [2];
 		Debug.Log ("particleSystemArrayLength= " + particleSystemArray.Length);
     }
@@ -44,16 +44,5 @@ public class ExplosionParticleSystem : MonoBehaviour
 		explosionSystemRight.Stop ();
 	}
 
-	/*public IEnumerator BoostEntering(){
-		
-		Vector3 boostParticlePos = new Vector3 (2f, bore.transform.position.y + 10, 0);
-		explosionSystem.Play ();
-			for (int i = 0; i < 1; i++) {
-				explosionSystem.transform.position = boostParticlePos;
-				Debug.Log ("explosionPos  " + explosionSystem.transform.position);
-				boostParticlePos.y = boostParticlePos.y + 2;
-				yield return new WaitForSeconds (.08f);
-			}
 
-	}*/
 }
