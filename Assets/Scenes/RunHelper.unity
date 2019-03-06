@@ -7559,5 +7559,10 @@ PrefabInstance:
       propertyPath: bore
       value: 
       objectReference: {fileID: 2120997774}
+    - target: {fileID: 2928413826639791891, guid: af1df6d5ef6642e468dec0a9d964ad1a,
+        type: 3}
+      propertyPath: bore
+      value: 
+      objectReference: {fileID: 2120997774}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af1df6d5ef6642e468dec0a9d964ad1a, type: 3}
