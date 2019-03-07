@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -310,8 +310,12 @@ public class Platform : MonoBehaviour
 
     public void CreatePlatform()
     {
+        //Sizes are changed according to Screen 
+        //When First Inıt script written Call this and put sizes on PlayerPrefs
         distBetweenBlock = platformSizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform);
 
+
+        //For 5 line mode
         if (Data.is5Line)
         {
             BlockPos = new float[] { -2 * distBetweenBlock, -1 * distBetweenBlock, distBetweenBlock, 2 * distBetweenBlock };
