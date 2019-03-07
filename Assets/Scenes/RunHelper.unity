@@ -1436,7 +1436,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 46b7929ed77674745a6abafe2b153068, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -7049,9 +7049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb0551df198143d3810a66353235245, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bore: {fileID: 2120997774}
   monsterSpeed: 0.8
-  speed: 0.5
 --- !u!114 &1460985071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7855,8 +7853,8 @@ GameObject:
   - component: {fileID: 2120997776}
   - component: {fileID: 2120997775}
   - component: {fileID: 2120997777}
-  - component: {fileID: 2120997778}
   - component: {fileID: 2120997779}
+  - component: {fileID: 2120997778}
   m_Layer: 0
   m_Name: Runner
   m_TagString: Runner
