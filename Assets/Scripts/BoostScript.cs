@@ -10,8 +10,8 @@ public class BoostScript : MonoBehaviour
 	private BoreBoostEffects boreBoostEffects;
 	private BadThingsBoostEffect badThingsBoostEffect;
 
-	public Color newVignetteColor;
-	public Color oldVignetteColor;
+	//public Color newVignetteColor;
+	//public Color oldVignetteColor;
 
 	private void Start(){
 		explosionParticleSystem = (ExplosionParticleSystem)FindObjectOfType(typeof(ExplosionParticleSystem));

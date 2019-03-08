@@ -45,6 +45,7 @@ public class PostProcessingChange : MonoBehaviour
 		if (isEntering) {
 			colorGrading.temperature.value = 100f;
 			colorGrading.tint.value = 60f;
+            colorGrading.saturation.value = 10f;
 
 			vignette.color.value = vignetteNewColor;
 
@@ -52,19 +53,19 @@ public class PostProcessingChange : MonoBehaviour
 
 			colorGrading.temperature.value = 50f;
 			colorGrading.tint.value = 25f;
-			colorGrading.saturation.value = 100f;
+			colorGrading.saturation.value = 50f;
 
 			vignette.color.value = vignetteOldColor;
-			while (vignette.intensity.value < .3f) {
+			while (vignette.intensity.value < 0.35f) {
 				vignette.intensity.value += vignetteChange;
 				yield return new WaitForSeconds (vignetteIntensityTimer);
 			}
 		} else {
 			colorGrading.temperature.value = 0f;
 			colorGrading.tint.value = 0f;
-			colorGrading.saturation.value = -54f;
+			colorGrading.saturation.value = -0f;
 
-			while (vignette.intensity.value > 0.2f) {
+			while (vignette.intensity.value > 0.25f) {
 				vignette.intensity.value -= vignetteChange;
 				yield return new WaitForSeconds (vignetteIntensityTimer);
 			}

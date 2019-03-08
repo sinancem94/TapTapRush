@@ -941,7 +941,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b65dc571eb654acf892cd34b24a98d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newVignetteColor: {r: 0.8867924, g: 0.0292809, b: 0.0292809, a: 0}
+  newVignetteColor: {r: 0, g: 0, b: 0, a: 0}
   oldVignetteColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &369643773
 MonoBehaviour:
@@ -1225,8 +1225,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8294d7c6c5ec4dfeb3b2c1a5ed9b2cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OrthographicUpperSize: 70
-  OrthographicLowerSize: 55
+  OrthographicUpperSize: 0
+  OrthographicLowerSize: 0
 --- !u!114 &546899198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1458,8 +1458,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d4cc6212d1dec24c8eb4bad78fa7f19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeAmount: 0.0003
-  waitTimer: 0.003
+  changeAmount: 0
+  waitTimer: 0
 --- !u!224 &579384798 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6419100091106235810, guid: 3209428e57039443b8b946fa8b43c015,
@@ -1559,7 +1559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  changeAmount: 0.5
+  changeAmount: 0
 --- !u!1 &724224407
 GameObject:
   m_ObjectHideFlags: 0
@@ -7049,7 +7049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb0551df198143d3810a66353235245, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterSpeed: 0.8
+  monsterSpeed: 0
 --- !u!114 &1460985071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7670,7 +7670,7 @@ MonoBehaviour:
   vignetteIntensityTimer: 0.05
   vignetteColorTimer: 1.5
   tempandTintTimer: 0.5
-  vignetteNewColor: {r: 0.4339623, g: 0.047080822, b: 0.047080822, a: 0}
+  vignetteNewColor: {r: 0.44, g: 0.048400007, b: 0.048400007, a: 0}
 --- !u!1 &2033782069
 GameObject:
   m_ObjectHideFlags: 0
@@ -7938,7 +7938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787d8951f99c148748308c352200321e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharacterSpeed: 1.6
+  CharacterSpeed: 0
 --- !u!95 &2120997778
 Animator:
   serializedVersion: 3
@@ -8305,5 +8305,32 @@ PrefabInstance:
       propertyPath: bore
       value: 
       objectReference: {fileID: 2120997774}
-    m_RemovedComponents: []
+    - target: {fileID: 6832713012157879514, guid: af1df6d5ef6642e468dec0a9d964ad1a,
+        type: 3}
+      propertyPath: m_TagString
+      value: LeftExplosionSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 6832713012714860063, guid: af1df6d5ef6642e468dec0a9d964ad1a,
+        type: 3}
+      propertyPath: m_TagString
+      value: RightExplosionSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 6832713012714860513, guid: af1df6d5ef6642e468dec0a9d964ad1a,
+        type: 3}
+      propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6832713012714860513, guid: af1df6d5ef6642e468dec0a9d964ad1a,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6832713013592446308, guid: af1df6d5ef6642e468dec0a9d964ad1a,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6832713013592446310, guid: af1df6d5ef6642e468dec0a9d964ad1a, type: 3}
+    - {fileID: 6832713013647873996, guid: af1df6d5ef6642e468dec0a9d964ad1a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: af1df6d5ef6642e468dec0a9d964ad1a, type: 3}
