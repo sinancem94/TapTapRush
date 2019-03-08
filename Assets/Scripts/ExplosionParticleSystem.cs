@@ -4,45 +4,54 @@ using UnityEngine;
 
 public class ExplosionParticleSystem : MonoBehaviour
 {
-	public GameObject bore;
+    public GameObject bore;
     private ParticleSystem explosionSystemRight;
-	private ParticleSystem explosionSystemLeft;
-	private ParticleSystem[] particleSystemArray;
+    private ParticleSystem explosionSystemLeft;
+    private ParticleSystem[] particleSystemArray;
+
+    private GameObject gameObjectRight;
+    private GameObject gameObjectLeft;
 
     // Use this for initialization
     void Start()
     {
-		particleSystemArray = gameObject.GetComponentsInChildren<ParticleSystem> ();
-		explosionSystemRight = particleSystemArray [0]; //sanırım bunların böyle alınmaması gerekiyo
-		explosionSystemLeft = particleSystemArray [2];
-		Debug.Log ("particleSystemArrayLength= " + particleSystemArray.Length);
+        particleSystemArray = gameObject.GetComponentsInChildren<ParticleSystem>();
+        gameObjectRight = GameObject.FindWithTag("RightExplosionSystem");
+        gameObjectLeft = GameObject.FindWithTag("LeftExplosionSystem");
+
+        explosionSystemRight = gameObjectRight.GetComponent<ParticleSystem>();
+        explosionSystemLeft = gameObjectLeft.GetComponent<ParticleSystem>();
+
+        Debug.Log("particleSystemArrayLength= " + particleSystemArray.Length);
     }
 
     public void Explode(Vector3 explosionArea)
     {
         explosionSystemRight.transform.position = explosionArea;
-		explosionSystemLeft.transform.position = explosionArea;
+        explosionSystemLeft.transform.position = explosionArea;
         explosionSystemRight.Play();
-		explosionSystemLeft.Play ();
+        explosionSystemLeft.Play();
     }
 
-	public void EnteringBoost(){
-		Debug.Log ("entering boost");
+    public void EnteringBoost()
+    {
+        Debug.Log("entering boost");
 
-		Vector3 boostParticlePosRight = new Vector3 (2f, bore.transform.position.y + 10, 0);
-		Vector3 boostParticlePosLeft = new Vector3 (-2f, bore.transform.position.y + 10, 0);
-		explosionSystemRight.transform.position = boostParticlePosRight;
-		explosionSystemLeft.transform.position = boostParticlePosLeft;
+        Vector3 boostParticlePosRight = new Vector3(2f, bore.transform.position.y + 10, 0);
+        Vector3 boostParticlePosLeft = new Vector3(-2f, bore.transform.position.y + 10, 0);
+        explosionSystemRight.transform.position = boostParticlePosRight;
+        explosionSystemLeft.transform.position = boostParticlePosLeft;
 
-		explosionSystemRight.Play ();
-		explosionSystemLeft.Play ();
+        explosionSystemRight.Play();
+        explosionSystemLeft.Play();
 
-	}
+    }
 
-	public void ExitingBoost(){
-		explosionSystemLeft.Stop ();
-		explosionSystemRight.Stop ();
-	}
+    public void ExitingBoost()
+    {
+        explosionSystemLeft.Stop();
+        explosionSystemRight.Stop();
+    }
 
 
 }
