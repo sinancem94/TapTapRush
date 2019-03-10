@@ -941,8 +941,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b65dc571eb654acf892cd34b24a98d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newVignetteColor: {r: 0, g: 0, b: 0, a: 0}
-  oldVignetteColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &369643773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1458,8 +1456,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d4cc6212d1dec24c8eb4bad78fa7f19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeAmount: 0
-  waitTimer: 0
+  changeAmount: 0.001
+  waitTimer: 0.01
 --- !u!224 &579384798 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6419100091106235810, guid: 3209428e57039443b8b946fa8b43c015,
