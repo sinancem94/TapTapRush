@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraSizeHandler : SizeHandler
+public class CameraSizeHandler
 {
 
     public IEnumerator DynamicCameraMovement(float Upperlimit, float LowerLimit)
