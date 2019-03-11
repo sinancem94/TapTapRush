@@ -307,7 +307,7 @@ public class Platform : MonoBehaviour
         }
     }
 
-    public void SetSpeeds()
+    public void SetSpeeds() //Set speed for bore and monster
     {
         GameData.GetSpeedData(runner.GetComponent<Runner>(), Nightmare.GetComponent<BadThingParticleSystem>());
     }

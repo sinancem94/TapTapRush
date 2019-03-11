@@ -38,12 +38,17 @@ public class InitilizationScript : MonoBehaviour
     void Start()
     {
         SetParameters();
+        //Debug.Log(Data.charSpeed);
+        //Debug.Log(Data.monsSpeed);
+        //Debug.Log(Data.HighScore);
+        //Debug.Log(Data.MaxLevel);
+        //Debug.Log(Data.Level);
     }
 
     private void SetParameters()
     {
-        Data.charSpeed = PlayerPrefs.GetInt("BoreSpeed");
-        Data.monsSpeed = PlayerPrefs.GetInt("MonsterSpeed");
+        Data.charSpeed = PlayerPrefs.GetFloat("BoreSpeed");
+        Data.monsSpeed = PlayerPrefs.GetFloat("MonsterSpeed");
         Data.HighScore = PlayerPrefs.GetInt("HighScore");
         Data.MaxLevel = PlayerPrefs.GetInt("MaxLevel");
         Data.Level = PlayerPrefs.GetInt("Level");
