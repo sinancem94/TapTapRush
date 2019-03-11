@@ -69,10 +69,10 @@ public class UIHandler : MonoBehaviour {
         infoText.gameObject.SetActive(true);
     }
 
-    //called from platform.gamehandler 
+    //called from platform
     public void GameOver()
     {
-        Debug.Log("game over");
+        Debug.Log("Game over");
         EndingPanel.SetActive(true);
     }
 
