@@ -86,9 +86,9 @@ public class TrialButtons : MonoBehaviour
         else
         {
             errorText.gameObject.SetActive(false);
-            Data.charSpeed = float.Parse(charSpeed.text);
-            Platform.instance.runner.GetComponent<Runner>().CharacterSpeed = Data.charSpeed;
-            Debug.Log(Data.charSpeed);
+            PlayerPrefs.SetFloat("BoreSpeed", float.Parse(charSpeed.text));
+            Data.charSpeed = PlayerPrefs.GetFloat("BoreSpeed");
+            Platform.instance.SetSpeeds();
         }
     }
 
@@ -104,9 +104,9 @@ public class TrialButtons : MonoBehaviour
         else
         {
             errorText.gameObject.SetActive(false);
-            Data.monsSpeed = float.Parse(monsSpeed.text);
-            Platform.instance.Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed = Data.monsSpeed;
-            Debug.Log(Data.monsSpeed);
+            PlayerPrefs.SetFloat("MonsterSpeed", float.Parse(monsSpeed.text));
+            Data.monsSpeed = PlayerPrefs.GetFloat("MonsterSpeed");
+            Platform.instance.SetSpeeds();
         }
     }
 

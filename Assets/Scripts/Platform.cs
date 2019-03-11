@@ -110,8 +110,7 @@ public class Platform : MonoBehaviour
         platfotmTiles = new List<GameObject>();
         //platfotmTiles.Add(block);
 
-        GameData.GetParameters();
-        GameData.SetParameters(runner.GetComponent<Runner>(),Nightmare.GetComponent<BadThingParticleSystem>());
+        SetSpeeds();
 
         uI.OpenUIPanel();
 
@@ -306,6 +305,11 @@ public class Platform : MonoBehaviour
             }
             //Camera.main.gameObject.transform.position = new Vector3(0f, 6f, 0f);
         }
+    }
+
+    public void SetSpeeds()
+    {
+        GameData.GetSpeedData(runner.GetComponent<Runner>(), Nightmare.GetComponent<BadThingParticleSystem>());
     }
 
     public void CreatePlatform()
