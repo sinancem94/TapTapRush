@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelManager 
 {
-    public void FinishedLevel()
+    public void LevelPassed()
     {
         PlayerPrefs.SetInt("MaxLevel", Data.MaxLevel + 1);
         Data.MaxLevel = PlayerPrefs.GetInt("MaxLevel");

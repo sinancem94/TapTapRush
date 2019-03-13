@@ -102,7 +102,8 @@ public class Platform : MonoBehaviour
         if (lines)
             lines.transform.position = new Vector2(0f, runner.transform.position.y + (lines.transform.GetChild(0).localScale.y / 3));//(5 * distBetweenBlock));
         else
-            Debug.LogError("Lines are empty");
+            Debug.LogError("Could not find GameObject Lines");
+        
         road.transform.position = new Vector2(0f, runner.transform.position.y + (road.transform.localScale.y / 3));//(5 * distBetweenBlock));
               
         //background.transform.position = new Vector2(0f, runner.transform.position.y + 5);
