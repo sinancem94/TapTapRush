@@ -22,6 +22,8 @@ TagManager:
   - ErrorText
   - RightExplosionSystem
   - LeftExplosionSystem
+  - OnGamePanel
+  - LevelPassedPanel
   layers:
   - Default
   - TransparentFX

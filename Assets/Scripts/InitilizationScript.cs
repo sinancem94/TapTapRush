@@ -28,8 +28,7 @@ public class InitilizationScript : MonoBehaviour
         }
         else if(PlayerPrefs.HasKey("TapTapRush")) //Count Game Activity
         {
-            int GameInitCount = PlayerPrefs.GetInt("TapTapRush");
-            PlayerPrefs.SetInt("TapTapRush", GameInitCount + 1);
+            PlayerPrefs.SetInt("TapTapRush", Data.AppLaunchCount + 1);
         }
     
     }
@@ -47,11 +46,7 @@ public class InitilizationScript : MonoBehaviour
 
     private void SetParameters()
     {
-        Data.charSpeed = PlayerPrefs.GetFloat("BoreSpeed");
-        Data.monsSpeed = PlayerPrefs.GetFloat("MonsterSpeed");
-        Data.HighScore = PlayerPrefs.GetInt("HighScore");
-        Data.MaxLevel = PlayerPrefs.GetInt("MaxLevel");
-        Data.Level = PlayerPrefs.GetInt("Level");
+        Data.SetData();
     }
 
 

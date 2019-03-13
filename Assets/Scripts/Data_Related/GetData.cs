@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//Wrapper Around Data for platform to use
 public class GetData 
 {
-    public void GetSpeedData(Runner runner,BadThingParticleSystem nightmare)
+    public float GetBoreSpeed()
     {
-        runner.CharacterSpeed = Data.charSpeed;
-        nightmare.monsterSpeed = Data.monsSpeed;
+        return Data.charSpeed;
+    }
+
+    public float GetMonsterSpeed()
+    {
+        return Data.monsSpeed;
     }
 }
