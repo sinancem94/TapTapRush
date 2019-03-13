@@ -4,76 +4,59 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-
+//Manages change between UI panels
 public class UIHandler : MonoBehaviour {
 
-    Text point;
+
     GameObject StartingPanel;
-    GameObject EndingPanel;
-    Text infoText;
-    TrialButtons trialButtons;
+    GameObject GameOverPanel;
+    GameObject OnGamePanel;
+    GameObject LevelPassedPanel;
+
+    //TrialButtons trialButtons;
 
     private void Start()
     {
         StartingPanel = GameObject.FindWithTag("StartingPanel"); //this.transform.GetChild(0).gameObject;
         StartingPanel.SetActive(false);
-        EndingPanel = GameObject.FindWithTag("GameOverPanel");//this.transform.GetChild(1).gameObject;
-        EndingPanel.SetActive(false);
-        point = GameObject.FindWithTag("Point").GetComponent<Text>();//this.transform.GetChild(2).GetComponent<Text>();
-        infoText = GameObject.FindWithTag("InfoText").GetComponent<Text>();
-        infoText.gameObject.SetActive(false);
+        GameOverPanel = GameObject.FindWithTag("GameOverPanel");//this.transform.GetChild(1).gameObject;
+        GameOverPanel.SetActive(false);
+        OnGamePanel = GameObject.FindWithTag("OnGamePanel");
+        OnGamePanel.SetActive(false);
+        LevelPassedPanel = GameObject.FindWithTag("LevelPassedPanel");
 
-        trialButtons = GetComponent<TrialButtons>();
-        trialButtons.enabled = false;
+        //trialButtons = GetComponent<TrialButtons>();
+        //trialButtons.enabled = false;
     }
 
-    public void SetPoint(int pnt)
+    public UIGameHandler GetGamePanel()
     {
-        point.text = pnt.ToString();
+        return OnGamePanel.GetComponent<UIGameHandler>();
     }
 
-    public IEnumerator GiveInfo(float time,string message)
-    {
-        infoText.text = message;
-        while(infoText.color.a < 1)
-        {
-            infoText.color = new Color(infoText.color.r,infoText.color.g,infoText.color.b,infoText.color.a + 0.1f);
-            yield return new WaitForSeconds(.01f);
-        }
-        infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 1);
-
-        yield return new WaitForSeconds(time);
-
-        while (infoText.color.a > 0)
-        {
-            infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, infoText.color.a - 0.1f);
-            yield return new WaitForSeconds(.01f);
-        }
-
-        infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 0);
-
-        StopCoroutine(GiveInfo(time, message));
-    }
-
+    //Opens Starting Panel
+    //After platform setted game objects and parameters calls this method 
     public void OpenUIPanel()
     {
         StartingPanel.SetActive(true);
-        trialButtons.enabled = true;
+        //trialButtons.enabled = true;
     }
 
     //called from starting button.
     public void StartGame()
     {
-        Platform.instance.game.StartGame();
         StartingPanel.SetActive(false);
-        infoText.gameObject.SetActive(true);
+        OnGamePanel.SetActive(true);
+        Platform.instance.game.StartGame();
+        //infoText.gameObject.SetActive(true);
     }
 
     //called from platform
     public void GameOver()
     {
         Debug.Log("Game over");
-        EndingPanel.SetActive(true);
+        OnGamePanel.SetActive(false);
+        GameOverPanel.SetActive(true);
     }
 
     public void Restart()

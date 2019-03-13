@@ -15,7 +15,7 @@ public class Platform : MonoBehaviour
     private InputManager ınput;
     private PlatformSizeHandler platformSizeHandler;
     private UIHandler uI;
-    private ExplosionParticleSystem explosionParticleSystem;
+    private UIGameHandler uIGame;
     private BoostScript Boost;
 
 
@@ -81,10 +81,9 @@ public class Platform : MonoBehaviour
         platformSizeHandler = new PlatformSizeHandler();
 
         Boost = (BoostScript)FindObjectOfType(typeof(BoostScript));
-
         uI = (UIHandler)FindObjectOfType(typeof(UIHandler));
-
-        explosionParticleSystem = (ExplosionParticleSystem)FindObjectOfType(typeof(ExplosionParticleSystem));
+        uIGame = SetUIGameHandler(); 
+        //uIGame = (UIGameHandler)FindObjectOfType(typeof(UIGameHandler));
 
         block = GameObject.FindWithTag("Block");
         runner = GameObject.FindWithTag("Runner");
@@ -102,7 +101,7 @@ public class Platform : MonoBehaviour
         if (lines)
             lines.transform.position = new Vector2(0f, runner.transform.position.y + (lines.transform.GetChild(0).localScale.y / 3));//(5 * distBetweenBlock));
         else
-            Debug.LogError("Could not find GameObject Lines");
+            Debug.LogError("Could not find GameObject Background");
         
         road.transform.position = new Vector2(0f, runner.transform.position.y + (road.transform.localScale.y / 3));//(5 * distBetweenBlock));
               
@@ -111,20 +110,19 @@ public class Platform : MonoBehaviour
         platfotmTiles = new List<GameObject>();
         //platfotmTiles.Add(block);
 
-        SetSpeeds();
-
-        uI.OpenUIPanel();
-
         point = 0;
         gainedPoint = 1;
         pushBlockForward = 0;
 
-        SetBoost(false);
         boostTimer = 0f;
         boostLimit = 10f;
 
         CreatePlatform();
 
+        SetSpeeds();
+        SetBoost(false);
+
+        uI.OpenUIPanel();
     }
 
     //runner bloktan öndeyse bloğu ileri at + lines ı bir ileri taşı
@@ -200,11 +198,7 @@ public class Platform : MonoBehaviour
 
         if (!Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, 0f)) // eğer zaten ortada değilse
         {
-            if (explosionParticleSystem != null)
-            {
-                //explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
-            }
-
+            
             if (!isBoost)
                 toPos = platfotmTiles[blockToSlide].transform.position.x + (direction * distBetweenBlock); // nereye gitcek onu hesapla
             else
@@ -227,7 +221,7 @@ public class Platform : MonoBehaviour
                 {
                     blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
                     point += gainedPoint;
-                    uI.SetPoint(point);
+                    uIGame.SetPoint(point);
                 }
             }
 
@@ -251,6 +245,7 @@ public class Platform : MonoBehaviour
         }
     }
 
+#region RoadCreating
     // blokları konumlandıran fonksiyon
     private Vector2 BlockPositioner(float rate)
     {
@@ -262,6 +257,97 @@ public class Platform : MonoBehaviour
 
         return new Vector2(BlockPos[exRand], distance);
     }
+
+    public void CreatePlatform() //Set initial Road and parameters
+    {
+        //Sizes are changed according to Screen 
+        //When First Inıt script written Call this and put sizes on PlayerPrefs
+        distBetweenBlock = platformSizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform);
+        //For 5 line mode
+        if (Data.is5Line)
+        {
+            BlockPos = new float[] { -2 * distBetweenBlock, -1 * distBetweenBlock, distBetweenBlock, 2 * distBetweenBlock };
+        }
+        else
+        {
+            BlockPos = new float[] { -1 * distBetweenBlock, distBetweenBlock };
+        }
+
+        distance = -5f; // Start from -5
+
+        for (int i = 1; i < platfotmTiles.Count; i++)
+        {
+            Destroy(platfotmTiles[i]);
+        }
+        platfotmTiles.Clear();
+        platfotmTiles.Add(block);
+        //platfotmTiles[0].GetComponent<Block>().SetBlock();
+
+        int levelStartStraightLine = 5; // start from third block to give full road
+
+        platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
+
+
+        for (int i = 0; i < levelStartStraightLine; i++)
+        {
+            distance += distBetweenBlock;
+            platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
+            platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
+
+        }
+
+        blockNum = 28; //total block number is = levelStartghtLine + block num
+
+        for (int i = 0; i < blockNum; i++)
+        {
+            platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
+            platfotmTiles[platfotmTiles.Count - 1].transform.position = BlockPositioner(distBetweenBlock);
+        }
+
+        //runner.transform.position = instance.platfotmTiles[4].transform.position; //Runner starts from 4rd tile
+
+        runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner starts from 4rd tile
+        blockToSlide = levelStartStraightLine + 1;
+
+        initialStraightRoadLenght = 3 * distBetweenBlock;//platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
+        straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y;//initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
+        //initialStraightRoadLenght = straightRoadLenght;
+
+        Debug.Log("Initial length is : " + initialStraightRoadLenght);
+    }
+#endregion
+
+
+#region SimpleSetMethods
+    public void SetSpeeds() //Set speed for bore and monster
+    {
+        runner.GetComponent<Runner>().CharacterSpeed = GameData.GetBoreSpeed();
+        Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed = GameData.GetMonsterSpeed();
+    }
+
+    //This method is used for getting game uı panel. 
+    //Since this script attached to OnGamePanel which owned by UI handler, UI handler returns this script from OnGamePanel
+    private UIGameHandler SetUIGameHandler()
+    {
+        return uI.GetGamePanel();
+    }
+
+    public bool SetBoost(bool to)
+    {
+        return isBoost = to;
+    }
+
+    private void GiveMessage(float time, string message)
+    {
+        StartCoroutine(uIGame.GiveInfo(time, message));
+    }
+#endregion
+
+   
+
+
+    //Gereksiz function ama camera da ilk başta bbunla setliyor şimdilik ondan duruyor
+    //TODO: Bu değişcek
 
     public void ChangeAngle() //for mode //new Vector3(0f,0f,-10f)new Vector3(0f, -6f, -10f)
     {
@@ -306,83 +392,6 @@ public class Platform : MonoBehaviour
             }
             //Camera.main.gameObject.transform.position = new Vector3(0f, 6f, 0f);
         }
-    }
-
-    public void SetSpeeds() //Set speed for bore and monster
-    {
-        GameData.GetSpeedData(runner.GetComponent<Runner>(), Nightmare.GetComponent<BadThingParticleSystem>());
-    }
-
-    public void CreatePlatform()
-    {
-        //Sizes are changed according to Screen 
-        //When First Inıt script written Call this and put sizes on PlayerPrefs
-        distBetweenBlock = platformSizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform);
-
-
-        //For 5 line mode
-        if (Data.is5Line)
-        {
-            BlockPos = new float[] { -2 * distBetweenBlock, -1 * distBetweenBlock, distBetweenBlock, 2 * distBetweenBlock };
-        }
-        else
-        {
-            BlockPos = new float[] { -1 * distBetweenBlock, distBetweenBlock };
-        }
-
-        distance = -5f; // Start from -5
-
-        for (int i = 1; i < platfotmTiles.Count; i++)
-        {
-            Destroy(platfotmTiles[i]);
-        }
-        platfotmTiles.Clear();
-        platfotmTiles.Add(block);
-        //platfotmTiles[0].GetComponent<Block>().SetBlock();
-
-        int levelStartStraightLine = 5; // start from third block to give full road
-
-        platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
-
-
-        for (int i = 0; i < levelStartStraightLine; i++)
-        {
-            distance += distBetweenBlock;
-            platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
-            platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
-
-        }
-
-        blockNum = 28; //total block number is = levelStartghtLine + block num
-
-        for (int i = 0; i < blockNum; i++)
-        {
-            platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
-            platfotmTiles[platfotmTiles.Count - 1].transform.position = BlockPositioner(distBetweenBlock);
-        }
-
-        runner.transform.position = instance.platfotmTiles[4].transform.position; //Runner starts from 4rd tile
-
-        //ChangeAngle();
-
-        runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner starts from 4rd tile
-
-        blockToSlide = levelStartStraightLine + 1;
-
-        initialStraightRoadLenght = 3 * distBetweenBlock;//platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
-        straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y;//initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
-
-        Debug.Log("Initial length is : " + initialStraightRoadLenght);
-    }
-
-    public bool SetBoost(bool to)
-    {
-        return isBoost = to;
-    }
-
-    public void GiveMessage(float time, string message)
-    {
-        StartCoroutine(uI.GiveInfo(time, message));
     }
 }
 
