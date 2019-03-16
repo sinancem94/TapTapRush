@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InitilizationScript : MonoBehaviour
 {
-    /*
+    /* 
      * All initilization done here, Game speed, level adjustment and other data of the player will be setted and getted in here
      * Plugins and integrations will be done in here 
      * 

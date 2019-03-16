@@ -8,6 +8,7 @@ public class GameHandler {
     {
         BeginingPage,
         GameRunning,
+        LevelPassed,
         GameOver
     };
 
@@ -23,6 +24,10 @@ public class GameHandler {
     public void StartGame()
     {
         state = GameState.GameRunning;
+    }
+    public void LevelPassed()
+    {
+        state = GameState.LevelPassed;
     }
 
 }

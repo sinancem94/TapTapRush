@@ -17,6 +17,7 @@ public class Platform : MonoBehaviour
     private UIHandler uI;
     private UIGameHandler uIGame;
     private BoostScript Boost;
+    private LevelManager levelManager;
 
 
     //GameObjects
@@ -35,9 +36,12 @@ public class Platform : MonoBehaviour
 
     public float[] BlockPos; // blokların oluşailceği pozisyonlar
 
-    private int blockNum; // kaç tane blok olcağı
+    private int BlockNumberInPlatformTiles; //Platform tiles listesinde kaç blok olacağı
 
     public int blockToSlide; // o sırada kaydırılcak blok
+
+    public int level_p;
+    public int TotalBlockInLevel;
 
     private int exRand = 3;
     private int sameLine = 0;
@@ -80,6 +84,9 @@ public class Platform : MonoBehaviour
 
         platformSizeHandler = new PlatformSizeHandler();
 
+        level_p = GetCurrentLevel();
+        levelManager = new LevelManager(level_p);
+
         Boost = (BoostScript)FindObjectOfType(typeof(BoostScript));
         uI = (UIHandler)FindObjectOfType(typeof(UIHandler));
         uIGame = SetUIGameHandler(); 
@@ -112,17 +119,21 @@ public class Platform : MonoBehaviour
 
         point = 0;
         gainedPoint = 1;
+
         pushBlockForward = 0;
+        BlockNumberInPlatformTiles = 30;
 
         boostTimer = 0f;
         boostLimit = 10f;
 
+        levelManager.SetParametersForLevel(ref Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed);
+
         CreatePlatform();
 
-        SetSpeeds();
+        SetSpeed(); //Set player speed from playerprefs.
         SetBoost(false);
 
-        uI.OpenUIPanel();
+        uI.OpenUIPanel(); //After arranging everything open uı panel for starting game
     }
 
     //runner bloktan öndeyse bloğu ileri at + lines ı bir ileri taşı
@@ -246,17 +257,19 @@ public class Platform : MonoBehaviour
     }
 
 #region RoadCreating
+
     // blokları konumlandıran fonksiyon
     private Vector2 BlockPositioner(float rate)
     {
         int tempEx = exRand;
 
-        exRand = RandomPos.RandomPosition(exRand, sameLine, BlockPos.Length);
+        exRand = MathCalculation.RandomPosition(exRand, sameLine, BlockPos.Length);
         sameLine = (tempEx == exRand) ? sameLine += 1 : sameLine = 0;
         distance += rate;
 
         return new Vector2(BlockPos[exRand], distance);
     }
+
 
     public void CreatePlatform() //Set initial Road and parameters
     {
@@ -296,33 +309,38 @@ public class Platform : MonoBehaviour
 
         }
 
-        blockNum = 28; //total block number is = levelStartghtLine + block num
+        //Platform tiles da buluncak toplam blok sayısından ilk baştaki düz blokları çıkar 
+        int remainingBlock = BlockNumberInPlatformTiles - levelStartStraightLine; 
 
-        for (int i = 0; i < blockNum; i++)
+        for (int i = 0; i < remainingBlock; i++)
         {
             platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
             platfotmTiles[platfotmTiles.Count - 1].transform.position = BlockPositioner(distBetweenBlock);
         }
 
-        //runner.transform.position = instance.platfotmTiles[4].transform.position; //Runner starts from 4rd tile
-
-        runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner starts from 4rd tile
+        runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner düz sıranın en sonunda başlıyor
         blockToSlide = levelStartStraightLine + 1;
 
         initialStraightRoadLenght = 3 * distBetweenBlock;//platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
         straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y;//initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
         //initialStraightRoadLenght = straightRoadLenght;
 
-        Debug.Log("Initial length is : " + initialStraightRoadLenght);
+        //Debug.Log("Length  length is : " + initialStraightRoadLenght);
     }
+
 #endregion
 
 
 #region SimpleSetMethods
-    public void SetSpeeds() //Set speed for bore and monster
+    public void SetSpeed() //Set speed for bore and monster
     {
         runner.GetComponent<Runner>().CharacterSpeed = GameData.GetBoreSpeed();
-        Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed = GameData.GetMonsterSpeed();
+        //Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed = GameData.GetMonsterSpeed();
+    }
+
+    private int GetCurrentLevel()
+    {
+        return GameData.GetLevel();
     }
 
     //This method is used for getting game uı panel. 

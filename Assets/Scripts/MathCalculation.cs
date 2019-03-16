@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class RandomPos
+public static class MathCalculation
 {
     public static int RandomPosition(int exRandom, int samenumb,int maxValue)
     {
@@ -37,5 +37,10 @@ public static class RandomPos
         {
             return randomIndex;
         }
+    }
+
+    public static float GetCoeffNum(float coefficient, float initialNum, float maxNum)
+    {
+        return initialNum + (int)(maxNum * (1 - Mathf.Exp(-(coefficient))));
     }
 }

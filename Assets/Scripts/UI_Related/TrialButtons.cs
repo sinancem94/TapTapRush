@@ -14,12 +14,15 @@ public class TrialButtons : MonoBehaviour
     private void Start()
     {
         postProcessing = GameObject.FindGameObjectWithTag("PostProcessing");
-        charSpeed = GameObject.FindGameObjectWithTag("ChangeCharSpeed").GetComponent<InputField>();
-        monsSpeed = GameObject.FindGameObjectWithTag("ChangeMonsSpeed").GetComponent<InputField>();
 
-        charSpeed.placeholder.GetComponent<Text>().text = "Change Bore's Speed Speed\n" + "Current is : " + Data.charSpeed.ToString("0.0");
-
-        monsSpeed.placeholder.GetComponent<Text>().text = "Change Monster Speed Speed\n" + "Current is : " + Data.monsSpeed.ToString("0.0");
+        if(GameObject.FindGameObjectWithTag("ChangeCharSpeed"))
+            charSpeed = GameObject.FindGameObjectWithTag("ChangeCharSpeed").GetComponent<InputField>();
+        if(GameObject.FindGameObjectWithTag("ChangeMonsSpeed"))
+            monsSpeed = GameObject.FindGameObjectWithTag("ChangeMonsSpeed").GetComponent<InputField>();
+        if(charSpeed)
+            charSpeed.placeholder.GetComponent<Text>().text = "Change Bore's Speed Speed\n" + "Current is : " + Data.charSpeed.ToString("0.0");
+        if(monsSpeed)
+            monsSpeed.placeholder.GetComponent<Text>().text = "Change Monster Speed Speed\n" + "Current is : " + Data.monsSpeed.ToString("0.0");
 
         errorText = GameObject.FindGameObjectWithTag("ErrorText").GetComponent<Text>();
         errorText.gameObject.SetActive(false);
@@ -88,7 +91,7 @@ public class TrialButtons : MonoBehaviour
             errorText.gameObject.SetActive(false);
             PlayerPrefs.SetFloat("BoreSpeed", float.Parse(charSpeed.text));
             Data.charSpeed = PlayerPrefs.GetFloat("BoreSpeed");
-            Platform.instance.SetSpeeds();
+            Platform.instance.SetSpeed();
         }
     }
 
@@ -106,7 +109,7 @@ public class TrialButtons : MonoBehaviour
             errorText.gameObject.SetActive(false);
             PlayerPrefs.SetFloat("MonsterSpeed", float.Parse(monsSpeed.text));
             Data.monsSpeed = PlayerPrefs.GetFloat("MonsterSpeed");
-            Platform.instance.SetSpeeds();
+            Platform.instance.SetSpeed();
         }
     }
 

@@ -9,7 +9,7 @@ public class Fader : MonoBehaviour
 	public float speed = 1.0f;
 	private float time = 0f;
 	private Color textColor;
-	public float changeAmount;
+	public float changeAmount = 0.4f;
 
 	// Use this for initialization
 	void Start () {

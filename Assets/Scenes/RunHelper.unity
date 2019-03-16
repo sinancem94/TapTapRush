@@ -599,7 +599,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &266071540
 RectTransform:
   m_ObjectHideFlags: 0
@@ -676,7 +676,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 724224409}
         m_MethodName: ChangeMonsterSpeed
         m_Mode: 1
         m_Arguments:
@@ -960,6 +960,8 @@ MonoBehaviour:
   distBetweenBlock: 0
   BlockPos: []
   blockToSlide: 0
+  level_p: 0
+  TotalBlockInLevel: 0
   gainedPoint: 0
   distanceBtwRunner: 0
   isBoost: 0
@@ -1453,8 +1455,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d4cc6212d1dec24c8eb4bad78fa7f19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeAmount: 0.001
-  waitTimer: 0.01
+  changeAmount: 0
+  waitTimer: 0
 --- !u!224 &579384798 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6419100091106235810, guid: 3209428e57039443b8b946fa8b43c015,
@@ -1605,7 +1607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  changeAmount: 0
+  changeAmount: 0.4
 --- !u!1 &724224407
 GameObject:
   m_ObjectHideFlags: 0
@@ -2022,6 +2024,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 724224409}
+    - target: {fileID: 6419100091106235811, guid: 3209428e57039443b8b946fa8b43c015,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChangeMode
       objectReference: {fileID: 0}
     - target: {fileID: 6419100090897206994, guid: 3209428e57039443b8b946fa8b43c015,
         type: 3}
@@ -7413,7 +7420,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 724224409}
         m_MethodName: ChangeCharacterSpeed
         m_Mode: 1
         m_Arguments:
@@ -7727,11 +7734,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05b49699d02abc14db51db3a6e65a145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vignetteChange: 0.05
-  vignetteIntensityTimer: 0.05
-  vignetteColorTimer: 1.5
-  tempandTintTimer: 0.5
-  vignetteNewColor: {r: 0.44, g: 0.048400007, b: 0.048400007, a: 0}
+  vignetteChange: 0
+  vignetteIntensityTimer: 0
+  vignetteColorTimer: 0
+  tempandTintTimer: 0
+  vignetteNewColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &2033782069
 GameObject:
   m_ObjectHideFlags: 0
@@ -7748,7 +7755,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2033782070
 Transform:
   m_ObjectHideFlags: 0
