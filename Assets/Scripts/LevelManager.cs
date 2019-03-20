@@ -1,11 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class LevelManager 
+﻿public class LevelManager 
 {
     private int LevelNumber;
     public bool isBoostAllowed;
+    private readonly float initialLength = 40f;
+    private readonly float initialDistance = 15f;
+    private readonly float initialMonsterSpeed = Data.GetInitialMonsterSpeed();
+
+
+    public float length;
+    public float distanceThreshold; //Used for level endings which distance btw monster & player used for determining whether condition occured.
 
     public LevelWidth levelWidth;
     public LevelBlockType levelBlockType;
@@ -15,6 +18,8 @@ public class LevelManager
     public LevelManager(int lvl)
     {
         LevelNumber = lvl;
+        initialLength = 40;
+        initialDistance = 15f;
     }
 
     public enum LevelWidth
@@ -35,20 +40,26 @@ public class LevelManager
         Time,
         Distance,
         Length,
-        Boost
+        Boost,
+        None
     }
 
-    public void SetParametersForLevel(ref float monsSpeed)
+    public void SetParametersForLevel(int lvl,ref float monsSpeed, ref bool boostAllow)
     {
-        monsSpeed = SetMonsterSpeed(monsSpeed);
-        SetLengthOfRoad();
-        SetLevelType();
+        LevelNumber = lvl;
+        monsSpeed = SetMonsterSpeed();
+        boostAllow = SetLevelType();
+        SetLevelParamsForEnding();
     }
 
-    private float SetMonsterSpeed(float monsterSpeed)
+    private float SetMonsterSpeed()
     {
-        float coefficient = (LevelNumber != 1) ? (float)(LevelNumber - 1) / 12 : 0;
-        return monsterSpeed = MathCalculation.GetCoeffNum(coefficient, Data.monsSpeed, 1.5f);
+        float speedExtended = initialMonsterSpeed * 100;
+
+        float coefficient = (LevelNumber != 0) ? (float)(LevelNumber) / 12 : 0;
+        speedExtended = MathCalculation.GetCoeffNum(coefficient, speedExtended, 150f);
+
+        return speedExtended / 100f;
     }
 
     //Level Finishing parameters arrangment START.
@@ -58,12 +69,34 @@ public class LevelManager
 
     private void SetLengthOfRoad()
     {
-        
+        float coefficient = (LevelNumber != 0) ? (float)(LevelNumber) / 12 : 0;
+        length =(int)MathCalculation.GetCoeffNum(coefficient, initialLength, 120f);
+    }
+
+    private void SetDistanceForPassCondition() 
+    {
+        float coefficient = (LevelNumber != 0) ? (float)(LevelNumber) / 12 : 0;
+        distanceThreshold = (int)MathCalculation.GetCoeffNum(coefficient, initialDistance, 20f);
     }
 
     private void SetTimeOfLevel()
     {
         
+    }
+
+    private void SetLevelParamsForEnding()
+    {
+        switch (levelFinishtype)
+        {
+            case LevelFinishtype.Length:
+                SetLengthOfRoad();
+                break;
+            case LevelFinishtype.Distance:
+                SetDistanceForPassCondition();
+                break;
+            default:
+                break;
+        }
     }
 
     //Level finishing parameters END.
@@ -93,52 +126,156 @@ public class LevelManager
      * 12. 5li ters düz boost karmakarışık ebesinin dini olcak.
      *  
      * 12 levelda bittikten sonra başka bir world olabilir ama oyun kısa oluyor böyle olunca.
+     *
     */
 
-    private void SetLevelType()
+    private bool SetLevelType()
     {
+       /* switch((int)(LevelNumber / 3))
+        {
+            case 0: // If first three level
+                break;
+            case 1: // If second three level
+                break;
+            case 2: // If third three level
+                break;
+            case 3: // If fourth three level
+                break;
+        }*/
+
         if ((int)(LevelNumber / 3) == 0) // If first three level
         {
             levelBlockType = LevelBlockType.Normal;
             levelWidth = LevelWidth.Three;
 
-            if (LevelNumber % 3 == 1)
+            if (LevelNumber % 3 == 0) //First level
             { 
                 levelFinishtype = LevelFinishtype.Distance;
                 isBoostAllowed = false;
             }
-            else if (LevelNumber % 3 == 2)
+            else if (LevelNumber % 3 == 1) //second level
             {
-                levelFinishtype = LevelFinishtype.Distance;
-                isBoostAllowed = false;
+                levelFinishtype = LevelFinishtype.Length;
+                isBoostAllowed = true;
+            }
+            else if (LevelNumber % 3 == 2) //3rd level
+            {
+                levelFinishtype = LevelFinishtype.Length;
+                isBoostAllowed = true;
             }
 
         }
         else if ((int)(LevelNumber / 3) == 1) // If second three level
         {
+            levelWidth = LevelWidth.Three;
 
+            if (LevelNumber % 3 == 0) //4th level
+            {
+                levelBlockType = LevelBlockType.Reverse;
+                levelFinishtype = LevelFinishtype.Distance;
+                isBoostAllowed = false;
+            }
+            else if (LevelNumber % 3 == 1) //5th level
+            {
+                levelBlockType = LevelBlockType.Mixed;
+                levelFinishtype = LevelFinishtype.Length;
+                isBoostAllowed = true;
+            }
+            else if (LevelNumber % 3 == 2) //6th level
+            {
+                levelBlockType = LevelBlockType.Mixed;
+                levelFinishtype = LevelFinishtype.Length;
+                isBoostAllowed = true;
+            }
         } 
         else if ((int)(LevelNumber / 3) == 2) // If third three level
         {
+            levelWidth = LevelWidth.Five;
+            levelBlockType = LevelBlockType.Normal;
 
+            if (LevelNumber % 3 == 0) //7th level
+            {
+                levelFinishtype = LevelFinishtype.Length;
+                isBoostAllowed = true;
+            }
+            else if (LevelNumber % 3 == 1) //8th level
+            {
+
+                levelFinishtype = LevelFinishtype.Distance;
+                isBoostAllowed = false;
+            }
+            else if (LevelNumber % 3 == 2) //9th level
+            {
+
+                levelFinishtype = LevelFinishtype.Length;
+                isBoostAllowed = true;
+            }
         } 
         else if ((int)(LevelNumber / 3) == 3) // If fourth three level
         {
+            levelWidth = LevelWidth.Five;
 
-        } 
-       
+
+            if (LevelNumber % 3 == 0) //7th level
+            {
+                levelBlockType = LevelBlockType.Reverse;
+                levelFinishtype = LevelFinishtype.Length;
+                isBoostAllowed = true;
+            }
+            else if (LevelNumber % 3 == 1) //8th level
+            {
+                levelBlockType = LevelBlockType.Mixed;
+                levelFinishtype = LevelFinishtype.Distance;
+                isBoostAllowed = false;
+            }
+            else if (LevelNumber % 3 == 2) //9th level
+            {
+                levelBlockType = LevelBlockType.Mixed;
+                levelFinishtype = LevelFinishtype.Length;
+                isBoostAllowed = true;
+            }
+        }
+
+        return isBoostAllowed;
+    }
+
+
+
+
+    public bool IsEndingConditionSatisfied(float distanceBtwMonster, int PassedRoadLength)
+    {
+        bool didPassed = false;
+
+        switch (levelFinishtype) 
+        {
+            case LevelFinishtype.Length:
+                didPassed = (PassedRoadLength >= length) ? true : false;
+                if (didPassed)
+                    IncreaseLevelNumber();
+                break;
+            case LevelFinishtype.Distance:
+                didPassed = (distanceBtwMonster >= distanceThreshold) ? true : false;
+                if (didPassed)
+                    IncreaseLevelNumber();
+                break;
+            case LevelFinishtype.Boost:
+                didPassed = false;
+                if (didPassed)
+                    IncreaseLevelNumber();
+                break;
+            case LevelFinishtype.None: //endless sa hep devam ediyor
+                didPassed = false;
+                break;
+            default:
+                break;
+        }
+
+        return didPassed;
     }
 
     public void IncreaseLevelNumber()
     {
         LevelNumber += 1;
-        Data.Level = LevelNumber;
-
-        if(Data.Level > Data.MaxLevel)
-        {
-            PlayerPrefs.SetInt("MaxLevel", Data.Level);
-            Data.MaxLevel = Data.Level;
-        }
-        PlayerPrefs.SetInt("Level", Data.Level);
+        Data.UpdateLevelData(LevelNumber);
     }
 }

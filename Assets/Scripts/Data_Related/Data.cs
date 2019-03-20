@@ -16,7 +16,7 @@ public static class Data
     public static int HighScore;
 
     public static int MaxLevel;
-    public static int Level;
+    public static int Level; //Level starts from 0 and increases. because 0 is usefull while arranging levels
 
     public static void SetData()
     {
@@ -26,5 +26,41 @@ public static class Data
         HighScore = PlayerPrefs.GetInt("HighScore");
         MaxLevel = PlayerPrefs.GetInt("MaxLevel");
         Level = PlayerPrefs.GetInt("Level");
+    }
+
+    public static void UpdateLevelData(int currlevel) 
+    {
+        Level = currlevel;
+
+        if (Level > MaxLevel)
+        {
+            PlayerPrefs.SetInt("MaxLevel", Level);
+            MaxLevel = Level;
+        }
+        PlayerPrefs.SetInt("Level", Level);
+    }
+
+    public static int GetMaxLevel() 
+    {
+        return MaxLevel;
+    }
+
+    public static int GetLevel() 
+    {
+        return Level;
+    }
+
+    public static float GetInitialMonsterSpeed() 
+    {
+        return monsSpeed;
+    }
+
+    public static void ChangeLevel(int currlevel) 
+    {
+       // if(currlevel <= MaxLevel) 
+        //{
+            Level = currlevel;
+            PlayerPrefs.SetInt("Level", Level);
+        //}
     }
 }

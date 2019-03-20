@@ -28,11 +28,11 @@ public class CameraMovement : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!isChanging && Platform.instance.game.state == GameHandler.GameState.GameRunning)
+        if (!isChanging && Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
         {
             StartCamera();
         }
-        else if(isChanging && Platform.instance.game.state == GameHandler.GameState.GameOver)
+        else if(isChanging && Platform.instance.game.GetGameState() == GameHandler.GameState.GameOver || Platform.instance.game.GetGameState() == GameHandler.GameState.LevelPassed)
         {
             StopCamera();
         }

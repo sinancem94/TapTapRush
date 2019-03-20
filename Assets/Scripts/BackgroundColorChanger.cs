@@ -27,8 +27,8 @@ public class BackgroundColorChanger : MonoBehaviour {
 
 	private  IEnumerator WaitAndChangeColor(float hueIncreaseEnum, float waitTime)
     {
-        yield return new WaitUntil(() => Platform.instance.game.state == GameHandler.GameState.GameRunning);
-        while (Platform.instance.game.state == GameHandler.GameState.GameRunning) 
+        yield return new WaitUntil(() => Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning);
+        while (Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning) 
         {
 			Color newColor;
 			bgColor = bgSpriteRenderer.color;

@@ -17,6 +17,11 @@ public class GameHandler {
         state = currState;
     }
 
+    public GameState GetGameState() 
+    {
+        return state;
+    }
+
     public void GameOver()
     {
         state = GameState.GameOver;

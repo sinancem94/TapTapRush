@@ -11,8 +11,9 @@ public class UIHandler : MonoBehaviour {
     GameObject StartingPanel;
     GameObject GameOverPanel;
     GameObject OnGamePanel;
-    GameObject LevelPassedPanel;
 
+    UIGameHandler uIGameHandler;
+    GameOverPage gameOverPage;
     //TrialButtons trialButtons;
 
     private void Start()
@@ -23,15 +24,16 @@ public class UIHandler : MonoBehaviour {
         GameOverPanel.SetActive(false);
         OnGamePanel = GameObject.FindWithTag("OnGamePanel");
         OnGamePanel.SetActive(false);
-        LevelPassedPanel = GameObject.FindWithTag("LevelPassedPanel");
 
         //trialButtons = GetComponent<TrialButtons>();
         //trialButtons.enabled = false;
+        uIGameHandler = OnGamePanel.GetComponent<UIGameHandler>();
+        gameOverPage = GameOverPanel.GetComponent<GameOverPage>();
     }
 
     public UIGameHandler GetGamePanel()
     {
-        return OnGamePanel.GetComponent<UIGameHandler>();
+        return uIGameHandler;
     }
 
     //Opens Starting Panel
@@ -56,6 +58,8 @@ public class UIHandler : MonoBehaviour {
     {
         Debug.Log("Game over");
         OnGamePanel.SetActive(false);
+
+        gameOverPage.SetPanel();
         GameOverPanel.SetActive(true);
     }
 

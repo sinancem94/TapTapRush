@@ -17,7 +17,7 @@ public class Platform : MonoBehaviour
     private UIHandler uI;
     private UIGameHandler uIGame;
     private BoostScript Boost;
-    private LevelManager levelManager;
+    public LevelManager levelManager; //Should be private public for displaying level parameters for now.
 
 
     //GameObjects
@@ -29,6 +29,7 @@ public class Platform : MonoBehaviour
     public GameObject Nightmare;
 
     public List<GameObject> platfotmTiles; //blokları barındıran liste
+    public List<Block> blockScripts;
 
     //Parameters
     private float distance; //bi sonraki bloğun gelceği y mesafesi.  habire artıyor
@@ -41,7 +42,7 @@ public class Platform : MonoBehaviour
     public int blockToSlide; // o sırada kaydırılcak blok
 
     public int level_p;
-    public int TotalBlockInLevel;
+    public int passedBlockNumber;
 
     private int exRand = 3;
     private int sameLine = 0;
@@ -54,10 +55,13 @@ public class Platform : MonoBehaviour
     private bool boostLock; //since isBoost is changed in BoostScript, boostLock is used for locking update statement where boost started. Bir kere girsin diye
 
     public bool isBoost; // when boost mode activates set to true otherwise false
+    private bool isBoostAllowed;
     private float boostTimer;
     private float boostLimit;
 
     public int pushBlockForward; // sıranın en sonuna atılcak blok. en arkada kalan blok
+
+    private bool is5Line;
 
     public float straightRoadLenght;
     public float initialStraightRoadLenght; // for refence point of starting size
@@ -115,7 +119,9 @@ public class Platform : MonoBehaviour
         //background.transform.position = new Vector2(0f, runner.transform.position.y + 5);
 
         platfotmTiles = new List<GameObject>();
+        blockScripts = new List<Block>();
         //platfotmTiles.Add(block);
+        passedBlockNumber = 0;
 
         point = 0;
         gainedPoint = 1;
@@ -126,15 +132,17 @@ public class Platform : MonoBehaviour
         boostTimer = 0f;
         boostLimit = 10f;
 
-        levelManager.SetParametersForLevel(ref Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed);
+        SetMonsterPosition();
+        SetSpeeds(); //Set player speed from playerprefs.
 
-        CreatePlatform();
+        SetLevelParameters();
+        //CreatePlatform();
 
-        SetSpeed(); //Set player speed from playerprefs.
         SetBoost(false);
 
         uI.OpenUIPanel(); //After arranging everything open uı panel for starting game
     }
+
 
     //runner bloktan öndeyse bloğu ileri at + lines ı bir ileri taşı
     private void LateUpdate()
@@ -147,7 +155,7 @@ public class Platform : MonoBehaviour
 
             platfotmTiles[pushBlockForward].transform.position = BlockPositioner(distBetweenBlock);
 
-            platfotmTiles[pushBlockForward].GetComponent<Block>().SetBlock();
+            blockScripts[pushBlockForward].SetBlock(levelManager.levelBlockType);
 
             pushBlockForward = (pushBlockForward + 1 < platfotmTiles.Count) ? pushBlockForward += 1 : pushBlockForward = 0;
         }
@@ -156,7 +164,7 @@ public class Platform : MonoBehaviour
     // kaycak bloğa karar ver, input al, input varsa ona göre haraket et, yol hesapla, boost moda giriyor mu ona bak
     private void Update()
     {
-        if (game.state == GameHandler.GameState.GameRunning)
+        if (game.GetGameState() == GameHandler.GameState.GameRunning)
         {
             ınput.directionGetter();
 
@@ -172,7 +180,16 @@ public class Platform : MonoBehaviour
 
             distanceBtwRunner = runner.transform.position.y - Nightmare.transform.position.y;
 
-            if (distanceBtwRunner > 12f && !boostLock) //kombo var mı hesapla
+            //////////////////////////////
+            //Calculate if level passed
+            //
+            if (levelManager.IsEndingConditionSatisfied(distanceBtwRunner, passedBlockNumber))
+            {
+                game.LevelPassed();
+                uI.GameOver();
+            }
+
+            if (distanceBtwRunner > 12f && !boostLock && isBoostAllowed) //kombo var mı hesapla
             {
                 boostLock = true;
 
@@ -203,12 +220,16 @@ public class Platform : MonoBehaviour
         }
     }
 
+
+
     private void MoveTile(int direction)
     {
         float toPos = 0;
 
         if (!Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, 0f)) // eğer zaten ortada değilse
         {
+            if (blockScripts[blockToSlide].type == BlockData.blockType.reverse)
+                direction *= -1;
             
             if (!isBoost)
                 toPos = platfotmTiles[blockToSlide].transform.position.x + (direction * distBetweenBlock); // nereye gitcek onu hesapla
@@ -219,18 +240,19 @@ public class Platform : MonoBehaviour
             if(toPos < BlockPos[0] || toPos > BlockPos[BlockPos.Length - 1])
             {
                 game.GameOver();
-                platfotmTiles[blockToSlide].GetComponent<Block>().Fall(new Vector2(direction, 0));
+                blockScripts[blockToSlide].Fall(new Vector2(direction, 0));
                 //StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().Fall(new Vector2(direction, 0)));
 
                 uI.GameOver();
             }
             else
             {
-                platfotmTiles[blockToSlide].GetComponent<Block>().MoveTile(toPos);
+                blockScripts[blockToSlide].MoveTile(toPos);
 
                 if (Mathf.Approximately(toPos, 0)) // eğer 0 a geliyorsa bi sonraki bloğa geç
                 {
                     blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
+                    passedBlockNumber++;
                     point += gainedPoint;
                     uIGame.SetPoint(point);
                 }
@@ -263,7 +285,7 @@ public class Platform : MonoBehaviour
     {
         int tempEx = exRand;
 
-        exRand = MathCalculation.RandomPosition(exRand, sameLine, BlockPos.Length);
+        exRand = MathCalculation.RandomPosition(exRand, sameLine, BlockPos.Length,is5Line);
         sameLine = (tempEx == exRand) ? sameLine += 1 : sameLine = 0;
         distance += rate;
 
@@ -275,9 +297,10 @@ public class Platform : MonoBehaviour
     {
         //Sizes are changed according to Screen 
         //When First Inıt script written Call this and put sizes on PlayerPrefs
-        distBetweenBlock = platformSizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform);
+        is5Line = (levelManager.levelWidth == LevelManager.LevelWidth.Five) ? true : false; 
+        distBetweenBlock = platformSizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform,is5Line);
         //For 5 line mode
-        if (Data.is5Line)
+        if (is5Line)
         {
             BlockPos = new float[] { -2 * distBetweenBlock, -1 * distBetweenBlock, distBetweenBlock, 2 * distBetweenBlock };
         }
@@ -292,13 +315,19 @@ public class Platform : MonoBehaviour
         {
             Destroy(platfotmTiles[i]);
         }
+
         platfotmTiles.Clear();
+        blockScripts.Clear();
+
         platfotmTiles.Add(block);
+        blockScripts.Add(block.GetComponent<Block>());
+
         //platfotmTiles[0].GetComponent<Block>().SetBlock();
 
         int levelStartStraightLine = 5; // start from third block to give full road
 
         platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
+        blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
 
 
         for (int i = 0; i < levelStartStraightLine; i++)
@@ -306,6 +335,9 @@ public class Platform : MonoBehaviour
             distance += distBetweenBlock;
             platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
             platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
+
+            blockScripts.Add(platfotmTiles[platfotmTiles.Count - 1].GetComponent<Block>());
+            blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
 
         }
 
@@ -316,9 +348,14 @@ public class Platform : MonoBehaviour
         {
             platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
             platfotmTiles[platfotmTiles.Count - 1].transform.position = BlockPositioner(distBetweenBlock);
+
+            blockScripts.Add(platfotmTiles[platfotmTiles.Count - 1].GetComponent<Block>());
+            blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
         }
 
         runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner düz sıranın en sonunda başlıyor
+
+
         blockToSlide = levelStartStraightLine + 1;
 
         initialStraightRoadLenght = 3 * distBetweenBlock;//platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
@@ -331,11 +368,30 @@ public class Platform : MonoBehaviour
 #endregion
 
 
-#region SimpleSetMethods
-    public void SetSpeed() //Set speed for bore and monster
+#region SimpleMethods
+    public void SetSpeeds() //Set speed for bore and monster
     {
         runner.GetComponent<Runner>().CharacterSpeed = GameData.GetBoreSpeed();
         //Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed = GameData.GetMonsterSpeed();
+    }
+
+    public void SetLevelParameters() 
+    {
+        level_p = GetCurrentLevel();
+        levelManager.SetParametersForLevel(level_p,ref Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed,ref isBoostAllowed);
+        foreach(Block b in blockScripts) 
+        {
+            b.SetBlock(levelManager.levelBlockType);
+        }
+        CreatePlatform();
+    }
+
+    private void SetMonsterPosition() 
+    {
+        Camera mainCam = Camera.main;
+        float  distanceBetweenCamera = 6f;
+
+        Nightmare.transform.position = new Vector3(mainCam.transform.position.x, mainCam.transform.position.y - distanceBetweenCamera, 0f);
     }
 
     private int GetCurrentLevel()
@@ -364,7 +420,7 @@ public class Platform : MonoBehaviour
    
 
 
-    //Gereksiz function ama camera da ilk başta bbunla setliyor şimdilik ondan duruyor
+    //Gereksiz function ama camera da ilk başta bununla setliyor şimdilik ondan duruyor
     //TODO: Bu değişcek
 
     public void ChangeAngle() //for mode //new Vector3(0f,0f,-10f)new Vector3(0f, -6f, -10f)

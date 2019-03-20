@@ -4,11 +4,11 @@ using UnityEngine;
 
 public static class MathCalculation
 {
-    public static int RandomPosition(int exRandom, int samenumb,int maxValue)
+    public static int RandomPosition(int exRandom, int samenumb,int maxValue,bool is5Line)
     {
         int minValue = 0;
 
-        if(Data.is5Line)
+        if(is5Line)
         {
             int r = Random.Range(0, 4);
             maxValue = (r == 3) ? maxValue : maxValue - 1;
@@ -38,6 +38,8 @@ public static class MathCalculation
             return randomIndex;
         }
     }
+
+
 
     public static float GetCoeffNum(float coefficient, float initialNum, float maxNum)
     {

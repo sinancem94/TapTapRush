@@ -38,7 +38,7 @@ public class Runner : MonoBehaviour
 
     void Update()
     {
-        if (Platform.instance.game.state == GameHandler.GameState.GameRunning)
+        if (Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
         {
             speed = Platform.instance.straightRoadLenght * CharacterSpeed; 
 

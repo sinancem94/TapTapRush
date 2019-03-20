@@ -11,7 +11,6 @@ public class InitilizationScript : MonoBehaviour
      */
     void Awake()
     {
-       
         if(!PlayerPrefs.HasKey("TapTapRush")) //New User just opened the game
         {
             Debug.Log("New User. Setting parameters..");
@@ -23,12 +22,14 @@ public class InitilizationScript : MonoBehaviour
 
             PlayerPrefs.SetInt("HighScore", 0);
 
-            PlayerPrefs.SetInt("MaxLevel", 1);
-            PlayerPrefs.SetInt("Level", 1);
+            PlayerPrefs.SetInt("MaxLevel", 0);
+            PlayerPrefs.SetInt("Level", 0);
+            PlayerPrefs.Save();
         }
         else if(PlayerPrefs.HasKey("TapTapRush")) //Count Game Activity
         {
             PlayerPrefs.SetInt("TapTapRush", Data.AppLaunchCount + 1);
+            PlayerPrefs.Save();
         }
     
     }
