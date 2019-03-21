@@ -33,7 +33,7 @@ public class UIHomePage : MonoBehaviour
     }
 
 
-    public void ChangeAngle() //for mode
+  /*  public void ChangeAngle() //for mode
     {
         if (!Data.isAngled)
         {
@@ -47,10 +47,10 @@ public class UIHomePage : MonoBehaviour
             //modeButton.GetComponentInChildren<Text>().text = "açısız";
             Platform.instance.ChangeAngle();
         }
-    }
+    }*/
 
 
-    public void ChangeView() //for postprocessing or not
+  /*  public void ChangeView() //for postprocessing or not
     {
         if(Data.isPostProcessing)
         {
@@ -64,9 +64,9 @@ public class UIHomePage : MonoBehaviour
             postProcessing.SetActive(true);
         }
 
-    }
+    }*/
 
-    public void ChangeMode() // for 5 line or not
+   /* public void ChangeMode() // for 5 line or not
     {
         if(Data.is5Line)
         {
@@ -77,7 +77,7 @@ public class UIHomePage : MonoBehaviour
             Data.is5Line = true;
         }
         Platform.instance.CreatePlatform();
-    }
+    }*/
 
     public void ChangeCharacterSpeed()
     {
@@ -98,7 +98,7 @@ public class UIHomePage : MonoBehaviour
         }
     }
 
-    public void ChangeMonsterSpeed()
+   /* public void ChangeMonsterSpeed()
     {
         float spd = float.Parse(monsSpeed.text);
 
@@ -115,7 +115,7 @@ public class UIHomePage : MonoBehaviour
             Data.monsSpeed = PlayerPrefs.GetFloat("MonsterSpeed");
             Platform.instance.SetSpeeds();
         }
-    }
+    }*/
 
     public void SetLevelInfoText() 
     {

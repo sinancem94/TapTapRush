@@ -10,7 +10,7 @@ public static class MathCalculation
 
         if(is5Line)
         {
-            int r = Random.Range(0, 4);
+            int r = Random.Range(0, 5);
             maxValue = (r == 3) ? maxValue : maxValue - 1;
             minValue = (r == 3) ? minValue : minValue + 1;
         }
@@ -43,6 +43,6 @@ public static class MathCalculation
 
     public static float GetCoeffNum(float coefficient, float initialNum, float maxNum)
     {
-        return initialNum + (int)(maxNum * (1 - Mathf.Exp(-(coefficient))));
+        return initialNum + (int)((maxNum  - initialNum) * (1 - Mathf.Exp(-(coefficient * 3))));
     }
 }

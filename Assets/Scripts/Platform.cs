@@ -132,12 +132,10 @@ public class Platform : MonoBehaviour
         boostTimer = 0f;
         boostLimit = 10f;
 
-        SetMonsterPosition();
+        CreatePlatformAccordingToLevel();
+
         SetSpeeds(); //Set player speed from playerprefs.
-
-        SetLevelParameters();
         //CreatePlatform();
-
         SetBoost(false);
 
         uI.OpenUIPanel(); //After arranging everything open uı panel for starting game
@@ -181,11 +179,16 @@ public class Platform : MonoBehaviour
             distanceBtwRunner = runner.transform.position.y - Nightmare.transform.position.y;
 
             //////////////////////////////
-            //Calculate if level passed
+            //Calculate if level passed or ended.
             //
             if (levelManager.IsEndingConditionSatisfied(distanceBtwRunner, passedBlockNumber))
             {
                 game.LevelPassed();
+                uI.GameOver();
+            }
+            else if(distanceBtwRunner < 0.8f) 
+            {
+                game.GameOver();
                 uI.GameOver();
             }
 
@@ -241,7 +244,6 @@ public class Platform : MonoBehaviour
             {
                 game.GameOver();
                 blockScripts[blockToSlide].Fall(new Vector2(direction, 0));
-                //StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().Fall(new Vector2(direction, 0)));
 
                 uI.GameOver();
             }
@@ -375,7 +377,7 @@ public class Platform : MonoBehaviour
         //Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed = GameData.GetMonsterSpeed();
     }
 
-    public void SetLevelParameters() 
+    public void CreatePlatformAccordingToLevel() 
     {
         level_p = GetCurrentLevel();
         levelManager.SetParametersForLevel(level_p,ref Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed,ref isBoostAllowed);
@@ -384,12 +386,13 @@ public class Platform : MonoBehaviour
             b.SetBlock(levelManager.levelBlockType);
         }
         CreatePlatform();
+        SetMonsterPosition();
     }
 
     private void SetMonsterPosition() 
     {
         Camera mainCam = Camera.main;
-        float  distanceBetweenCamera = 6f;
+        float  distanceBetweenCamera = (!is5Line) ? 6f : 12f;
 
         Nightmare.transform.position = new Vector3(mainCam.transform.position.x, mainCam.transform.position.y - distanceBetweenCamera, 0f);
     }

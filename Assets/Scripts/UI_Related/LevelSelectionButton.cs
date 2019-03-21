@@ -29,7 +29,7 @@ public class LevelSelectionButton : MonoBehaviour
     public void SelectLevel()
     {
         Data.ChangeLevel(levelofButton);
-        Platform.instance.SetLevelParameters();
+        Platform.instance.CreatePlatformAccordingToLevel();
         Debug.Log("Level changed to " + (levelofButton + 1));
         this.transform.parent.gameObject.SetActive(false);
     }

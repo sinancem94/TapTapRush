@@ -2,10 +2,9 @@
 {
     private int LevelNumber;
     public bool isBoostAllowed;
-    private readonly float initialLength = 40f;
-    private readonly float initialDistance = 15f;
-    private readonly float initialMonsterSpeed = Data.GetInitialMonsterSpeed();
-
+    private readonly float initialLength;
+    private readonly float initialDistance;
+    private readonly float initialMonsterSpeed; 
 
     public float length;
     public float distanceThreshold; //Used for level endings which distance btw monster & player used for determining whether condition occured.
@@ -18,8 +17,9 @@
     public LevelManager(int lvl)
     {
         LevelNumber = lvl;
-        initialLength = 40;
-        initialDistance = 15f;
+        initialLength = 50;
+        initialDistance = 12f;
+        initialMonsterSpeed = Data.GetInitialMonsterSpeed();
     }
 
     public enum LevelWidth
@@ -56,8 +56,8 @@
     {
         float speedExtended = initialMonsterSpeed * 100;
 
-        float coefficient = (LevelNumber != 0) ? (float)(LevelNumber) / 12 : 0;
-        speedExtended = MathCalculation.GetCoeffNum(coefficient, speedExtended, 150f);
+        float coefficient =  (LevelNumber != 0 && LevelNumber < 7) ? (float)(LevelNumber) / 12 : (LevelNumber == 0) ? 0 : (float)(LevelNumber) / 30;
+        speedExtended = MathCalculation.GetCoeffNum(coefficient, speedExtended, 120f);
 
         return speedExtended / 100f;
     }
@@ -70,7 +70,7 @@
     private void SetLengthOfRoad()
     {
         float coefficient = (LevelNumber != 0) ? (float)(LevelNumber) / 12 : 0;
-        length =(int)MathCalculation.GetCoeffNum(coefficient, initialLength, 120f);
+        length =(int)MathCalculation.GetCoeffNum(coefficient, initialLength, 200);
     }
 
     private void SetDistanceForPassCondition() 
@@ -163,7 +163,6 @@
                 levelFinishtype = LevelFinishtype.Length;
                 isBoostAllowed = true;
             }
-
         }
         else if ((int)(LevelNumber / 3) == 1) // If second three level
         {
@@ -172,13 +171,13 @@
             if (LevelNumber % 3 == 0) //4th level
             {
                 levelBlockType = LevelBlockType.Reverse;
-                levelFinishtype = LevelFinishtype.Distance;
+                levelFinishtype = LevelFinishtype.Length;
                 isBoostAllowed = false;
             }
             else if (LevelNumber % 3 == 1) //5th level
             {
                 levelBlockType = LevelBlockType.Mixed;
-                levelFinishtype = LevelFinishtype.Length;
+                levelFinishtype = LevelFinishtype.Distance;
                 isBoostAllowed = true;
             }
             else if (LevelNumber % 3 == 2) //6th level
@@ -195,13 +194,13 @@
 
             if (LevelNumber % 3 == 0) //7th level
             {
-                levelFinishtype = LevelFinishtype.Length;
+                levelFinishtype = LevelFinishtype.Distance;
                 isBoostAllowed = true;
             }
             else if (LevelNumber % 3 == 1) //8th level
             {
 
-                levelFinishtype = LevelFinishtype.Distance;
+                levelFinishtype = LevelFinishtype.Length;
                 isBoostAllowed = false;
             }
             else if (LevelNumber % 3 == 2) //9th level
@@ -218,7 +217,7 @@
 
             if (LevelNumber % 3 == 0) //7th level
             {
-                levelBlockType = LevelBlockType.Reverse;
+                levelBlockType = LevelBlockType.Normal;
                 levelFinishtype = LevelFinishtype.Length;
                 isBoostAllowed = true;
             }
