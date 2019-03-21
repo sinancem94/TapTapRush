@@ -24,9 +24,9 @@ public class CameraSizeHandler
 
         float camSizeChange = 0f;
 
-        yield return new WaitUntil(() => Platform.instance.game.state == GameHandler.GameState.GameRunning);
+        yield return new WaitUntil(() => Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning);
 
-        while (Platform.instance.game.state == GameHandler.GameState.GameRunning)
+        while (Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
         {
             //Debug.Log(Platform.instance.straightRoadLenght);
             if ((Platform.instance.straightRoadLenght) > roadMiddleReferencePoint) //genişlicekse

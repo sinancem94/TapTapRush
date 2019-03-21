@@ -24,6 +24,8 @@ TagManager:
   - LeftExplosionSystem
   - OnGamePanel
   - LevelPassedPanel
+  - StartGameButton
+  - GameEndedMessage
   layers:
   - Default
   - TransparentFX

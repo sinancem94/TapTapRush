@@ -53,10 +53,10 @@ public class Block : MonoBehaviour
 
         type = BlockData.blockType.normal;
 
-        if (!Data.isAngled) //for mode trial
+       /* if (!Data.isAngled) //for mode trial
         {
-            transform.GetChild(0).gameObject.SetActive(false);
-        }
+            transform.GetChild(0).gameObject.SetActive(true);
+        }*/
 
     }
 
@@ -83,18 +83,25 @@ public class Block : MonoBehaviour
         }
     }
 
-    public void SetBlock()
+    public void SetBlock(LevelManager.LevelBlockType bt)
     {
-
-        int r = Random.Range(2, 10);// 2 yaptım başını hiç ters olmasın diye
-        //TODO: Create a random reverse generator that deals reverse positions 
-        if (type == BlockData.blockType.reverse)
+        if(bt == LevelManager.LevelBlockType.Reverse)
         {
-            BlockData.ChangeBlockType(ref type, BlockSprites);
+            if(type == BlockData.blockType.normal)
+                BlockData.ChangeBlockType(ref type, BlockSprites);
         }
-        else if (r < 2)
+        else if (bt == LevelManager.LevelBlockType.Mixed)
         {
-            BlockData.ChangeBlockType(ref type, BlockSprites);
+            int r = Random.Range(0, 10);
+            //TODO: Create a random reverse generator that deals reverse positions 
+            if (type == BlockData.blockType.reverse)
+            {
+                BlockData.ChangeBlockType(ref type, BlockSprites);
+            }
+            else if (r < 2)
+            {
+                BlockData.ChangeBlockType(ref type, BlockSprites);
+            }
         }
 
         foreach (SpriteRenderer sr in BlockSprites)

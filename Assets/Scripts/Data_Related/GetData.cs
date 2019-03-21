@@ -14,4 +14,10 @@ public class GetData
     {
         return Data.monsSpeed;
     }
+
+    public int GetLevel()
+    {
+        return Data.Level;
+    }
+
 }

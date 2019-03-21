@@ -5,7 +5,7 @@ using UnityEngine;
 public class BlockData
 {
     public static Color normalColor = new Color32(0, 0, 0, 255);
-    public static Color reverseColor = new Color32(75, 170, 120, 255);
+    public static Color reverseColor = Color.green;//new Color32(75, 170, 120, 255);
 
     public static Sprite normalBlock = Resources.Load<Sprite>("Sprites/TapTapBlock2");//, typeof(Texture)) as Texture;
     public static Sprite reverseBlock = Resources.Load<Sprite>("Sprites/TapTapBlock2");

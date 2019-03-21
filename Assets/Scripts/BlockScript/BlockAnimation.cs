@@ -40,8 +40,10 @@ public class BlockAnimation : MonoBehaviour {
         int from = (distance < 0) ? -1 : 1;
         while(!slided)
         {
+            Debug.Log(transform.position + "  " + slided + " " + gameObject.name + "  " + distance);
             //this.transform.Translate(translationVector * Time.deltaTime);
             this.transform.position += translationVector * 0.15f;
+
 
             distance = toPosition - this.transform.position.x;
 
@@ -49,7 +51,7 @@ public class BlockAnimation : MonoBehaviour {
             {
                 slided = true;
             }
-
+            Debug.Log(transform.position + "  " + slided);
             yield return new WaitForSeconds(0.01f);
         }
         this.transform.position = new Vector3(toPosition,transform.position.y,0f);

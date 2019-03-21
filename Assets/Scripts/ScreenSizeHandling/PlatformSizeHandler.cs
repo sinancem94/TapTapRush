@@ -5,7 +5,7 @@ using UnityEngine;
 //Arrange gameObject sizes according to devices screen size
 public class PlatformSizeHandler : SizeHandler{
 	
-    public float ArrangeSize(Transform road,Transform lines,Transform block,Transform runner) 
+    public float ArrangeSize(Transform road,Transform lines,Transform block,Transform runner, bool is5Line) 
     {
         //Arrange platform width convert screen width to world size in x
         //float height = Camera.main.orthographicSize * 2.0f;
@@ -27,7 +27,7 @@ public class PlatformSizeHandler : SizeHandler{
 
         //Arrange block scale according to roads scale. 1.8f for 3 lines , 3f for 5 lines
         float blockScale = roadWidth / 1.8f;
-        if(Data.is5Line)
+        if(is5Line)
         {
             blockScale = roadWidth / 3f;//1.8f; 
         }
@@ -42,7 +42,7 @@ public class PlatformSizeHandler : SizeHandler{
         //Arrange runner size
         runner.localScale = new Vector3(blockScale * 2 / 4, blockScale * 2 / 4, 1f);
         //return the distance between blocks. 3f for 3 lines, 5f for 5 lines
-        if(Data.is5Line){
+        if(is5Line){
             return roadWidth / 5f;//3f;
         }
         else{
