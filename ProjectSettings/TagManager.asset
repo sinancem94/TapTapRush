@@ -26,6 +26,7 @@ TagManager:
   - LevelPassedPanel
   - StartGameButton
   - GameEndedMessage
+  - LevelPanel
   layers:
   - Default
   - TransparentFX
@@ -80,4 +81,7 @@ TagManager:
     locked: 0
   - name: ParticleSys
     uniqueID: 2650437413
+    locked: 0
+  - name: FireBall
+    uniqueID: 2438379129
     locked: 0

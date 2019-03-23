@@ -11,22 +11,24 @@ public class BoreBoostEffects : MonoBehaviour
     void Start()
     {
         boreScale = this.transform.localScale.x;
-		scalerVec = new Vector3(0.5f,0.5f,0f);
+		scalerVec = new Vector3(0.1f,0.1f,0f);
     }
 
 	public IEnumerator scaleBore(bool isScaleIncrease){
-
-
-		if (isScaleIncrease) {
-            while (gameObject.transform.localScale.x < boreScale + 2f) {
+		if (isScaleIncrease) 
+        {
+            while (gameObject.transform.localScale.x < boreScale + 2f) 
+            {
 				gameObject.transform.localScale += scalerVec;
-				yield return new WaitForSeconds (.5f);
+				yield return new WaitForSeconds (.1f);
 			}
-		} else {
-			Debug.Log ("enteredscalebore false");
-            while (gameObject.transform.localScale.x > boreScale) {
+		} 
+        else 
+        {
+            while (gameObject.transform.localScale.x > boreScale) 
+            {
 				gameObject.transform.localScale -= scalerVec;
-				yield return new WaitForSeconds (.5f);
+				yield return new WaitForSeconds (.1f);
 			}
 		}
 	}

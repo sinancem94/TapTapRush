@@ -12,6 +12,7 @@ public class CreateLevelSelectionButtons : MonoBehaviour
 
     void Start()
     {
+        //this.transform.position = Vector3.zero;
         Rect panelRect = this.GetComponent<RectTransform>().rect;
         panelRect.center = Vector2.zero;
         panelRect.height = Screen.height;
@@ -40,6 +41,4 @@ public class CreateLevelSelectionButtons : MonoBehaviour
         }
 
     }
-
-
 }

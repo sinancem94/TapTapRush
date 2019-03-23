@@ -206,6 +206,7 @@ public class Platform : MonoBehaviour
 
                 GiveMessage(2f, "RUN!!!");
                 Debug.LogWarning("BOOST !! at : " + Time.unscaledTime);
+                Debug.LogWarning("Distance is : " + distanceBtwRunner);
             }
             else if(boostLock)
             {

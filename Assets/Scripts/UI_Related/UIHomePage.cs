@@ -117,16 +117,27 @@ public class UIHomePage : MonoBehaviour
         }
     }*/
 
+    public void ChooseEndless() 
+    {
+        Data.ChangeLevel(-1);
+        Platform.instance.CreatePlatformAccordingToLevel();
+        Debug.Log("Choosed Endless Mode");
+    }
+
     public void SetLevelInfoText() 
     {
         //errorText.gameObject.SetActive(true);
         errorText.text = "Level is : " + (Data.GetLevel() + 1) + "\n";
         errorText.text += "Monster Speed is : " + Platform.instance.Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed + "\n\n";
-       
-        if(Platform.instance.levelManager.levelFinishtype == LevelManager.LevelFinishtype.Length) 
+
+        if(Platform.instance.levelManager.levelFinishtype == LevelManager.LevelFinishtype.None) 
+        {
+            errorText.text += "Sometimes you just want to run.\n\n";
+        }
+        else if (Platform.instance.levelManager.levelFinishtype == LevelManager.LevelFinishtype.Length) 
         {
             //errorText.text += "Level finishes with length\n";
-            errorText.text += "Finish when " + Platform.instance.levelManager.length + " blocks passed.\n";
+            errorText.text += "Finish when " + Platform.instance.levelManager.length + " blocks passed.\n\n";
         }
         else if (Platform.instance.levelManager.levelFinishtype == LevelManager.LevelFinishtype.Distance)
         {

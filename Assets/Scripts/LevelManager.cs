@@ -143,7 +143,14 @@
                 break;
         }*/
 
-        if ((int)(LevelNumber / 3) == 0) // If first three level
+        if(LevelNumber == -1) // İf mode is endless
+        {
+            levelBlockType = LevelBlockType.Mixed;
+            levelWidth = LevelWidth.Three;
+            isBoostAllowed = true;
+            levelFinishtype = LevelFinishtype.None;   
+        }
+        else if ((int)(LevelNumber / 3) == 0) // If first three level
         {
             levelBlockType = LevelBlockType.Normal;
             levelWidth = LevelWidth.Three;
