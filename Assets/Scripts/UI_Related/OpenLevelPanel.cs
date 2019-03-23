@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class OpenLevelPanel : MonoBehaviour
 {
+    private GameObject panel;
+
+    private void Start()
+    {
+        panel = GameObject.FindWithTag("LevelPanel");
+        panel.SetActive(false);
+    }
+
     public void ChangePanelStatus()
     {
-        GameObject panel = transform.GetChild(1).gameObject;
-
         if (!panel.activeInHierarchy) 
         {
             panel.SetActive(true);
