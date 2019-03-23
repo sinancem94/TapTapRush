@@ -56,6 +56,8 @@ public class Platform : MonoBehaviour
 
     public bool isBoost; // when boost mode activates set to true otherwise false
     private bool isBoostAllowed;
+
+    public float boostTime;
     private float boostTimer;
     private float boostLimit;
 
@@ -130,7 +132,8 @@ public class Platform : MonoBehaviour
         BlockNumberInPlatformTiles = 30;
 
         boostTimer = 0f;
-        boostLimit = 10f;
+        boostTime = 10f;
+        boostLimit = 12f;
 
         CreatePlatformAccordingToLevel();
 
@@ -192,7 +195,7 @@ public class Platform : MonoBehaviour
                 uI.GameOver();
             }
 
-            if (distanceBtwRunner > 12f && !boostLock && isBoostAllowed) //kombo var mı hesapla
+            if (distanceBtwRunner > boostLimit && !boostLock && isBoostAllowed) //kombo var mı hesapla
             {
                 boostLock = true;
 
@@ -207,7 +210,7 @@ public class Platform : MonoBehaviour
             else if(boostLock)
             {
                 boostTimer += Time.deltaTime;
-                if(boostTimer >= boostLimit)
+                if(boostTimer >= boostTime)
                 {
                     boostLock = false;
                     Boost.StopBoost(5f);
@@ -298,7 +301,6 @@ public class Platform : MonoBehaviour
     public void CreatePlatform() //Set initial Road and parameters
     {
         //Sizes are changed according to Screen 
-        //When First Inıt script written Call this and put sizes on PlayerPrefs
         is5Line = (levelManager.levelWidth == LevelManager.LevelWidth.Five) ? true : false; 
         distBetweenBlock = platformSizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform,is5Line);
         //For 5 line mode
@@ -391,10 +393,10 @@ public class Platform : MonoBehaviour
 
     private void SetMonsterPosition() 
     {
-        Camera mainCam = Camera.main;
-        float  distanceBetweenCamera = (!is5Line) ? 6f : 12f;
+        //Camera mainCam = Camera.main;
+        float  distanceBetweenRunner = (!is5Line) ? 8f : 11f;
 
-        Nightmare.transform.position = new Vector3(mainCam.transform.position.x, mainCam.transform.position.y - distanceBetweenCamera, 0f);
+        Nightmare.transform.position = new Vector3(runner.transform.position.x, runner.transform.position.y - distanceBetweenRunner, 0f);
     }
 
     private int GetCurrentLevel()
@@ -419,57 +421,6 @@ public class Platform : MonoBehaviour
         StartCoroutine(uIGame.GiveInfo(time, message));
     }
 #endregion
-
-   
-
-
-    //Gereksiz function ama camera da ilk başta bununla setliyor şimdilik ondan duruyor
-    //TODO: Bu değişcek
-
-    public void ChangeAngle() //for mode //new Vector3(0f,0f,-10f)new Vector3(0f, -6f, -10f)
-    {
-        if (!Data.isAngled)
-        {
-            foreach (GameObject g in platfotmTiles)
-            {
-                g.transform.GetChild(0).gameObject.SetActive(false);
-            }
-            Camera.main.gameObject.transform.eulerAngles = Vector3.zero;
-            Camera.main.gameObject.GetComponent<CameraMovement>().CalculateOffset(runner.transform.position + new Vector3(0f, -3f, 10f));
-            if (Data.is5Line)
-            {
-                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
-                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 80f;
-            }
-            else
-            {
-                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
-                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 90f;
-            }
-
-            //Camera.main.gameObject.transform.position = Vector3.zero;
-        }
-        else
-        {
-            foreach (GameObject g in platfotmTiles)
-            {
-                g.transform.GetChild(0).gameObject.SetActive(true);
-            }
-            Camera.main.gameObject.transform.eulerAngles = new Vector3(-30f, 0f, 0f);
-            Camera.main.gameObject.GetComponent<CameraMovement>().CalculateOffset(runner.transform.position + new Vector3(0f, 3f, 10f));
-            if (Data.is5Line)
-            {
-                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
-                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 70f;
-            }
-            else
-            {
-                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
-                Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 75f;
-            }
-            //Camera.main.gameObject.transform.position = new Vector3(0f, 6f, 0f);
-        }
-    }
 }
 
 
@@ -616,3 +567,53 @@ public class Platform : MonoBehaviour
         straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y;//initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
         Debug.Log("Initial length is : " + initialStraightRoadLenght);*/
 
+
+
+
+//Gereksiz function ama camera da ilk başta bununla setliyor şimdilik ondan duruyor
+//TODO: Bu değişcek
+
+/* public void ChangeAngle() //for mode //new Vector3(0f,0f,-10f)new Vector3(0f, -6f, -10f)
+ {
+     if (!Data.isAngled)
+     {
+         foreach (GameObject g in platfotmTiles)
+         {
+             g.transform.GetChild(0).gameObject.SetActive(false);
+         }
+         Camera.main.gameObject.transform.eulerAngles = Vector3.zero;
+         Camera.main.gameObject.GetComponent<CameraMovement>().CalculateOffset(runner.transform.position + new Vector3(0f, -3f, 10f));
+         if (Data.is5Line)
+         {
+             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
+             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 80f;
+         }
+         else
+         {
+             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
+             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 90f;
+         }
+
+         //Camera.main.gameObject.transform.position = Vector3.zero;
+     }
+     else
+     {
+         foreach (GameObject g in platfotmTiles)
+         {
+             g.transform.GetChild(0).gameObject.SetActive(true);
+         }
+         Camera.main.gameObject.transform.eulerAngles = new Vector3(-30f, 0f, 0f);
+         Camera.main.gameObject.GetComponent<CameraMovement>().CalculateOffset(runner.transform.position + new Vector3(0f, 3f, 10f));
+         if (Data.is5Line)
+         {
+             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
+             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 70f;
+         }
+         else
+         {
+             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
+             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 75f;
+         }
+         //Camera.main.gameObject.transform.position = new Vector3(0f, 6f, 0f);
+     }
+ }*/

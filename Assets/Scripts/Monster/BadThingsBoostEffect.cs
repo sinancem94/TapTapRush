@@ -7,13 +7,9 @@ public class BadThingsBoostEffect : MonoBehaviour
 
 	private ParticleSystem nightmareParticleSys;
 
-
-    // Start is called before the first frame update
     void Start()
     {
 		nightmareParticleSys = gameObject.GetComponent<ParticleSystem>();
-
-
     }
 
 	public void nightmareRadius(float nightmareRad){

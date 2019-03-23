@@ -7,10 +7,7 @@ using UnityEngine;
 public class BadThingParticleSystem : MonoBehaviour
 {
     //public GameObject bore;
-    private Camera mainCam; //Camera which partsys follows
     //private CameraMovement cameraMovement;
-
-    private float distanceBetweenCamera;
 
     public float monsterSpeed;
     private float speed;

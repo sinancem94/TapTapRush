@@ -18,11 +18,17 @@ public class CameraMovement : MonoBehaviour
     void Start()
     {
         initPos = Platform.instance.runner.transform.position; //for mode
-        //offset = initPos - new Vector3(0f, Platform.instance.runner.transform.position.y - 3f, 10f); //transform.position - initPos;
+
         cameraSizeHandler = new CameraSizeHandler();
         isChanging = false;
-        Platform.instance.ChangeAngle(); //set cam and blocks for angle. for mode
-                                         //StartCoroutine(cameraSizeHandler.DynamicCameraMovement(OrthographicUpperSize,OrthographicLowerSize));
+
+        CalculateOffset(new Vector3(0f, 3f, -10f));
+
+        //ıf not changed from editor change to this values
+        if(Mathf.Approximately(OrthographicLowerSize,0))
+            OrthographicLowerSize = 55f;
+        if (Mathf.Approximately(OrthographicUpperSize, 0))
+            OrthographicUpperSize = 80f;
     }
 
 
@@ -43,7 +49,8 @@ public class CameraMovement : MonoBehaviour
 
     public void CalculateOffset(Vector3 pos) //for mode
     {
-        offset = -pos + Platform.instance.runner.transform.position;
+        offset = pos;
+        //offset = Platform.instance.runner.transform.position - pos;
     }
 
     void StartCamera()
