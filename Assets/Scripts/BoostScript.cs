@@ -31,6 +31,7 @@ public class BoostScript : MonoBehaviour
         StartCoroutine(postProcessingChange.BoostPostProcessingSettings(true));
         //  StartCoroutine (boreBoostEffects.scaleBore (true));  //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
         //boreBoostEffects.stopBore ();
+		boreBoostEffects.boreStartsSliding();   								// only for testing animation right now.
     }
 
 
@@ -43,7 +44,7 @@ public class BoostScript : MonoBehaviour
         badThingsBoostEffect.badThingsBoostExit(Platform.instance.runner.transform.position.y);
         //  StartCoroutine (boreBoostEffects.scaleBore (false));  //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
         //badThingsBoostEffect.nightmareRadius (1f);
-
+		boreBoostEffects.boreExitsFromBoost(); 									// only for testing animation right now.
     }
     private IEnumerator SlowTime(float changeSpeed, bool isStarted)
     {

@@ -6,6 +6,7 @@ public class BoreBoostEffects : MonoBehaviour
 {
     private Vector3 scalerVec;
     private float boreScale;
+	public Animator animator;
 
     private float speed;
 
@@ -43,10 +44,11 @@ public class BoreBoostEffects : MonoBehaviour
 
     public void boreStartsSliding()
     {
+		animator.SetBool ("isSliding", true);
     }
 
     public void boreExitsFromBoost()
     {
-
+		animator.SetBool ("isSliding", false);
     }
 }

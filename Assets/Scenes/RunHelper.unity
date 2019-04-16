@@ -9175,6 +9175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a32e22db49544c14585084a1628100a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 2120997778}
 --- !u!61 &2120997780
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9394,6 +9395,11 @@ PrefabInstance:
     - target: {fileID: 3305468092750085105, guid: 4cb7a159b3a284f2eb54d3d7bc5d384b,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3305468092750085107, guid: 4cb7a159b3a284f2eb54d3d7bc5d384b,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
