@@ -2,10 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraSizeHandler
+public class DynamicCameraMovement
 {
+    public Coroutine DynamicCameraSizer;
 
-    public IEnumerator DynamicCameraMovement(float Upperlimit, float LowerLimit)
+    private MonoBehaviour MainCam;
+    private Camera camera;
+
+    public DynamicCameraMovement(MonoBehaviour owner)
+    {
+        MainCam = owner;
+        camera = owner.GetComponent<Camera>();
+    }
+
+    public void StartDynamicSizeHandler(float upperCamSizeLimit,float lowerCamSizeLimit)
+    {
+        if(DynamicCameraSizer == null)
+            DynamicCameraSizer = MainCam.StartCoroutine(CamSizeCorountine(upperCamSizeLimit, lowerCamSizeLimit));
+    }
+
+    public void StopDynamicSizeHandler()
+    {
+        MainCam.StopCoroutine(DynamicCameraSizer);
+    }
+
+
+
+    private IEnumerator CamSizeCorountine(float Upperlimit, float LowerLimit)
     {
         float camSize = Camera.main.fieldOfView;
 
@@ -37,18 +60,21 @@ public class CameraSizeHandler
                 float newCamSize = camSize + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint)));
 
                 //genişle
-                if (Camera.main.fieldOfView < newCamSize && Camera.main.fieldOfView < Upperlimit)
+                if (camera.fieldOfView < newCamSize && camera.fieldOfView < Upperlimit)
                 {
-                    camSizeChange = ChangeSizeTo(0.1f, camSizeChange);
-                    Camera.main.fieldOfView += camSizeChange;
+                    camera.fieldOfView = MoveCamSizeTowardsNewSize(newCamSize, camera.fieldOfView);
+
+                    //camSizeChange = ChangeSizeTo(0.1f, camSizeChange);
+
+                    //camera.fieldOfView += camSizeChange;
                     //Camera.main.fieldOfView += 0.1f;
                 }//daral
-                else if (Camera.main.fieldOfView > newCamSize)
+              /*  else if (Camera.main.fieldOfView > newCamSize)
                 {
                     camSizeChange = ChangeSizeTo(-0.1f, camSizeChange);
                     Camera.main.fieldOfView += camSizeChange;
                     //Camera.main.fieldOfView -= 0.1f;
-                }
+                } */
 
                 //Camera.main.fieldOfView = camSize + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint)));
             }
@@ -60,18 +86,21 @@ public class CameraSizeHandler
                 float newCamSize = camSize - (camDiffLowBounds * ((roadMiddleReferencePoint - Platform.instance.straightRoadLenght) / (roadMiddleReferencePoint - roadLengthLowerLimit)));
 
                 //daral
-                if (Camera.main.fieldOfView > newCamSize && Camera.main.fieldOfView > LowerLimit)
+                if (camera.fieldOfView > newCamSize && camera.fieldOfView > LowerLimit)
                 {
-                    camSizeChange = ChangeSizeTo(-0.1f, camSizeChange);
-                    Camera.main.fieldOfView += camSizeChange;
+                    camera.fieldOfView = MoveCamSizeTowardsNewSize(newCamSize, camera.fieldOfView);
+
+                    //camSizeChange = ChangeSizeTo(-0.1f, camSizeChange);
+
+                    //camera.fieldOfView += camSizeChange;
                     //Camera.main.fieldOfView -= 0.1f;
                 }//genişle
-                else if (Camera.main.fieldOfView < newCamSize)
+             /*   else if (Camera.main.fieldOfView < newCamSize)
                 {
                     camSizeChange = ChangeSizeTo(0.1f, camSizeChange);
                     Camera.main.fieldOfView += camSizeChange;
                     //Camera.main.fieldOfView += 0.1f;
-                }
+                }*/
                 //Camera.main.fieldOfView = camSize - (camDiffLowBounds * ((roadMiddleReferencePoint - Platform.instance.straightRoadLenght) / (roadMiddleReferencePoint - roadLengthLowerLimit)));
             }
             /*else // düz 60
@@ -79,12 +108,26 @@ public class CameraSizeHandler
                 Camera.main.fieldOfView = camSize;
             }*/
 
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.001f);
         }
     }
 
-    //change camera size forward to
-    float ChangeSizeTo(float direction, float changeSize)
+    //Moves camera size forward to desired size
+    float MoveCamSizeTowardsNewSize(float newCamSize,float currentCamSize )
+    {
+        if(!Mathf.Approximately(currentCamSize, newCamSize))
+        {
+            float delta = (newCamSize > currentCamSize) ? (newCamSize / currentCamSize) * 0.1f : (currentCamSize / newCamSize) *  0.1f;
+
+            Debug.Log(delta);
+
+            return Mathf.MoveTowards(currentCamSize, newCamSize, delta);
+        }
+
+        return 0;
+    }
+
+   /* float ChangeSizeTo(float direction, float changeSize)
     {
 
         if (direction > 0)
@@ -97,6 +140,6 @@ public class CameraSizeHandler
         }
 
         return changeSize;
-    }
+    }*/
 
 }

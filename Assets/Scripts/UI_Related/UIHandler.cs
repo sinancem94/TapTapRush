@@ -69,7 +69,7 @@ public class UIHandler : MonoBehaviour {
 
     //Opens Starting Panel
     //After platform setted game objects and parameters calls this method 
-    public void OpenUIPanel()
+    public void OpenHomePage()
     {
         StartingPanel.SetActive(true);
         //trialButtons.enabled = true;
