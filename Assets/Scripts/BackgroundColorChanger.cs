@@ -11,6 +11,11 @@ public class BackgroundColorChanger : MonoBehaviour {
 	 
 	void Start () 
     {
+        if (Mathf.Approximately(changeAmount, 0))
+            changeAmount = 0.01f;
+        if (Mathf.Approximately(waitTimer, 0))
+            waitTimer = 0.1f;
+
 		bgSpriteRenderer = GetComponent<SpriteRenderer>();
 		bgColor = bgSpriteRenderer.color;
 		StartCoroutine (WaitAndChangeColor (changeAmount, waitTimer));

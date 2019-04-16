@@ -14,21 +14,52 @@ public class UIHandler : MonoBehaviour {
 
     UIGameHandler uIGameHandler;
     GameOverPage gameOverPage;
+    UIHomePage uIHomePage;
     //TrialButtons trialButtons;
+
+    //Attached to Canvas. 
+    //Oyunun her aşamasındaki paneller arası geçiş yapmak kullanılıyor. Paneller in kendilerine ait scriptleri var
+    //Her bir panel, canvas ın child ı. Ondan sırayla al
+    //StartingPanel 0
+    //GameOverPanel 1
+    //OnGamelPanel//
 
     private void Start()
     {
-        StartingPanel = GameObject.FindWithTag("StartingPanel"); //this.transform.GetChild(0).gameObject;
-        StartingPanel.SetActive(false);
-        GameOverPanel = GameObject.FindWithTag("GameOverPanel");//this.transform.GetChild(1).gameObject;
-        GameOverPanel.SetActive(false);
-        OnGamePanel = GameObject.FindWithTag("OnGamePanel");
-        OnGamePanel.SetActive(false);
 
-        //trialButtons = GetComponent<TrialButtons>();
-        //trialButtons.enabled = false;
-        uIGameHandler = OnGamePanel.GetComponent<UIGameHandler>();
-        gameOverPage = GameOverPanel.GetComponent<GameOverPage>();
+        if (transform.GetChild(0))
+        {
+            StartingPanel = transform.GetChild(0).gameObject;
+            StartingPanel.SetActive(false);
+            uIHomePage = StartingPanel.GetComponent<UIHomePage>();
+        }
+        else
+        {
+            Debug.LogError("Cant find starting panel");
+        }
+
+        if (transform.GetChild(1))
+        {
+            GameOverPanel = transform.GetChild(1).gameObject;
+            GameOverPanel.SetActive(false);
+            gameOverPage = GameOverPanel.GetComponent<GameOverPage>();
+        }
+        else
+        {
+            Debug.LogError("Cant find starting panel");
+        }
+
+        if (transform.GetChild(2))
+        {
+            OnGamePanel = transform.GetChild(2).gameObject;
+            OnGamePanel.SetActive(false);
+            uIGameHandler = OnGamePanel.GetComponent<UIGameHandler>();
+        }
+        else
+        {
+            Debug.LogError("Cant find starting panel");
+        }
+
     }
 
     public UIGameHandler GetGamePanel()
@@ -59,14 +90,15 @@ public class UIHandler : MonoBehaviour {
         Debug.Log("Game over");
         OnGamePanel.SetActive(false);
 
-        gameOverPage.SetPanel();
         GameOverPanel.SetActive(true);
+        gameOverPage.SetPanel();
     }
 
     public void Restart()
     {
         //Data.isAngled = false;//for mode change kaldırılcak
-        SceneManager.LoadScene("RunHelper");
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name,LoadSceneMode.Single);
     }
 	
 }

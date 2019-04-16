@@ -5,7 +5,9 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class PostProcessingChange : MonoBehaviour
 {
-	private ColorGrading colorGrading;
+    public static PostProcessingChange instance;
+
+    private ColorGrading colorGrading;
 	private Vignette vignette;
 	private Color vignetteOldColor;
 
@@ -15,6 +17,13 @@ public class PostProcessingChange : MonoBehaviour
 	public float tempandTintTimer;
 	public Color vignetteNewColor;
 
+    private bool suddenGlowRunning;
+
+    private void Awake()
+    {
+        if (!instance)
+            instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -34,14 +43,57 @@ public class PostProcessingChange : MonoBehaviour
 			return;
 		}
 
-		vignette.roundness.value = 1; //change value of vignette
-		vignetteOldColor = vignette.color.value;
+        suddenGlowRunning = false;
 
+        vignette.roundness.value = 1; //change value of vignette
+		vignetteOldColor = vignette.color.value;
+    }
+
+    public void Glow(float rate)
+    {
+        if (!suddenGlowRunning)
+            StartCoroutine(SuddenGlow(rate));
+        else
+            Debug.LogWarning("Cannor start Sudden Glow. IEnumerator is already running.");
+    }
+
+    private IEnumerator SuddenGlow(float glw)
+    {
+        suddenGlowRunning = true;
+
+        float intens = vignette.intensity.value;
+        float round = vignette.roundness.value;
+
+        float limit = intens - glw;
+
+        bool done = false;
+
+        bool decreased = false;
+
+        while(!done)
+        {
+            yield return new WaitForSeconds(0.01f);
+            if (vignette.intensity.value >= limit && !decreased)
+            {
+                vignette.intensity.value -= 0.01f;
+                decreased = (vignette.intensity.value <= limit) ? true : false;
+            }
+            else
+            {
+                vignette.intensity.value += 0.01f;
+                done = (vignette.intensity.value >= intens) ? true : false;
+            }
+        }
+
+        vignette.intensity.value = intens;
+
+        suddenGlowRunning = false;
+        StopCoroutine(SuddenGlow(glw));
     }
 
 
-	public IEnumerator BoostVignetteSettings (bool isEntering){
-		Debug.Log ("enter vignette");
+    public IEnumerator BoostVignetteSettings (bool isEntering)
+    {
 		if (isEntering) {
 			colorGrading.temperature.value = 100f;
 			colorGrading.tint.value = 60f;

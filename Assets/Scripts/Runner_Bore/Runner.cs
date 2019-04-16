@@ -48,4 +48,10 @@ public class Runner : MonoBehaviour
             }
         }
     }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Platform.instance.GameOver();
+    }
 }

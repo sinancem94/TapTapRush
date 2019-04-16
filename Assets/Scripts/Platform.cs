@@ -11,13 +11,14 @@ public class Platform : MonoBehaviour
 {
     //Scripts
     public GameHandler game;
+    public LevelManager levelManager; //Should be private public for displaying level parameters for now.
+    public PlatformSizeHandler sizeHandler;
+
     private GetData GameData; 
     private InputManager ınput;
-    private PlatformSizeHandler platformSizeHandler;
     private UIHandler uI;
     private UIGameHandler uIGame;
     private BoostScript Boost;
-    public LevelManager levelManager; //Should be private public for displaying level parameters for now.
 
 
     //GameObjects
@@ -27,10 +28,12 @@ public class Platform : MonoBehaviour
     public GameObject road;//düz yol 
     public GameObject background; //rengi değişen bok
     public GameObject Nightmare;
+    public GameObject Shooter;
 
     public List<GameObject> platfotmTiles; //blokları barındıran liste
     public List<Block> blockScripts;
-
+    public GameObject[] Shooters;
+        
     //Parameters
     private float distance; //bi sonraki bloğun gelceği y mesafesi.  habire artıyor
     public float distBetweenBlock; //bloklar arası x mesafesi
@@ -88,36 +91,62 @@ public class Platform : MonoBehaviour
 
         ınput = new InputManager();
 
-        platformSizeHandler = new PlatformSizeHandler();
+        sizeHandler = new PlatformSizeHandler();
 
         level_p = GetCurrentLevel();
         levelManager = new LevelManager(level_p);
 
         Boost = (BoostScript)FindObjectOfType(typeof(BoostScript));
         uI = (UIHandler)FindObjectOfType(typeof(UIHandler));
-        uIGame = SetUIGameHandler(); 
-        //uIGame = (UIGameHandler)FindObjectOfType(typeof(UIGameHandler));
+        uIGame = SetUIGameHandler();
+        
+        //////////////
+        //If gameobjects not setted from editor find with tag.
+        if(!block)
+            block = GameObject.FindWithTag("Block");
 
-        block = GameObject.FindWithTag("Block");
-        runner = GameObject.FindWithTag("Runner");
-        lines = GameObject.FindWithTag("Lines");
-        road = GameObject.FindWithTag("Road");
-        background = GameObject.FindWithTag("Background");
-        Nightmare = GameObject.FindWithTag("Nightmare");
+        if(!runner)
+            runner = GameObject.FindWithTag("Runner");
 
+        if (!lines)
+            lines = GameObject.FindWithTag("Lines");
+
+        if (!road)
+            road = GameObject.FindWithTag("Road");
+
+        if (!background)
+            background = GameObject.FindWithTag("Background");
+
+        if (!Nightmare)
+            Nightmare = GameObject.FindWithTag("Nightmare");
+        /////////////
+        /////////////  
+        //Do gameobject arragments if they exist.
         if (background)
             background.transform.position = new Vector3(0f, 6.5f, 0f);
         else
             Debug.LogError("Could not find GameObject Background");
-        //road.transform.position = new Vector3(road.transform.position.x, road.transform.position.y + (road.transform.localScale.y / 3), 0f);
-        //road.transform.position = new Vector3(road.transform.position.x, road.transform.position.y + (road.transform.localScale.y / 3), 0f);
+
         if (lines)
             lines.transform.position = new Vector2(0f, runner.transform.position.y + (lines.transform.GetChild(0).localScale.y / 3));//(5 * distBetweenBlock));
         else
             Debug.LogError("Could not find GameObject Background");
-        
-        road.transform.position = new Vector2(0f, runner.transform.position.y + (road.transform.localScale.y / 3));//(5 * distBetweenBlock));
-              
+
+        if(road)
+            road.transform.position = new Vector2(0f, runner.transform.position.y + (road.transform.localScale.y / 3));//(5 * distBetweenBlock));
+        else
+            Debug.LogError("Could not find GameObject Road");
+        //////////////
+
+
+        Shooters = GameObject.FindGameObjectsWithTag("Shooter");
+
+        foreach (GameObject shooter in Shooters)
+        {
+            shooter.gameObject.SetActive(false);
+            shooter.transform.position = new Vector2(0f, -5f);
+        }
+
         //background.transform.position = new Vector2(0f, runner.transform.position.y + 5);
 
         platfotmTiles = new List<GameObject>();
@@ -145,21 +174,23 @@ public class Platform : MonoBehaviour
     }
 
 
-    //runner bloktan öndeyse bloğu ileri at + lines ı bir ileri taşı
+
     private void LateUpdate()
     {
+        //runnerla en arkada kalan blok arasındaki mesafe 10 bloğu geçerse giriyor buraya.
+        //Onları ilerletmişken road ve lines da ileri atılıyor.
         if (runner.transform.position.y >= platfotmTiles[pushBlockForward].transform.position.y + (10 * distBetweenBlock))
         {
             lines.transform.position = new Vector2(0f, runner.transform.position.y + (10 * distBetweenBlock));
             road.transform.position = new Vector2(0f, runner.transform.position.y + (10 * distBetweenBlock));
-            //background.transform.position = new Vector2(0f, runner.transform.position.y + 3);
-
+          
             platfotmTiles[pushBlockForward].transform.position = BlockPositioner(distBetweenBlock);
-
             blockScripts[pushBlockForward].SetBlock(levelManager.levelBlockType);
-
             pushBlockForward = (pushBlockForward + 1 < platfotmTiles.Count) ? pushBlockForward += 1 : pushBlockForward = 0;
         }
+
+        //Herhangi bir dragon arkada kaldıysa yerini tekrar hesaplayıp ileri at.
+        PlaceDragons();
     }
 
     // kaycak bloğa karar ver, input al, input varsa ona göre haraket et, yol hesapla, boost moda giriyor mu ona bak
@@ -175,9 +206,7 @@ public class Platform : MonoBehaviour
                 MoveTile((int)ınput.dirr);
             }
 
-            straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
-
-            //Debug.Log(straightRoadLenght);
+            straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera orthogonic size için uzaklık hesapla
 
             distanceBtwRunner = runner.transform.position.y - Nightmare.transform.position.y;
 
@@ -186,16 +215,16 @@ public class Platform : MonoBehaviour
             //
             if (levelManager.IsEndingConditionSatisfied(distanceBtwRunner, passedBlockNumber))
             {
-                game.LevelPassed();
-                uI.GameOver();
+                LevelPassed();
             }
             else if(distanceBtwRunner < 0.8f) 
             {
-                game.GameOver();
-                uI.GameOver();
+                GameOver();
             }
 
-            if (distanceBtwRunner > boostLimit && !boostLock && isBoostAllowed) //kombo var mı hesapla
+            //////////////////////////////
+            //Calculate if entered or exited boost
+            if (distanceBtwRunner > boostLimit && !boostLock && isBoostAllowed)
             {
                 boostLock = true;
 
@@ -235,7 +264,7 @@ public class Platform : MonoBehaviour
 
         if (!Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, 0f)) // eğer zaten ortada değilse
         {
-            if (blockScripts[blockToSlide].type == BlockData.blockType.reverse)
+            if (blockScripts[blockToSlide].type == BlockData.blockType.reverse) // eğer ters bloksa -1 le çarp ki ters yöne doğru gitsin
                 direction *= -1;
             
             if (!isBoost)
@@ -244,14 +273,12 @@ public class Platform : MonoBehaviour
                 toPos = 0; //block will go to zero in either direction
 
 
-            if(toPos < BlockPos[0] || toPos > BlockPos[BlockPos.Length - 1])
+            if(toPos < BlockPos[0] || toPos > BlockPos[BlockPos.Length - 1]) // eğer gitceği yer blockpos sınırları içinde değilse oyunu sonlandır
             {
-                game.GameOver();
                 blockScripts[blockToSlide].Fall(new Vector2(direction, 0));
-
-                uI.GameOver();
+                GameOver();
             }
-            else
+            else // eğer blockpos sınırları içindeyse bloğu haraket ettir
             {
                 blockScripts[blockToSlide].MoveTile(toPos);
 
@@ -263,24 +290,6 @@ public class Platform : MonoBehaviour
                     uIGame.SetPoint(point);
                 }
             }
-
-         /*   if (toPos < BlockPos[0] || toPos > BlockPos[BlockPos.Length - 1]) //en uçta yanlış yöne basıldıysa düş
-            {
-                game.GameOver();
-                platfotmTiles[blockToSlide].GetComponent<Block>().Fall(new Vector2(direction, 0));
-                //StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().Fall(new Vector2(direction, 0)));
-                uI.GameOver();
-            }
-            else //yoksa o yöne doğru git
-            {
-                platfotmTiles[blockToSlide].GetComponent<Block>().MoveTile(toPos);
-                if (Mathf.Approximately(toPos, 0)) // eğer 0 a geliyorsa bi sonraki bloğa geç
-                {
-                    blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
-                    point += gainedPoint;
-                    uI.SetPoint(point);
-                }
-            }*/
         }
     }
 
@@ -303,7 +312,7 @@ public class Platform : MonoBehaviour
     {
         //Sizes are changed according to Screen 
         is5Line = (levelManager.levelWidth == LevelManager.LevelWidth.Five) ? true : false; 
-        distBetweenBlock = platformSizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform,is5Line);
+        distBetweenBlock = sizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform,is5Line);
         //For 5 line mode
         if (is5Line)
         {
@@ -343,7 +352,6 @@ public class Platform : MonoBehaviour
 
             blockScripts.Add(platfotmTiles[platfotmTiles.Count - 1].GetComponent<Block>());
             blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
-
         }
 
         //Platform tiles da buluncak toplam blok sayısından ilk baştaki düz blokları çıkar 
@@ -359,25 +367,49 @@ public class Platform : MonoBehaviour
         }
 
         runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner düz sıranın en sonunda başlıyor
-
-
         blockToSlide = levelStartStraightLine + 1;
 
         initialStraightRoadLenght = 3 * distBetweenBlock;//platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
         straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y;//initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
-        //initialStraightRoadLenght = straightRoadLenght;
-
-        //Debug.Log("Length  length is : " + initialStraightRoadLenght);
     }
 
-#endregion
+
+    public void PlaceDragons()
+    {
+        int lowerYLimit = 10;
+        int upperYLimit = 20;
+
+        foreach(GameObject dragon in Shooters) 
+        {
+            if(dragon.transform.position.y < runner.transform.position.y)
+            {
+                int r = (Random.Range(0, 3) == 1) ? -1 : 1;
+
+                float x = sizeHandler.GetWallPosition() * r;
+                float y = platfotmTiles[blockToSlide].transform.position.y + (Random.Range(lowerYLimit, upperYLimit) * distBetweenBlock);
+
+                Vector3 dragonPos = new Vector3(x,y,0f);
+
+                dragon.transform.position = dragonPos;
+                dragon.transform.rotation = Quaternion.Euler(0f, 0f, 90 * r);
+
+                if(!dragon.activeInHierarchy)
+                    dragon.SetActive(true);
+
+                lowerYLimit += 15;
+                upperYLimit += 15;
+            }
+        }      
+    }
+
+    #endregion
 
 
-#region SimpleMethods
-    public void SetSpeeds() //Set speed for bore and monster
+    #region SimpleMethods
+
+    public void SetSpeeds() //Set speed for bore 
     {
         runner.GetComponent<Runner>().CharacterSpeed = GameData.GetBoreSpeed();
-        //Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed = GameData.GetMonsterSpeed();
     }
 
     public void CreatePlatformAccordingToLevel() 
@@ -392,9 +424,20 @@ public class Platform : MonoBehaviour
         SetMonsterPosition();
     }
 
+    public void GameOver() 
+    {
+        game.GameOver();
+        uI.GameOver();
+    }
+
+    public void LevelPassed()
+    {
+        game.LevelPassed();
+        uI.GameOver();
+    }
+
     private void SetMonsterPosition() 
     {
-        //Camera mainCam = Camera.main;
         float  distanceBetweenRunner = (!is5Line) ? 8f : 11f;
 
         Nightmare.transform.position = new Vector3(runner.transform.position.x, runner.transform.position.y - distanceBetweenRunner, 0f);
@@ -407,6 +450,7 @@ public class Platform : MonoBehaviour
 
     //This method is used for getting game uı panel. 
     //Since this script attached to OnGamePanel which owned by UI handler, UI handler returns this script from OnGamePanel
+    //Can only get uıGameHandler this way because gamobject is disabled from uı handler.
     private UIGameHandler SetUIGameHandler()
     {
         return uI.GetGamePanel();

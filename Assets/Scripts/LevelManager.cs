@@ -131,7 +131,7 @@
 
     private bool SetLevelType()
     {
-       /* switch((int)(LevelNumber / 3))
+       /*switch((int)(LevelNumber / 3))
         {
             case 0: // If first three level
                 break;
@@ -147,7 +147,7 @@
         {
             levelBlockType = LevelBlockType.Mixed;
             levelWidth = LevelWidth.Three;
-            isBoostAllowed = true;
+            isBoostAllowed = false;
             levelFinishtype = LevelFinishtype.None;   
         }
         else if ((int)(LevelNumber / 3) == 0) // If first three level

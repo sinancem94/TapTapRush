@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class BlockData
 {
-    public static Color normalColor = new Color32(0, 0, 0, 255);
-    public static Color reverseColor = Color.green;//new Color32(75, 170, 120, 255);
+    public Color normalColor = new Color32(0, 0, 0, 255);
+    public Color reverseColor = Color.green;//new Color32(75, 170, 120, 255);
 
-    public static Sprite normalBlock = Resources.Load<Sprite>("Sprites/TapTapBlock2");//, typeof(Texture)) as Texture;
-    public static Sprite reverseBlock = Resources.Load<Sprite>("Sprites/TapTapBlock2");
+    public Sprite normalBlock = Resources.Load<Sprite>("Sprites/TapTapBlock2");//, typeof(Texture)) as Texture;
+    public Sprite reverseBlock = Resources.Load<Sprite>("Sprites/TapTapBlock2");
 
     public enum blockType
     {
@@ -17,18 +17,15 @@ public class BlockData
     };
 
     //Changes block type whether its a normal block or reverse block
-    public static void ChangeBlockType(ref blockType type,List<SpriteRenderer> blockSprites /*,SpriteRenderer blockSprite ,SpriteRenderer childBlockSprite*/)
+    public void ChangeBlockType(ref blockType type,SpriteRenderer blockSprite /*,SpriteRenderer blockSprite ,SpriteRenderer childBlockSprite*/)
     {
         if (type == blockType.normal)
         {
             type = blockType.reverse;
 
-            foreach(SpriteRenderer sp in blockSprites)
-            {
-                sp.sprite = reverseBlock;
-                sp.color = reverseColor;
-            }
-
+            blockSprite.sprite = reverseBlock;
+            blockSprite.color = reverseColor;
+      
            /* blockSprite.sprite = reverseBlock;
             blockSprite.color = reverseColor;
 
@@ -39,11 +36,8 @@ public class BlockData
         {
             type = blockType.normal;
 
-            foreach (SpriteRenderer sp in blockSprites)
-            {
-                sp.sprite = normalBlock;
-                sp.color = normalColor;
-            }
+            blockSprite.sprite = normalBlock;
+            blockSprite.color = normalColor;
 
            /* blockSprite.sprite = normalBlock;
             blockSprite.color = normalColor;

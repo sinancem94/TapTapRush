@@ -8,9 +8,11 @@ public class Block : MonoBehaviour
 {
 
     public BlockData.blockType type;
+    public BlockData blockData;
+
     private BlockAnimation blockAnimation;
 
-    private List<SpriteRenderer> BlockSprites;
+    private SpriteRenderer BlockSprite;
 
     private float outlineSize;
 
@@ -20,33 +22,20 @@ public class Block : MonoBehaviour
 
     // private SpriteRenderer blockSprite;
     // private SpriteRenderer ChildBlockSprite;
-    private Text limitText;
-
-    public int limit;
 
     private void OnEnable()
     {
+        blockData = new BlockData();
         blockAnimation = this.GetComponent<BlockAnimation>();
-        BlockSprites = new List<SpriteRenderer>();
 
-        foreach (SpriteRenderer sp in this.GetComponentsInChildren<SpriteRenderer>())
-        {
-            BlockSprites.Add(sp);
+        BlockSprite = GetComponent<SpriteRenderer>();
 
-            sp.sprite = BlockData.normalBlock;
-            sp.color = BlockData.normalColor;
-        }
-        //        Debug.Log(BlockSprites.Count);
-        outlineSize = BlockSprites[0].material.GetFloat("_OutlineSize");
+        BlockSprite.sprite = blockData.normalBlock;
+        BlockSprite.color = blockData.normalColor;
 
-        /* blockSprite = GetComponent<SpriteRenderer>();
-         ChildBlockSprite = GetComponentInChildren<SpriteRenderer>();
-         blockSprite.sprite = BlockData.normalBlock;
-         blockSprite.color = BlockData.normalColor;
-         ChildBlockSprite.sprite = BlockData.normalBlock;
-         ChildBlockSprite.color = BlockData.normalColor;*/
-
-        limit = 1;
+        //Debug.Log(BlockSprites.Count);
+        outlineSize = BlockSprite.material.GetFloat("_OutlineSize");
+        //BlockSprites[0].material.GetFloat("_OutlineSize");
 
         isShined = false;
         isMoving = false;
@@ -62,23 +51,18 @@ public class Block : MonoBehaviour
 
     private void Update()
     {
+        //Blokların ortaya geçince parlaması için..
         if (Mathf.Approximately(this.transform.position.x, 0) && !isShined)
         {
             if (outlineSize < 10f)
             {
                 outlineSize += 0.5f;
-                foreach (SpriteRenderer sr in BlockSprites)
-                {
-                    sr.material.SetFloat("_OutlineSize", outlineSize);
-                }
+                BlockSprite.material.SetFloat("_OutlineSize", outlineSize);
             }
             else //if outlineSize >= 10
             {
                 isShined = true;
-                foreach (SpriteRenderer sr in BlockSprites)
-                {
-                    sr.material.SetFloat("_OutlineSize", 10);
-                }
+                BlockSprite.material.SetFloat("_OutlineSize", 10);
             }
         }
     }
@@ -88,28 +72,20 @@ public class Block : MonoBehaviour
         if(bt == LevelManager.LevelBlockType.Reverse)
         {
             if(type == BlockData.blockType.normal)
-                BlockData.ChangeBlockType(ref type, BlockSprites);
+                blockData.ChangeBlockType(ref type, BlockSprite);
         }
         else if (bt == LevelManager.LevelBlockType.Mixed)
         {
             int r = Random.Range(0, 10);
             //TODO: Create a random reverse generator that deals reverse positions 
-            if (type == BlockData.blockType.reverse)
+            if (type == BlockData.blockType.reverse || r < 2)
             {
-                BlockData.ChangeBlockType(ref type, BlockSprites);
-            }
-            else if (r < 2)
-            {
-                BlockData.ChangeBlockType(ref type, BlockSprites);
+                blockData.ChangeBlockType(ref type, BlockSprite);
             }
         }
 
-        foreach (SpriteRenderer sr in BlockSprites)
-        {
-            sr.material.SetFloat("_OutlineSize", 1);
-        }
-        outlineSize = BlockSprites[0].material.GetFloat("_OutlineSize");
-
+        outlineSize = 1;
+        BlockSprite.material.SetFloat("_OutlineSize", outlineSize);
         isShined = false;
     }
 
@@ -125,10 +101,5 @@ public class Block : MonoBehaviour
     public void Fall(Vector2 fallTo)
     {
         StartCoroutine(blockAnimation.Fall(fallTo));
-    }
-
-    public void ChangeLimit(int num)
-    {
-        limit += num;
     }
 }
