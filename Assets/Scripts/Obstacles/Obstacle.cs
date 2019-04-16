@@ -1,0 +1,72 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+
+//Used by obstacles in game. Dragon,blades etc. 
+//Starting and disabling handled in this script.
+
+//Each obstacle creates and sets its own parameters in Create parameters .
+//Obstacles Implements loop ObstacleLoop which is different for each obstacle
+
+public abstract class Obstacle : MonoBehaviour
+{
+    public bool EnteredStart;
+    public bool isObstacleLooping;
+
+    private SpriteRenderer s_renderer;
+
+    void Start()
+    {
+        EnteredStart = true;
+        isObstacleLooping = false;
+        s_renderer = GetComponent<SpriteRenderer>();
+
+        //Debug.Log("Starta girdi : " + Time.unscaledTime);
+
+        SetParameters();
+    }
+
+    private void LateUpdate()
+    {
+        if (!isObstacleLooping && s_renderer.isVisible) 
+        {
+            //Debug.Log("Started shooting fireball");
+            isObstacleLooping = true;
+            StartCoroutine(ObstacleLoop());
+        }
+        else if(isObstacleLooping && !s_renderer.isVisible)
+        {
+            //Debug.Log("Stopped shooting fireball");
+            isObstacleLooping = false;
+            StopCoroutine(ObstacleLoop());
+            this.gameObject.SetActive(false);
+        }
+    }
+
+    /*private void OnEnable()
+    {
+        Debug.Log("OnEnable a girdi. is shooting is : " + isObstacleLooping + " is started is . : " + EnteredStart);
+        if (EnteredStart && !isObstacleLooping)
+        {
+            Debug.Log("Started shooting fireball");
+            isObstacleLooping = true;
+            StartCoroutine(ObstacleLoop());
+        }
+    }*/
+
+    private void OnDisable()
+    {
+        if (isObstacleLooping)
+        {
+            Debug.Log("Stopped shooting fireball");
+            isObstacleLooping = false;
+            StopCoroutine(ObstacleLoop());
+        }
+    }
+
+    public abstract void SetParameters();
+
+    public abstract IEnumerator ObstacleLoop();
+   
+}
