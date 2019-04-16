@@ -11,9 +11,9 @@ public class PostProcessingChange : MonoBehaviour
 
 	public float vignetteChange;
 	public float vignetteIntensityTimer;
-	public float vignetteColorTimer;
-	public float tempandTintTimer;
-	public Color vignetteNewColor;
+	public float colorGradingTimer;
+	//public float tempandTintTimer;
+	//public Color vignetteNewColor;
 
 
     // Start is called before the first frame update
@@ -26,47 +26,52 @@ public class PostProcessingChange : MonoBehaviour
 			return;
 		}
 
-		bool foundVignetteSettings = postProcessVolume.profile.TryGetSettings<Vignette>(out vignette);
-		bool foundColorGradingSettings = postProcessVolume.profile.TryGetSettings<ColorGrading> (out colorGrading);
+		bool foundVignetteSettings = postProcessVolume.profile.TryGetSettings<Vignette>(out vignette);  					// vignette i sec
+		bool foundColorGradingSettings = postProcessVolume.profile.TryGetSettings<ColorGrading> (out colorGrading);			//color gradingi sec
 		if(!foundVignetteSettings) {
 			enabled = false;
 			Debug.Log("Cant load PitchTest settings");
 			return;
 		}
 
-		vignette.roundness.value = 1; //change value of vignette
-		vignetteOldColor = vignette.color.value;
+		vignette.roundness.value = 1;    					//change value of vignette
+		vignetteOldColor = vignette.color.value;			//vignette in eski colorunu bul
 
     }
 
 
-	public IEnumerator BoostVignetteSettings (bool isEntering){
+	public IEnumerator BoostPostProcessingSettings (bool isEntering){					//boost a girerken ve çıkarkenki vignette ve color grading ayarlamaları burada yapılıyor
 		Debug.Log ("enter vignette");
 		if (isEntering) {
+			//color grading settings for starting boost
 			colorGrading.temperature.value = 100f;
 			colorGrading.tint.value = 60f;
             colorGrading.saturation.value = 10f;
 
 			//vignette.color.value = vignetteNewColor;
 
-			yield return new WaitForSeconds (vignetteColorTimer);
+			yield return new WaitForSeconds (colorGradingTimer);
 
-			colorGrading.temperature.value = 50f;
-			colorGrading.tint.value = 25f;
-			colorGrading.saturation.value = 50f;
+			//color grading settings during boost
+			colorGrading.temperature.value = 100f;
+			colorGrading.tint.value = 100f;
+			colorGrading.saturation.value = -100f;
+			colorGrading.contrast.value = 100f;
 
-			//vignette.color.value = vignetteOldColor;
-			while (vignette.intensity.value < 0.35f) {
-				vignette.intensity.value += vignetteChange;
+			//vignette settings during boost
+			while (vignette.intensity.value > 0f) {
+				vignette.intensity.value -= vignetteChange;
 				yield return new WaitForSeconds (vignetteIntensityTimer);
 			}
 		} else {
+			//color grading settings after exiting from boost & initial vignette settings
 			colorGrading.temperature.value = 0f;
 			colorGrading.tint.value = 0f;
 			colorGrading.saturation.value = 0f;
 
-			while (vignette.intensity.value > 0.25f) {
-				vignette.intensity.value -= vignetteChange;
+			//vignette settings after exiting from boost & initial vignette settings
+			while (vignette.intensity.value < 0.25f) {
+				vignette.intensity.value += vignetteChange;
 				yield return new WaitForSeconds (vignetteIntensityTimer);
 			}
 		}

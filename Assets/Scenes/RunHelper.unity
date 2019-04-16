@@ -7847,6 +7847,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78458ec25495e6c4c9da7c1443fea144, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bore: {fileID: 2120997774}
 --- !u!1 &1589103707
 GameObject:
   m_ObjectHideFlags: 0
@@ -8731,7 +8732,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1924276065
@@ -8991,11 +8992,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05b49699d02abc14db51db3a6e65a145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vignetteChange: 0
-  vignetteIntensityTimer: 0
-  vignetteColorTimer: 0
-  tempandTintTimer: 0
-  vignetteNewColor: {r: 0, g: 0, b: 0, a: 0}
+  vignetteChange: 0.1
+  vignetteIntensityTimer: 0.5
+  colorGradingTimer: 0.7
 --- !u!1 &2033782069
 GameObject:
   m_ObjectHideFlags: 0

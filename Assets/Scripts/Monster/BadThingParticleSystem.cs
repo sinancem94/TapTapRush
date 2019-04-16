@@ -20,7 +20,7 @@ public class BadThingParticleSystem : MonoBehaviour
             if(!Platform.instance.isBoost)
                 speed = ((Platform.instance.distanceBtwRunner * 3) / 4) * monsterSpeed; //speed whithout boost 
             else
-                speed = ((Platform.instance.distanceBtwRunner) * 4f) * monsterSpeed; // speed with boost
+                speed = ((Platform.instance.distanceBtwRunner) * 4f) * monsterSpeed * 0; // speed with boost,   0 yaptım boosttayken. ama bu boost işlerini badthingsboosteffecte kaydırsak iyi olacak.
 
             NightmareChase(speed);
         }

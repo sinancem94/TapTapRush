@@ -22,12 +22,13 @@ public class BoostScript : MonoBehaviour
 
     public void StartBoost(float timeChangeSpeed)
     {
-		badThingsBoostEffect.nightmareRadius (10f);
+	//	badThingsBoostEffect.nightmareRadius (10f);
         StartCoroutine(SlowTime(timeChangeSpeed, true));
 		//explosionParticleSys.gameObject.SetActive (true);
 		explosionParticleSystem.EnteringBoost();
-		StartCoroutine (postProcessingChange.BoostVignetteSettings (true));
-		StartCoroutine (boreBoostEffects.scaleBore (true));
+		StartCoroutine (postProcessingChange.BoostPostProcessingSettings (true));
+	//	StartCoroutine (boreBoostEffects.scaleBore (true));  //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
+		//boreBoostEffects.stopBore ();
     }
    
 
@@ -36,9 +37,11 @@ public class BoostScript : MonoBehaviour
         StartCoroutine(SlowTime(timeChangeSpeed, false));
 		//explosionParticleSys.gameObject.SetActive (false);
 		explosionParticleSystem.ExitingBoost();
-		StartCoroutine (postProcessingChange.BoostVignetteSettings (false));
-		StartCoroutine (boreBoostEffects.scaleBore (false));
-		badThingsBoostEffect.nightmareRadius (1f);
+		StartCoroutine (postProcessingChange.BoostPostProcessingSettings (false));
+		badThingsBoostEffect.badThingsBoostExit ();
+	//	StartCoroutine (boreBoostEffects.scaleBore (false));  //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
+		//badThingsBoostEffect.nightmareRadius (1f);
+
     }
 
     private IEnumerator SlowTime(float changeSpeed, bool isStarted)

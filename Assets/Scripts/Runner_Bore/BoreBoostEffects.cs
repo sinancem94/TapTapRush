@@ -7,6 +7,8 @@ public class BoreBoostEffects : MonoBehaviour
 	private Vector3 scalerVec;
     private float boreScale;
 
+	private float speed;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,5 +33,16 @@ public class BoreBoostEffects : MonoBehaviour
 				yield return new WaitForSeconds (.1f);
 			}
 		}
+	}
+
+	public void stopBore(){
+		this.transform.Translate(0f, 0f * speed * Time.deltaTime, 0f, Space.World);
+	}
+
+	public void boreStartsSliding(){
+	}
+
+	public void boreExitsFromBoost(){
+		
 	}
 }
