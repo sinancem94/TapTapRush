@@ -7,17 +7,17 @@ public class CameraMovement : MonoBehaviour
 
     private Vector3 offset;
 
-    private CameraSizeHandler cameraSizeHandler;
-    private bool isChanging;
+    private DynamicCameraMovement dynamicCamera;
+    private bool isCamSizeChanging;
 
     public float OrthographicUpperSize;
     public float OrthographicLowerSize;
 
     void Start()
     {
-        cameraSizeHandler = new CameraSizeHandler();
-        isChanging = false;
+        dynamicCamera = new DynamicCameraMovement(this);
 
+        isCamSizeChanging = false;
         CalculateOffset(new Vector3(0f, 3f, -10f));
 
         //ıf not changed from editor change to this values
@@ -30,11 +30,11 @@ public class CameraMovement : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!isChanging && Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
+        if (!isCamSizeChanging && Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
         {
             StartCamera();
         }
-        else if(isChanging && Platform.instance.game.GetGameState() == GameHandler.GameState.GameOver || Platform.instance.game.GetGameState() == GameHandler.GameState.LevelPassed)
+        else if(isCamSizeChanging && Platform.instance.game.GetGameState() == GameHandler.GameState.GameOver || Platform.instance.game.GetGameState() == GameHandler.GameState.LevelPassed)
         {
             StopCamera();
         }
@@ -51,14 +51,16 @@ public class CameraMovement : MonoBehaviour
 
     void StartCamera()
     {
-        isChanging = true;
-        StartCoroutine(cameraSizeHandler.DynamicCameraMovement(OrthographicUpperSize, OrthographicLowerSize));
+        isCamSizeChanging = true;
+        dynamicCamera.StartDynamicSizeHandler(OrthographicUpperSize, OrthographicLowerSize);
+        //StartCoroutine(dynamicCamera.DynamicCameraSizer(OrthographicUpperSize, OrthographicLowerSize));
     }
 
     void StopCamera()
     {
-        isChanging = false;
-        StopCoroutine(cameraSizeHandler.DynamicCameraMovement(OrthographicUpperSize, OrthographicLowerSize));
+        isCamSizeChanging = false;
+        dynamicCamera.StopDynamicSizeHandler();
+        //StopCoroutine(dynamicCamera.DynamicCameraSizer(OrthographicUpperSize, OrthographicLowerSize));
     }
 
 

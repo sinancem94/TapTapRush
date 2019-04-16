@@ -170,7 +170,7 @@ public class Platform : MonoBehaviour
         //CreatePlatform();
         SetBoost(false);
 
-        uI.OpenUIPanel(); //After arranging everything open uı panel for starting game
+        uI.OpenHomePage(); //After arranging everything open uı panel for starting game
     }
 
 
