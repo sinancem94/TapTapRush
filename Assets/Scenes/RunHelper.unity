@@ -8951,11 +8951,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05b49699d02abc14db51db3a6e65a145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vignetteChange: 0
-  vignetteIntensityTimer: 0
-  vignetteColorTimer: 0
-  tempandTintTimer: 0
-  vignetteNewColor: {r: 0, g: 0, b: 0, a: 0}
+  vignetteChange: 0.2
+  vignetteIntensityTimer: 0.5
+  colorGradingTimer: 0.5
 --- !u!1 &2104914254
 GameObject:
   m_ObjectHideFlags: 0
