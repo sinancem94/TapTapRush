@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InputManager
 {
-    //private bool trackSwipe = true;
+    private bool trackSwipe = true;
     public direction dirr = direction.none;
     public Queue<direction> directions = new Queue<direction>(); // ınputs are holded in a que
 

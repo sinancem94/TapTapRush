@@ -7,10 +7,6 @@ public class PlatformSizeHandler : SizeHandler{
 	
     public float ArrangeSize(Transform road,Transform lines,Transform block,Transform runner, bool is5Line) 
     {
-        //Arrange platform width convert screen width to world size in x
-        //float height = Camera.main.orthographicSize * 2.0f;
-        //float width = height * Camera.main.aspect;
-
         //Arrange road scale according to screen
         float roadWidth = gameScreenWidth / (float)(5f/3f);
         float roadLength = 50f;
@@ -18,7 +14,7 @@ public class PlatformSizeHandler : SizeHandler{
         road.localScale = new Vector3(roadWidth, roadLength, 1f);
 
         //Arrange line positions according to roads size
-        float linePosition = (/*Platform.instance.*/road.transform.localScale.x / 2);
+        float linePosition = road.transform.localScale.x / 2;
         lines.GetChild(0).localPosition = new Vector3(linePosition, 0f, 0f);
         lines.GetChild(0).localScale = new Vector3(lines.GetChild(0).localScale.x, roadLength, 0f);
 
@@ -38,7 +34,6 @@ public class PlatformSizeHandler : SizeHandler{
 
 
         block.localScale = new Vector3(blockScale,blockScale,1f);
-
         //Arrange runner size
         runner.localScale = new Vector3(blockScale * 2 / 4, blockScale * 2 / 4, 1f);
         //return the distance between blocks. 3f for 3 lines, 5f for 5 lines

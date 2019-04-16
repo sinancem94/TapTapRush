@@ -7,8 +7,6 @@ public class CameraMovement : MonoBehaviour
 
     private Vector3 offset;
 
-    private Vector3 initPos; //for mode
-
     private CameraSizeHandler cameraSizeHandler;
     private bool isChanging;
 
@@ -17,8 +15,6 @@ public class CameraMovement : MonoBehaviour
 
     void Start()
     {
-        initPos = Platform.instance.runner.transform.position; //for mode
-
         cameraSizeHandler = new CameraSizeHandler();
         isChanging = false;
 
@@ -42,8 +38,8 @@ public class CameraMovement : MonoBehaviour
         {
             StopCamera();
         }
-        //if (!Platform.instance.runner.GetComponent<Runner>().isStrike)
-            transform.position = Platform.instance.runner.transform.position + offset;
+
+        transform.position = Platform.instance.runner.transform.position + offset;
     }
 
 

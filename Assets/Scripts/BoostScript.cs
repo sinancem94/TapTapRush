@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoostScript : MonoBehaviour
 {
 	//public ParticleSystem explosionParticleSys;
-	private ExplosionParticleSystem explosionParticleSystem;
+	private BoostParticleSystem boostParticleSystem;
 	private PostProcessingChange postProcessingChange;
 	private BoreBoostEffects boreBoostEffects;
 	private BadThingsBoostEffect badThingsBoostEffect;
@@ -14,7 +14,7 @@ public class BoostScript : MonoBehaviour
 	//public Color oldVignetteColor;
 
 	private void Start(){
-		explosionParticleSystem = (ExplosionParticleSystem)FindObjectOfType(typeof(ExplosionParticleSystem));
+        boostParticleSystem = (BoostParticleSystem)FindObjectOfType(typeof(BoostParticleSystem));
 		postProcessingChange = (PostProcessingChange)FindObjectOfType (typeof(PostProcessingChange));
 		boreBoostEffects = (BoreBoostEffects)FindObjectOfType (typeof(BoreBoostEffects));
 		badThingsBoostEffect = (BadThingsBoostEffect)FindObjectOfType (typeof(BadThingsBoostEffect));
@@ -24,8 +24,7 @@ public class BoostScript : MonoBehaviour
     {
 		badThingsBoostEffect.nightmareRadius (10f);
         StartCoroutine(SlowTime(timeChangeSpeed, true));
-		//explosionParticleSys.gameObject.SetActive (true);
-		explosionParticleSystem.EnteringBoost();
+        boostParticleSystem.EnteringBoost();
 		StartCoroutine (postProcessingChange.BoostVignetteSettings (true));
 		StartCoroutine (boreBoostEffects.scaleBore (true));
     }
@@ -34,8 +33,7 @@ public class BoostScript : MonoBehaviour
     public void StopBoost(float timeChangeSpeed)
     {
         StartCoroutine(SlowTime(timeChangeSpeed, false));
-		//explosionParticleSys.gameObject.SetActive (false);
-		explosionParticleSystem.ExitingBoost();
+        boostParticleSystem.ExitingBoost();
 		StartCoroutine (postProcessingChange.BoostVignetteSettings (false));
 		StartCoroutine (boreBoostEffects.scaleBore (false));
 		badThingsBoostEffect.nightmareRadius (1f);
