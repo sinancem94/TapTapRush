@@ -119,8 +119,6 @@ public class DynamicCameraMovement
         {
             float delta = (newCamSize > currentCamSize) ? (newCamSize / currentCamSize) * 0.1f : (currentCamSize / newCamSize) *  0.1f;
 
-            Debug.Log(delta);
-
             return Mathf.MoveTowards(currentCamSize, newCamSize, delta);
         }
 

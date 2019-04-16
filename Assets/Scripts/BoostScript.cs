@@ -20,25 +20,31 @@ public class BoostScript : MonoBehaviour
 		badThingsBoostEffect = (BadThingsBoostEffect)FindObjectOfType (typeof(BadThingsBoostEffect));
 	}
 
-    public void StartBoost(float timeChangeSpeed)
+
+
+     public void StartBoost(float timeChangeSpeed)
     {
-		badThingsBoostEffect.nightmareRadius (10f);
+        //  badThingsBoostEffect.nightmareRadius (10f);
         StartCoroutine(SlowTime(timeChangeSpeed, true));
+        //explosionParticleSys.gameObject.SetActive (true);
         boostParticleSystem.EnteringBoost();
-		StartCoroutine (postProcessingChange.BoostVignetteSettings (true));
-		StartCoroutine (boreBoostEffects.scaleBore (true));
+        StartCoroutine(postProcessingChange.BoostPostProcessingSettings(true));
+        //  StartCoroutine (boreBoostEffects.scaleBore (true));  //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
+        //boreBoostEffects.stopBore ();
     }
-   
+
 
     public void StopBoost(float timeChangeSpeed)
     {
         StartCoroutine(SlowTime(timeChangeSpeed, false));
+        //explosionParticleSys.gameObject.SetActive (false);
         boostParticleSystem.ExitingBoost();
-		StartCoroutine (postProcessingChange.BoostVignetteSettings (false));
-		StartCoroutine (boreBoostEffects.scaleBore (false));
-		badThingsBoostEffect.nightmareRadius (1f);
-    }
+        StartCoroutine(postProcessingChange.BoostPostProcessingSettings(false));
+        badThingsBoostEffect.badThingsBoostExit(Platform.instance.runner.transform.position.y);
+        //  StartCoroutine (boreBoostEffects.scaleBore (false));  //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
+        //badThingsBoostEffect.nightmareRadius (1f);
 
+    }
     private IEnumerator SlowTime(float changeSpeed, bool isStarted)
     {
         if(isStarted)

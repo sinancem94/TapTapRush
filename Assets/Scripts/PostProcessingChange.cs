@@ -5,124 +5,85 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class PostProcessingChange : MonoBehaviour
 {
-    public static PostProcessingChange instance;
-
     private ColorGrading colorGrading;
-	private Vignette vignette;
-	private Color vignetteOldColor;
+    private Vignette vignette;
+    private Color vignetteOldColor;
 
-	public float vignetteChange;
-	public float vignetteIntensityTimer;
-	public float vignetteColorTimer;
-	public float tempandTintTimer;
-	public Color vignetteNewColor;
+    public float vignetteChange;
+    public float vignetteIntensityTimer;
+    public float colorGradingTimer;
+    //public float tempandTintTimer;
+    //public Color vignetteNewColor;
 
-    private bool suddenGlowRunning;
-
-    private void Awake()
-    {
-        if (!instance)
-            instance = this;
-    }
 
     // Start is called before the first frame update
     void Start()
     {
-		PostProcessVolume postProcessVolume = GetComponent<PostProcessVolume> ();  
-		if (postProcessVolume.profile == null) {
-			enabled = false;
-			Debug.Log ("Cant load PostProcess volume");
-			return;
-		}
-
-		bool foundVignetteSettings = postProcessVolume.profile.TryGetSettings<Vignette>(out vignette);
-		bool foundColorGradingSettings = postProcessVolume.profile.TryGetSettings<ColorGrading> (out colorGrading);
-		if(!foundVignetteSettings) {
-			enabled = false;
-			Debug.Log("Cant load PitchTest settings");
-			return;
-		}
-
-        suddenGlowRunning = false;
-
-        vignette.roundness.value = 1; //change value of vignette
-		vignetteOldColor = vignette.color.value;
-    }
-
-    public void Glow(float rate)
-    {
-        if (!suddenGlowRunning)
-            StartCoroutine(SuddenGlow(rate));
-        else
-            Debug.LogWarning("Cannor start Sudden Glow. IEnumerator is already running.");
-    }
-
-    private IEnumerator SuddenGlow(float glw)
-    {
-        suddenGlowRunning = true;
-
-        float intens = vignette.intensity.value;
-        float round = vignette.roundness.value;
-
-        float limit = intens - glw;
-
-        bool done = false;
-
-        bool decreased = false;
-
-        while(!done)
+        PostProcessVolume postProcessVolume = GetComponent<PostProcessVolume>();
+        if (postProcessVolume.profile == null)
         {
-            yield return new WaitForSeconds(0.01f);
-            if (vignette.intensity.value >= limit && !decreased)
-            {
-                vignette.intensity.value -= 0.01f;
-                decreased = (vignette.intensity.value <= limit) ? true : false;
-            }
-            else
-            {
-                vignette.intensity.value += 0.01f;
-                done = (vignette.intensity.value >= intens) ? true : false;
-            }
+            enabled = false;
+            Debug.Log("Cant load PostProcess volume");
+            return;
         }
 
-        vignette.intensity.value = intens;
+        bool foundVignetteSettings = postProcessVolume.profile.TryGetSettings<Vignette>(out vignette);                      // vignette i sec
+        bool foundColorGradingSettings = postProcessVolume.profile.TryGetSettings<ColorGrading>(out colorGrading);         //color gradingi sec
+        if (!foundVignetteSettings)
+        {
+            enabled = false;
+            Debug.Log("Cant load PitchTest settings");
+            return;
+        }
 
-        suddenGlowRunning = false;
-        StopCoroutine(SuddenGlow(glw));
+        vignette.roundness.value = 1;                       //change value of vignette
+        vignetteOldColor = vignette.color.value;            //vignette in eski colorunu bul
+
     }
 
 
-    public IEnumerator BoostVignetteSettings (bool isEntering)
-    {
-		if (isEntering) {
-			colorGrading.temperature.value = 100f;
-			colorGrading.tint.value = 60f;
+    public IEnumerator BoostPostProcessingSettings(bool isEntering)
+    {                   //boost a girerken ve çıkarkenki vignette ve color grading ayarlamaları burada yapılıyor
+        Debug.Log("enter vignette");
+        if (isEntering)
+        {
+            //color grading settings for starting boost
+            colorGrading.temperature.value = 100f;
+            colorGrading.tint.value = 60f;
             colorGrading.saturation.value = 10f;
 
-			//vignette.color.value = vignetteNewColor;
+            //vignette.color.value = vignetteNewColor;
 
-			yield return new WaitForSeconds (vignetteColorTimer);
+            yield return new WaitForSeconds(colorGradingTimer);
 
-			colorGrading.temperature.value = 50f;
-			colorGrading.tint.value = 25f;
-			colorGrading.saturation.value = 50f;
+            //color grading settings during boost
+            colorGrading.temperature.value = 100f;
+            colorGrading.tint.value = 100f;
+            colorGrading.saturation.value = -100f;
+            colorGrading.contrast.value = 100f;
 
-			//vignette.color.value = vignetteOldColor;
-			while (vignette.intensity.value < 0.35f) {
-				vignette.intensity.value += vignetteChange;
-				yield return new WaitForSeconds (vignetteIntensityTimer);
-			}
-		} else {
-			colorGrading.temperature.value = 0f;
-			colorGrading.tint.value = 0f;
-			colorGrading.saturation.value = 0f;
+            //vignette settings during boost
+            while (vignette.intensity.value > 0f)
+            {
+                vignette.intensity.value -= vignetteChange;
+                yield return new WaitForSeconds(vignetteIntensityTimer);
+            }
+        }
+        else
+        {
+            //color grading settings after exiting from boost & initial vignette settings
+            colorGrading.temperature.value = 0f;
+            colorGrading.tint.value = 0f;
+            colorGrading.saturation.value = 0f;
 
-			while (vignette.intensity.value > 0.25f) {
-				vignette.intensity.value -= vignetteChange;
-				yield return new WaitForSeconds (vignetteIntensityTimer);
-			}
-		}
-	}
+            //vignette settings after exiting from boost & initial vignette settings
+            while (vignette.intensity.value < 0.25f)
+            {
+                vignette.intensity.value += vignetteChange;
+                yield return new WaitForSeconds(vignetteIntensityTimer);
+            }
+        }
+    }
 }
 
 
