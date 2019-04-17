@@ -1538,8 +1538,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8294d7c6c5ec4dfeb3b2c1a5ed9b2cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OrthographicUpperSize: 0
-  OrthographicLowerSize: 0
+  OrthographicUpperSize: 90
+  OrthographicLowerSize: 55
 --- !u!114 &546899198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9400,7 +9400,7 @@ PrefabInstance:
     - target: {fileID: 3305468092750085107, guid: 4cb7a159b3a284f2eb54d3d7bc5d384b,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4cb7a159b3a284f2eb54d3d7bc5d384b, type: 3}

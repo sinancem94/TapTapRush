@@ -161,7 +161,7 @@ public class Platform : MonoBehaviour
         BlockNumberInPlatformTiles = 30;
 
         boostTimer = 0f;
-        boostTime = 10f;
+        boostTime = 8f;
         boostLimit = 12f;
 
         CreatePlatformAccordingToLevel();
@@ -249,10 +249,6 @@ public class Platform : MonoBehaviour
                 }
             }
 
-            /*if (Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, 0f)) //kaycak bloğa karar veriyor. MoveTile de kayar kaymaz yapılıyor artık
-            {
-                blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
-            }*/
         }
     }
 

@@ -13,7 +13,8 @@ public class BoostScript : MonoBehaviour
 	//public Color newVignetteColor;
 	//public Color oldVignetteColor;
 
-	private void Start(){
+	private void Start()
+    {
         boostParticleSystem = (BoostParticleSystem)FindObjectOfType(typeof(BoostParticleSystem));
 		postProcessingChange = (PostProcessingChange)FindObjectOfType (typeof(PostProcessingChange));
 		boreBoostEffects = (BoreBoostEffects)FindObjectOfType (typeof(BoreBoostEffects));
@@ -22,10 +23,10 @@ public class BoostScript : MonoBehaviour
 
 
 
-     public void StartBoost(float timeChangeSpeed)
+    public void StartBoost(float timeChangeSpeed)
     {
-        //  badThingsBoostEffect.nightmareRadius (10f);
-        StartCoroutine(SlowTime(timeChangeSpeed, true));
+        Platform.instance.SetBoost(true);
+        StartCoroutine(SlowTime(timeChangeSpeed));
         //explosionParticleSys.gameObject.SetActive (true);
         boostParticleSystem.EnteringBoost();
         StartCoroutine(postProcessingChange.BoostPostProcessingSettings(true));
@@ -37,7 +38,8 @@ public class BoostScript : MonoBehaviour
 
     public void StopBoost(float timeChangeSpeed)
     {
-        StartCoroutine(SlowTime(timeChangeSpeed, false));
+        Platform.instance.SetBoost(false);
+        StartCoroutine(SlowTime(timeChangeSpeed));
         //explosionParticleSys.gameObject.SetActive (false);
         boostParticleSystem.ExitingBoost();
         StartCoroutine(postProcessingChange.BoostPostProcessingSettings(false));
@@ -46,13 +48,9 @@ public class BoostScript : MonoBehaviour
         //badThingsBoostEffect.nightmareRadius (1f);
 		boreBoostEffects.boreExitsFromBoost(); 									// only for testing animation right now.
     }
-    private IEnumerator SlowTime(float changeSpeed, bool isStarted)
-    {
-        if(isStarted)
-        {
-            Platform.instance.SetBoost(true); // setted true if start boost called this
-        }
 
+    private IEnumerator SlowTime(float changeSpeed)
+    {
         while(Time.timeScale > 0.4f)
         {
             Time.timeScale = Mathf.MoveTowards(Time.timeScale, 0.3f, Time.deltaTime * changeSpeed);
@@ -70,11 +68,6 @@ public class BoostScript : MonoBehaviour
         }
         Time.timeScale = 1f;
 
-        if(!isStarted)
-        {
-            Platform.instance.SetBoost(false); //Setted False after time speeds again
-        }
-          
-        StopCoroutine(SlowTime(changeSpeed,isStarted));
+        StopCoroutine(SlowTime(changeSpeed));
     }
 }

@@ -108,7 +108,7 @@ public class DynamicCameraMovement
                 Camera.main.fieldOfView = camSize;
             }*/
 
-            yield return new WaitForSeconds(0.001f);
+            yield return new WaitForSeconds(0.0001f);
         }
     }
 
@@ -117,12 +117,12 @@ public class DynamicCameraMovement
     {
         if(!Mathf.Approximately(currentCamSize, newCamSize))
         {
-            float delta = (newCamSize > currentCamSize) ? (newCamSize / currentCamSize) * 0.1f : (currentCamSize / newCamSize) *  0.1f;
+            float delta = (newCamSize > currentCamSize) ? (newCamSize / currentCamSize) * 0.15f : (currentCamSize / newCamSize) *  0.15f;
 
             return Mathf.MoveTowards(currentCamSize, newCamSize, delta);
         }
 
-        return 0;
+        return currentCamSize;
     }
 
    /* float ChangeSizeTo(float direction, float changeSize)
