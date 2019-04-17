@@ -38,7 +38,7 @@ public class Platform : MonoBehaviour
     private float distance; //bi sonraki bloğun gelceği y mesafesi.  habire artıyor
     public float distBetweenBlock; //bloklar arası x mesafesi
 
-    public float[] BlockPos; // blokların oluşailceği pozisyonlar
+    public float[] BlockPos; // blokların oluşabilceği pozisyonlar
 
     private int BlockNumberInPlatformTiles; //Platform tiles listesinde kaç blok olacağı
 
