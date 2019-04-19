@@ -14,6 +14,7 @@ public class Runner : MonoBehaviour
     //private Vector3 toPos;
 
    // private bool isBoost;
+	public Animator animator;
 
     private SpriteRenderer sprite;
 
@@ -45,6 +46,7 @@ public class Runner : MonoBehaviour
             {
                 speed = Platform.instance.straightRoadLenght * CharacterSpeed;              //burası if statementın dışındaydı aşağı aldım boosttan sonra bore kosmaya baslayabilsin diye
                 this.transform.Translate(0f, speed * Time.deltaTime, 0f, Space.World);
+				animator.SetFloat ("speed", speed);
             }
 
         }
