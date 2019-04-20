@@ -54,7 +54,10 @@ public class Block : MonoBehaviour
         //Blokların ortaya geçince parlaması için..
         if (Mathf.Approximately(this.transform.position.x, 0) && !isShined)
         {
-            if (outlineSize < 10f)
+
+			StartCoroutine (scaleDownBlock (true, 0.75f));
+
+           /* if (outlineSize < 10f)																burayla
             {
                 outlineSize += 0.5f;
                 BlockSprite.material.SetFloat("_OutlineSize", outlineSize);
@@ -62,8 +65,8 @@ public class Block : MonoBehaviour
             else //if outlineSize >= 10
             {
                 isShined = true;
-                BlockSprite.material.SetFloat("_OutlineSize", 10);
-            }
+                BlockSprite.material.SetFloat("_OutlineSize", 10);									burası arası outline size kullanılmayacağı için çıkartıldı
+            }*/
         }
     }
 
@@ -84,7 +87,8 @@ public class Block : MonoBehaviour
             }
         }
 
-        outlineSize = 1;
+		StartCoroutine (scaleDownBlock (false, 1.85f));
+        outlineSize = 1f;
         BlockSprite.material.SetFloat("_OutlineSize", outlineSize);
         isShined = false;
     }
@@ -102,4 +106,18 @@ public class Block : MonoBehaviour
     {
         StartCoroutine(blockAnimation.Fall(fallTo));
     }
+
+	IEnumerator scaleDownBlock(bool isScaledDown, float scaledTo){
+		if (isScaledDown) {
+			while (transform.localScale.x > scaledTo) {
+				transform.localScale -= new Vector3 (0.1f, 0.1f, 0);
+				yield return new WaitForSeconds (1f);
+			}
+			BlockSprite.material.SetFloat ("_OutlineSize", 0);
+		} else {
+			transform.localScale = new Vector3 (1.95f,1.95f,0);
+
+		}
+
+	}
 }
