@@ -25,7 +25,7 @@ public class BoostScript : MonoBehaviour
 
 
 
-    public void StartBoost(float timeChangeSpeed)
+    public void StartBoost(float timeChangeSpeed) //Phase 1 initiate
     {
         Platform.instance.SetBoost(true);
 
@@ -33,11 +33,22 @@ public class BoostScript : MonoBehaviour
 
         //explosionParticleSys.gameObject.SetActive (true);
         boostParticleSystem.EnteringBoost();
+
         StartCoroutine(postProcessingChange.BoostPostProcessingSettings(true));
 
         //  StartCoroutine (boreBoostEffects.scaleBore (true));  //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
-        //boreBoostEffects.stopBore ();
-		boreBoostEffects.boreStartsSliding();   								// only for testing animation right now.
+        //boreBoostEffects.stopBore ();     // only for testing animation right now.
+
+
+        boreBoostEffects.BoreEntersBoost();
+
+        //boreBoostEffects.BoreStartsSliding();   								
+    }
+
+
+    public void BoostPhaseOneFinished()
+    {
+
     }
 
 
@@ -47,12 +58,14 @@ public class BoostScript : MonoBehaviour
         //explosionParticleSys.gameObject.SetActive (false);
 
         boostParticleSystem.ExitingBoost();
+
         StartCoroutine(postProcessingChange.BoostPostProcessingSettings(false));
+
         badThingsBoostEffect.badThingsBoostExit(Platform.instance.runner.transform.position.y);
 
         //StartCoroutine (boreBoostEffects.scaleBore (false));   //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
         //badThingsBoostEffect.nightmareRadius (1f);
-		boreBoostEffects.boreExitsFromBoost(); 									// only for testing animation right now.
+		boreBoostEffects.BoreExitsFromBoost(); 									// only for testing animation right now.
     }
 
 

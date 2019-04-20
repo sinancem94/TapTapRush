@@ -1109,13 +1109,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3d022568bec944b2be5e113d9bad4d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  block: {fileID: 2125352534}
-  runner: {fileID: 2120997774}
-  lines: {fileID: 196421827}
-  road: {fileID: 1036371628}
-  background: {fileID: 570162057}
-  Nightmare: {fileID: 1460985066}
-  Shooter: {fileID: 976405100}
+  block: {fileID: 0}
+  runner: {fileID: 0}
+  lines: {fileID: 0}
+  road: {fileID: 0}
+  background: {fileID: 0}
+  Nightmare: {fileID: 0}
+  Shooter: {fileID: 0}
   platfotmTiles: []
   blockScripts: []
   Shooters: []
@@ -1538,8 +1538,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8294d7c6c5ec4dfeb3b2c1a5ed9b2cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OrthographicUpperSize: 90
-  OrthographicLowerSize: 55
+  OrthographicUpperSize: 0
+  OrthographicLowerSize: 0
 --- !u!114 &546899198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2255,12 +2255,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0474c7a9e8aae44e19d81348d07feb54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &976405100 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3305468092750085104, guid: 4cb7a159b3a284f2eb54d3d7bc5d384b,
-    type: 3}
-  m_PrefabInstance: {fileID: 3305468092921117084}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &976405101 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3305468092750085105, guid: 4cb7a159b3a284f2eb54d3d7bc5d384b,
@@ -8951,9 +8945,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05b49699d02abc14db51db3a6e65a145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vignetteChange: 0.2
-  vignetteIntensityTimer: 0.5
-  colorGradingTimer: 0.5
+  vignetteChange: 0
+  vignetteIntensityTimer: 0
+  colorGradingTimer: 0
 --- !u!1 &2104914254
 GameObject:
   m_ObjectHideFlags: 0

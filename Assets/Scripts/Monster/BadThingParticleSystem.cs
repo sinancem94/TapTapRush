@@ -32,6 +32,6 @@ public class BadThingParticleSystem : MonoBehaviour
           this.transform.Translate(0f, spd * Time.deltaTime, 0f, Space.World);
     }
 
-    public void StopOrStartMonster
+    //public void StopOrStartMonster
 
 }

@@ -33,8 +33,10 @@ public class Platform : MonoBehaviour
     public List<GameObject> platfotmTiles; //blokları barındıran liste
     public List<Block> blockScripts;
     public GameObject[] Shooters;
-        
+
     //Parameters
+    public bool inputLock; //Used when boost is finished and animation begins and various states
+
     private float distance; //bi sonraki bloğun gelceği y mesafesi.  habire artıyor
     public float distBetweenBlock; //bloklar arası x mesafesi
 
@@ -171,6 +173,8 @@ public class Platform : MonoBehaviour
         SetBoost(false);
 
         uI.OpenHomePage(); //After arranging everything open uı panel for starting game
+
+        inputLock = false;
     }
 
 
@@ -199,7 +203,8 @@ public class Platform : MonoBehaviour
     {
         if (game.GetGameState() == GameHandler.GameState.GameRunning)
         {
-            ınput.directionGetter();
+            if(!inputLock)
+                ınput.directionGetter();
 
             if (ınput.directions.Count != 0)
             {

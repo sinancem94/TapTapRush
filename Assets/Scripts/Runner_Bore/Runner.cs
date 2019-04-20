@@ -8,15 +8,13 @@ public class Runner : MonoBehaviour
 {
 
     private float speed;
-   // private float timer;
-   // private float gameTime;
+    // private float timer;
+    // private float gameTime;
 
     //private Vector3 toPos;
 
-   // private bool isBoost;
-	public Animator animator;
-
-    private SpriteRenderer sprite;
+    // private bool isBoost;
+    public Animator animator;
 
     public float CharacterSpeed;
 
@@ -29,11 +27,13 @@ public class Runner : MonoBehaviour
         //timer = 4f;
         //toPos = Vector3.zero;
        // isBoost = false;
-        sprite = this.GetComponent<SpriteRenderer>();
+
+        animator = this.GetComponent<Animator>();
+
         //CharacterSpeed = Data.charSpeed;
 
-      //  boostLimit = 5f;
-      //  boostCounter = 0f;
+        //  boostLimit = 5f;
+        //  boostCounter = 0f;
         //this.transform.position = Platform.instance.platfotmTiles[5].transform.position; // start from 3rd tile // platform da yapılıyor ki aradaki fark hemen hesaplanabilsin
     }
 
