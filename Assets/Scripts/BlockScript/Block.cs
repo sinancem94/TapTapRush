@@ -55,7 +55,7 @@ public class Block : MonoBehaviour
         if (Mathf.Approximately(this.transform.position.x, 0) && !isShined)
         {
 
-			StartCoroutine (scaleDownBlock (0.75f));
+			StartCoroutine (scaleDownBlock (true, 0.75f));
 
            /* if (outlineSize < 10f)																burayla
             {
@@ -87,6 +87,7 @@ public class Block : MonoBehaviour
             }
         }
 
+		StartCoroutine (scaleDownBlock (false, 1.85f));
         outlineSize = 1f;
         BlockSprite.material.SetFloat("_OutlineSize", outlineSize);
         isShined = false;
@@ -106,11 +107,17 @@ public class Block : MonoBehaviour
         StartCoroutine(blockAnimation.Fall(fallTo));
     }
 
-	IEnumerator scaleDownBlock(float scaledTo){
-		while (transform.localScale.x > scaledTo) {
-			transform.localScale -= new Vector3(0.1f,0.1f,0);
-			yield return new WaitForSeconds (1f);
+	IEnumerator scaleDownBlock(bool isScaledDown, float scaledTo){
+		if (isScaledDown) {
+			while (transform.localScale.x > scaledTo) {
+				transform.localScale -= new Vector3 (0.1f, 0.1f, 0);
+				yield return new WaitForSeconds (1f);
+			}
+			BlockSprite.material.SetFloat ("_OutlineSize", 0);
+		} else {
+			transform.localScale = new Vector3 (1.95f,1.95f,0);
+
 		}
-		BlockSprite.material.SetFloat("_OutlineSize", 0);
+
 	}
 }
