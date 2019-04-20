@@ -147,7 +147,7 @@
         {
             levelBlockType = LevelBlockType.Mixed;
             levelWidth = LevelWidth.Three;
-            isBoostAllowed = false;
+            isBoostAllowed = true;
             levelFinishtype = LevelFinishtype.None;   
         }
         else if ((int)(LevelNumber / 3) == 0) // If first three level

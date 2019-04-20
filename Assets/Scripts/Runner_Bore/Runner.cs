@@ -42,7 +42,7 @@ public class Runner : MonoBehaviour
         if (Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
         {
             //&& !Platform.instance.isBoost aşağı bu kısım eklendi boreman boosttayken durabilsin diye.
-            if (Platform.instance.straightRoadLenght >= 1f && !Platform.instance.isBoost)// && !Mathf.Approximately(platform.transform.GetChild(platform.GetComponent<Platform>().blockToSlide).position.y,0))
+            if (Platform.instance.straightRoadLenght >= 1f )// && !Mathf.Approximately(platform.transform.GetChild(platform.GetComponent<Platform>().blockToSlide).position.y,0))
             {
                 speed = Platform.instance.straightRoadLenght * CharacterSpeed;              //burası if statementın dışındaydı aşağı aldım boosttan sonra bore kosmaya baslayabilsin diye
                 this.transform.Translate(0f, speed * Time.deltaTime, 0f, Space.World);

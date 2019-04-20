@@ -27,8 +27,11 @@ public class BadThingParticleSystem : MonoBehaviour
     }
 
     //When distance between Camera and bore move particle system to closer
-	public void NightmareChase(float spd)
+	private void NightmareChase(float spd)
     {
           this.transform.Translate(0f, spd * Time.deltaTime, 0f, Space.World);
     }
+
+    public void StopOrStartMonster
+
 }
