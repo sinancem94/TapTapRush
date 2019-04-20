@@ -162,7 +162,7 @@ public class Platform : MonoBehaviour
 
         boostTimer = 0f;
         boostTime = 8f;
-        boostLimit = 12f;
+        boostLimit = 10f;
 
         CreatePlatformAccordingToLevel();
 
@@ -189,8 +189,9 @@ public class Platform : MonoBehaviour
             pushBlockForward = (pushBlockForward + 1 < platfotmTiles.Count) ? pushBlockForward += 1 : pushBlockForward = 0;
         }
 
-        //Herhangi bir dragon arkada kaldıysa yerini tekrar hesaplayıp ileri at.
-        PlaceDragons();
+        //en sondaki engel arkada kaldıysa tüm engellerin yerini tekrar hesaplayıp ileri at.
+        if(Shooters[Shooters.Length -1].transform.position.y < runner.transform.position.y)
+            PlaceObstacles();
     }
 
     // kaycak bloğa karar ver, input al, input varsa ona göre haraket et, yol hesapla, boost moda giriyor mu ona bak
@@ -231,7 +232,7 @@ public class Platform : MonoBehaviour
                 boostTimer = 0f;
                 gainedPoint += 1;
 
-                Boost.StartBoost(20f);
+                Boost.StartBoost(15f);
 
                 GiveMessage(2f, "RUN!!!");
                 Debug.LogWarning("BOOST !! at : " + Time.unscaledTime);
@@ -370,7 +371,7 @@ public class Platform : MonoBehaviour
     }
 
 
-    public void PlaceDragons()
+    public void PlaceObstacles()
     {
         int lowerYLimit = 10;
         int upperYLimit = 20;

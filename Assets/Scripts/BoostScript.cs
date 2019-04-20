@@ -10,6 +10,8 @@ public class BoostScript : MonoBehaviour
 	private BoreBoostEffects boreBoostEffects;
 	private BadThingsBoostEffect badThingsBoostEffect;
 
+    private Coroutine timeSlower;
+
 	//public Color newVignetteColor;
 	//public Color oldVignetteColor;
 
@@ -26,10 +28,13 @@ public class BoostScript : MonoBehaviour
     public void StartBoost(float timeChangeSpeed)
     {
         Platform.instance.SetBoost(true);
-        StartCoroutine(SlowTime(timeChangeSpeed));
+
+        timeSlower =  StartCoroutine(SlowTime(timeChangeSpeed));
+
         //explosionParticleSys.gameObject.SetActive (true);
         boostParticleSystem.EnteringBoost();
         StartCoroutine(postProcessingChange.BoostPostProcessingSettings(true));
+
         //  StartCoroutine (boreBoostEffects.scaleBore (true));  //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
         //boreBoostEffects.stopBore ();
 		boreBoostEffects.boreStartsSliding();   								// only for testing animation right now.
@@ -38,16 +43,23 @@ public class BoostScript : MonoBehaviour
 
     public void StopBoost(float timeChangeSpeed)
     {
-        Platform.instance.SetBoost(false);
-        StartCoroutine(SlowTime(timeChangeSpeed));
+        timeSlower = StartCoroutine(SlowTime(timeChangeSpeed,true));
         //explosionParticleSys.gameObject.SetActive (false);
+
         boostParticleSystem.ExitingBoost();
         StartCoroutine(postProcessingChange.BoostPostProcessingSettings(false));
         badThingsBoostEffect.badThingsBoostExit(Platform.instance.runner.transform.position.y);
-        //  StartCoroutine (boreBoostEffects.scaleBore (false));  //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
+
+        //StartCoroutine (boreBoostEffects.scaleBore (false));   //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
         //badThingsBoostEffect.nightmareRadius (1f);
 		boreBoostEffects.boreExitsFromBoost(); 									// only for testing animation right now.
     }
+
+
+    //Defined two SlowTime corountines because if isBoost setted to false directly before time slowed and information of boost end passed to player. 
+    //Player will not be able to understand boost end & will die.
+
+    //Just slows time does not change any parameter
 
     private IEnumerator SlowTime(float changeSpeed)
     {
@@ -68,6 +80,37 @@ public class BoostScript : MonoBehaviour
         }
         Time.timeScale = 1f;
 
-        StopCoroutine(SlowTime(changeSpeed));
+        StopCoroutine(timeSlower);
     }
+
+
+    //This is used when boost is Ended if boostEnd parameter is true at the end of the corountine isBoost is setted to false.
+
+    private IEnumerator SlowTime(float changeSpeed,bool boostEnd)
+    {
+        while (Time.timeScale > 0.4f)
+        {
+            Time.timeScale = Mathf.MoveTowards(Time.timeScale, 0.3f, Time.deltaTime * changeSpeed);
+            yield return new WaitForSeconds(.01f);
+        }
+
+        Time.timeScale = 0.4f;
+
+        yield return new WaitForSeconds(.4f);
+
+        while (Time.timeScale < 1f)
+        {
+            Time.timeScale = Mathf.MoveTowards(Time.timeScale, 1.1f, Time.deltaTime * changeSpeed);
+            yield return new WaitForSeconds(.01f);
+        }
+        Time.timeScale = 1f;
+
+        if(boostEnd)
+        {
+            Platform.instance.SetBoost(false);
+        }
+
+        StopCoroutine(timeSlower);
+    }
+
 }

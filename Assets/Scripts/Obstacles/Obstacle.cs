@@ -14,6 +14,8 @@ public abstract class Obstacle : MonoBehaviour
     public bool EnteredStart;
     public bool isObstacleLooping;
 
+    private Coroutine loop;
+
     private SpriteRenderer s_renderer;
 
     void Start()
@@ -29,18 +31,21 @@ public abstract class Obstacle : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!isObstacleLooping && s_renderer.isVisible) 
+        if(!Platform.instance.isBoost)
         {
-            //Debug.Log("Started shooting fireball");
-            isObstacleLooping = true;
-            StartCoroutine(ObstacleLoop());
-        }
-        else if(isObstacleLooping && !s_renderer.isVisible)
-        {
-            //Debug.Log("Stopped shooting fireball");
-            isObstacleLooping = false;
-            StopCoroutine(ObstacleLoop());
-            this.gameObject.SetActive(false);
+            if (!isObstacleLooping && s_renderer.isVisible)
+            {
+                //Debug.Log("Started shooting fireball");
+                isObstacleLooping = true;
+                loop = StartCoroutine(ObstacleLoop());
+            }
+            else if (isObstacleLooping && !s_renderer.isVisible)
+            {
+                //Debug.Log("Stopped shooting fireball");
+                isObstacleLooping = false;
+                StopCoroutine(loop);
+                this.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -59,9 +64,10 @@ public abstract class Obstacle : MonoBehaviour
     {
         if (isObstacleLooping)
         {
-            Debug.Log("Stopped shooting fireball");
+            Debug.Log("Obstacle stopped looping");
             isObstacleLooping = false;
-            StopCoroutine(ObstacleLoop());
+            if(loop != null)
+                StopCoroutine(loop);
         }
     }
 
