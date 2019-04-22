@@ -94,7 +94,7 @@ public class UIHomePage : MonoBehaviour
             SetLevelInfoText();
             PlayerPrefs.SetFloat("BoreSpeed", float.Parse(charSpeed.text));
             Data.charSpeed = PlayerPrefs.GetFloat("BoreSpeed");
-            Platform.instance.SetSpeeds();
+            Platform.instance.SetBoreSpeed();
         }
     }
 

@@ -409,14 +409,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 196421827}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 3, z: 1}
+  m_LocalScale: {x: 0.22727273, y: 0.15, z: 1}
   m_Children:
   - {fileID: 565386119}
   - {fileID: 392116944}
-  m_Father: {fileID: 369643770}
-  m_RootOrder: 1
+  m_Father: {fileID: 1036371629}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &196421829
 SpriteRenderer:
@@ -1066,9 +1066,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2125352536}
-  - {fileID: 196421828}
-  - {fileID: 1036371629}
+  - {fileID: 369911509}
   - {fileID: 976405101}
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -1109,28 +1107,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3d022568bec944b2be5e113d9bad4d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Blocks: {fileID: 0}
   block: {fileID: 0}
-  runner: {fileID: 0}
-  lines: {fileID: 0}
-  road: {fileID: 0}
+  Runner: {fileID: 0}
+  Lines: {fileID: 0}
+  Road: {fileID: 0}
+  RoadSprite: {fileID: 0}
   background: {fileID: 0}
   Nightmare: {fileID: 0}
   Shooter: {fileID: 0}
   platfotmTiles: []
   blockScripts: []
   Shooters: []
+  inputLock: 0
   distBetweenBlock: 0
+  blockScale: {x: 0, y: 0}
   BlockPos: []
   blockToSlide: 0
   level_p: 0
   passedBlockNumber: 0
   gainedPoint: 0
   distanceBtwRunner: 0
-  isBoost: 0
   boostTime: 0
   pushBlockForward: 0
   straightRoadLenght: 0
   initialStraightRoadLenght: 0
+--- !u!1 &369911508
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 369911509}
+  m_Layer: 0
+  m_Name: Road
+  m_TagString: Road
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &369911509
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369911508}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1036371629}
+  - {fileID: 997528299}
+  m_Father: {fileID: 369643770}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &392116943
 GameObject:
   m_ObjectHideFlags: 0
@@ -2261,6 +2294,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3305468092921117084}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &997528298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 997528299}
+  m_Layer: 0
+  m_Name: Blocks
+  m_TagString: Blocks
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &997528299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 997528298}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2125352536}
+  m_Father: {fileID: 369911509}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1002752599
 GameObject:
   m_ObjectHideFlags: 0
@@ -2346,8 +2410,8 @@ GameObject:
   - component: {fileID: 1036371629}
   - component: {fileID: 1036371630}
   m_Layer: 0
-  m_Name: Road
-  m_TagString: Road
+  m_Name: RoadSprite
+  m_TagString: RoadSprite
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2362,9 +2426,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 4.4, y: 20, z: 1}
-  m_Children: []
-  m_Father: {fileID: 369643770}
-  m_RootOrder: 2
+  m_Children:
+  - {fileID: 196421828}
+  m_Father: {fileID: 369911509}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1036371630
 SpriteRenderer:
@@ -9171,6 +9236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 2120997778}
+  spriteRenderer: {fileID: 0}
 --- !u!61 &2120997780
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9232,7 +9298,7 @@ GameObject:
   - component: {fileID: 2125352538}
   m_Layer: 11
   m_Name: Block
-  m_TagString: Block
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9296,7 +9362,7 @@ Transform:
   m_LocalPosition: {x: 0, y: -8, z: 0}
   m_LocalScale: {x: 0.0001, y: 0.0001, z: 0.0001}
   m_Children: []
-  m_Father: {fileID: 369643770}
+  m_Father: {fileID: 997528299}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2125352537
@@ -9318,7 +9384,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2125352534}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1959f43ba4ddd4c95903a7182249a34c, type: 3}
   m_Name: 

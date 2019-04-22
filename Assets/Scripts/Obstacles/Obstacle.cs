@@ -31,21 +31,19 @@ public abstract class Obstacle : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(!Platform.instance.isBoost)
+
+        if (!isObstacleLooping && s_renderer.isVisible && Platform.instance.GetBoostPhase() == BoostScript.BoostPhase.None)
         {
-            if (!isObstacleLooping && s_renderer.isVisible)
-            {
-                //Debug.Log("Started shooting fireball");
-                isObstacleLooping = true;
-                loop = StartCoroutine(ObstacleLoop());
-            }
-            else if (isObstacleLooping && !s_renderer.isVisible)
-            {
-                //Debug.Log("Stopped shooting fireball");
-                isObstacleLooping = false;
-                StopCoroutine(loop);
-                this.gameObject.SetActive(false);
-            }
+            Debug.Log("Started shooting fireball");
+            isObstacleLooping = true;
+            loop = StartCoroutine(ObstacleLoop());
+        }
+        else if ((isObstacleLooping && !s_renderer.isVisible) || (isObstacleLooping && Platform.instance.GetBoostPhase() != BoostScript.BoostPhase.None))
+        {
+            Debug.Log("Stopped shooting fireball");
+            isObstacleLooping = false;
+            StopCoroutine(loop);
+            this.gameObject.SetActive(false);
         }
     }
 

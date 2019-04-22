@@ -36,8 +36,8 @@ public class BoostParticleSystem : MonoBehaviour
 
         float boostPos = Platform.instance.sizeHandler.GetWallPosition();
 
-        Vector3 boostParticlePosRight = new Vector3(boostPos, Platform.instance.runner.transform.position.y + 10f, 0);
-        Vector3 boostParticlePosLeft = new Vector3(-boostPos, Platform.instance.runner.transform.position.y + 10f, 0);
+        Vector3 boostParticlePosRight = new Vector3(boostPos, Platform.instance.Runner.transform.position.y + 10f, 0);
+        Vector3 boostParticlePosLeft = new Vector3(-boostPos, Platform.instance.Runner.transform.position.y + 10f, 0);
 
         gameObjectRight.transform.position = boostParticlePosRight;
         gameObjectLeft.transform.position = boostParticlePosLeft;

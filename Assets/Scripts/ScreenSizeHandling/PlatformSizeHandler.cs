@@ -38,10 +38,10 @@ public class PlatformSizeHandler : SizeHandler{
         runner.localScale = new Vector3(blockScale * 2 / 4, blockScale * 2 / 4, 1f);
         //return the distance between blocks. 3f for 3 lines, 5f for 5 lines
         if(is5Line){
-            return roadWidth / 5f;//3f;
+            return roadWidth / 5f;//3f; //return distance btwn blocks
         }
         else{
-            return roadWidth / 3f;
+            return roadWidth / 3f; //return distance btwn blocks
         }
 
 	}

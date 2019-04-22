@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DynamicCameraMovement
 {
-    public Coroutine DynamicCameraSizer;
+    private Coroutine DynamicCameraSizer;
 
     private MonoBehaviour MainCam;
     private Camera camera;

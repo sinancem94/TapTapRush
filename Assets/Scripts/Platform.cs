@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 //Inputa sahip yani gelen inputları o alıyor ve oyunu yönetiyor, GameHandler a sahip yani game state i yönetiyor
@@ -22,11 +21,13 @@ public class Platform : MonoBehaviour
 
 
     //GameObjects
+    public GameObject Blocks; //Pooled Blocks Parent
     public GameObject block; //kırmızı bloklar
-    public GameObject runner; //koşan arkadaş artık neyse
-    public GameObject lines;
-    public GameObject road;//düz yol 
-    public GameObject background; //rengi değişen bok
+    public GameObject Runner; //koşan arkadaş artık neyse
+    public GameObject Lines;
+    public GameObject Road; //Block, RoadSprite ve lines ın Parent ı olan GameObject.
+    public GameObject RoadSprite;//Yol sprite ı. Karanlık World için gri düz bir kare. Road un ilk çocuğu 
+    public GameObject background; //rengi değişen arkaPlan. Runner ın child ı.
     public GameObject Nightmare;
     public GameObject Shooter;
 
@@ -35,10 +36,11 @@ public class Platform : MonoBehaviour
     public GameObject[] Shooters;
 
     //Parameters
-    public bool inputLock; //Used when boost is finished and animation begins and various states
+    public bool inputLock; //Used when boost is finished and animation begins && maybe in other various states
 
     private float distance; //bi sonraki bloğun gelceği y mesafesi.  habire artıyor
-    public float distBetweenBlock; //bloklar arası x mesafesi
+    public float distBetweenBlock; //bloklar arası x ve y mesafesi
+    public Vector2 blockScale;
 
     public float[] BlockPos; // blokların oluşabilceği pozisyonlar
 
@@ -49,29 +51,32 @@ public class Platform : MonoBehaviour
     public int level_p;
     public int passedBlockNumber;
 
+    //For block positioning
     private int exRand = 3;
     private int sameLine = 0;
 
-    private int point;
-    public int gainedPoint;
+    private int point; //Total point
+    public int gainedPoint; //Point that player gains under circumtances
 
     public float distanceBtwRunner;
 
     private bool boostLock; //since isBoost is changed in BoostScript, boostLock is used for locking update statement where boost started. Bir kere girsin diye
 
-    public bool isBoost; // when boost mode activates set to true otherwise false
+    private BoostScript.BoostPhase boostPhase; //Used for setting boost phases since behaviour will be different in each phase need more than just a bool
     private bool isBoostAllowed;
 
     public float boostTime;
     private float boostTimer;
     private float boostLimit;
 
-    public int pushBlockForward; // sıranın en sonuna atılcak blok. en arkada kalan blok
+    public int pushBlockForward; //En arkada kalan blok yani o sırada sıranın en sonuna atılcak blok. 
 
     private bool is5Line;
 
     public float straightRoadLenght;
     public float initialStraightRoadLenght; // for refence point of starting size
+
+    private Vector3 offsetRunnerBtwRoadSprite;
 
     public static Platform instance;
 
@@ -88,11 +93,8 @@ public class Platform : MonoBehaviour
     private void Start()
     {
         game = new GameHandler(GameHandler.GameState.BeginingPage);
-
         GameData = new GetData();
-
         ınput = new InputManager();
-
         sizeHandler = new PlatformSizeHandler();
 
         level_p = GetCurrentLevel();
@@ -101,45 +103,33 @@ public class Platform : MonoBehaviour
         Boost = (BoostScript)FindObjectOfType(typeof(BoostScript));
         uI = (UIHandler)FindObjectOfType(typeof(UIHandler));
         uIGame = SetUIGameHandler();
-        
+
         //////////////
         //If gameobjects not setted from editor find with tag.
-        if(!block)
-            block = GameObject.FindWithTag("Block");
+        if (!Road)
+            Road = GameObject.FindWithTag("Road");
 
-        if(!runner)
-            runner = GameObject.FindWithTag("Runner");
+        if (!Blocks)
+            Blocks = GameObject.FindWithTag("Blocks");
 
-        if (!lines)
-            lines = GameObject.FindWithTag("Lines");
+        if (!block)
+            block = Blocks.transform.GetChild(0).gameObject;
 
-        if (!road)
-            road = GameObject.FindWithTag("Road");
+        if(!Runner)
+            Runner = GameObject.FindWithTag("Runner");
+
+        if (!Lines)
+            Lines = GameObject.FindWithTag("Lines");
+
+        if (!RoadSprite)
+            RoadSprite = GameObject.FindWithTag("RoadSprite");
 
         if (!background)
             background = GameObject.FindWithTag("Background");
 
         if (!Nightmare)
             Nightmare = GameObject.FindWithTag("Nightmare");
-        /////////////
-        /////////////  
-        //Do gameobject arragments if they exist.
-        if (background)
-            background.transform.position = new Vector3(0f, 6.5f, 0f);
-        else
-            Debug.LogError("Could not find GameObject Background");
-
-        if (lines)
-            lines.transform.position = new Vector2(0f, runner.transform.position.y + (lines.transform.GetChild(0).localScale.y / 3));//(5 * distBetweenBlock));
-        else
-            Debug.LogError("Could not find GameObject Background");
-
-        if(road)
-            road.transform.position = new Vector2(0f, runner.transform.position.y + (road.transform.localScale.y / 3));//(5 * distBetweenBlock));
-        else
-            Debug.LogError("Could not find GameObject Road");
-        //////////////
-
+     
 
         Shooters = GameObject.FindGameObjectsWithTag("Shooter");
 
@@ -168,9 +158,9 @@ public class Platform : MonoBehaviour
 
         CreatePlatformAccordingToLevel();
 
-        SetSpeeds(); //Set player speed from playerprefs.
+        SetBoreSpeed(); //Set player speed from playerprefs.
         //CreatePlatform();
-        SetBoost(false);
+        SetBoostPhase(BoostScript.BoostPhase.None);
 
         uI.OpenHomePage(); //After arranging everything open uı panel for starting game
 
@@ -181,20 +171,20 @@ public class Platform : MonoBehaviour
 
     private void LateUpdate()
     {
+        //Lines.transform.position = Runner.transform.position + offsetRunnerBtwRoadSprite;
+        RoadSprite.transform.position = Runner.transform.position + offsetRunnerBtwRoadSprite;
+
         //runnerla en arkada kalan blok arasındaki mesafe 10 bloğu geçerse giriyor buraya.
         //Onları ilerletmişken road ve lines da ileri atılıyor.
-        if (runner.transform.position.y >= platfotmTiles[pushBlockForward].transform.position.y + (10 * distBetweenBlock))
+        if (Runner.transform.position.y >= platfotmTiles[pushBlockForward].transform.position.y + (10 * distBetweenBlock))
         {
-            lines.transform.position = new Vector2(0f, runner.transform.position.y + (10 * distBetweenBlock));
-            road.transform.position = new Vector2(0f, runner.transform.position.y + (10 * distBetweenBlock));
-          
             platfotmTiles[pushBlockForward].transform.position = BlockPositioner(distBetweenBlock);
             blockScripts[pushBlockForward].SetBlock(levelManager.levelBlockType);
             pushBlockForward = (pushBlockForward + 1 < platfotmTiles.Count) ? pushBlockForward += 1 : pushBlockForward = 0;
         }
 
         //en sondaki engel arkada kaldıysa tüm engellerin yerini tekrar hesaplayıp ileri at.
-        if(Shooters[Shooters.Length -1].transform.position.y < runner.transform.position.y)
+        if(Shooters[Shooters.Length -1].transform.position.y < Runner.transform.position.y)
             PlaceObstacles();
     }
 
@@ -212,9 +202,9 @@ public class Platform : MonoBehaviour
                 MoveTile((int)ınput.dirr);
             }
 
-            straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera orthogonic size için uzaklık hesapla
+            straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - Runner.transform.position.y; // camera orthogonic size ve runner hızı için uzaklık hesapla
 
-            distanceBtwRunner = runner.transform.position.y - Nightmare.transform.position.y;
+            distanceBtwRunner = Runner.transform.position.y - Nightmare.transform.position.y;
 
             //////////////////////////////
             //Calculate if level passed or ended.
@@ -230,14 +220,14 @@ public class Platform : MonoBehaviour
 
             //////////////////////////////
             //Calculate if entered or exited boost
-            if (distanceBtwRunner > boostLimit && !boostLock && isBoostAllowed)
+            if (distanceBtwRunner > boostLimit && !boostLock && isBoostAllowed && boostPhase == BoostScript.BoostPhase.None)
             {
                 boostLock = true;
 
                 boostTimer = 0f;
                 gainedPoint += 1;
 
-                Boost.StartBoost(15f);
+                Boost.StartBoost();
 
                 GiveMessage(2f, "RUN!!!");
                 Debug.LogWarning("BOOST !! at : " + Time.unscaledTime);
@@ -249,7 +239,9 @@ public class Platform : MonoBehaviour
                 if(boostTimer >= boostTime)
                 {
                     boostLock = false;
-                    Boost.StopBoost(5f);
+                    inputLock = true;
+                    Boost.BoostFinish();
+
                     GiveMessage(2f, "SLOWDOWN");
                     Debug.LogWarning("Boost finished... at : " + Time.unscaledTime);
                 }
@@ -269,7 +261,7 @@ public class Platform : MonoBehaviour
             if (blockScripts[blockToSlide].type == BlockData.blockType.reverse) // eğer ters bloksa -1 le çarp ki ters yöne doğru gitsin
                 direction *= -1;
             
-            if (!isBoost)
+            if (boostPhase == BoostScript.BoostPhase.None)
                 toPos = platfotmTiles[blockToSlide].transform.position.x + (direction * distBetweenBlock); // nereye gitcek onu hesapla
             else
                 toPos = 0; //block will go to zero in either direction
@@ -280,7 +272,7 @@ public class Platform : MonoBehaviour
                 blockScripts[blockToSlide].Fall(new Vector2(direction, 0));
                 GameOver();
             }
-            else // eğer blockpos sınırları içindeyse bloğu haraket ettir
+            else // eğer blockPos sınırları içindeyse bloğu haraket ettir
             {
                 blockScripts[blockToSlide].MoveTile(toPos);
 
@@ -313,8 +305,10 @@ public class Platform : MonoBehaviour
     public void CreatePlatform() //Set initial Road and parameters
     {
         //Sizes are changed according to Screen 
-        is5Line = (levelManager.levelWidth == LevelManager.LevelWidth.Five) ? true : false; 
-        distBetweenBlock = sizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform,is5Line);
+        is5Line = (levelManager.levelWidth == LevelManager.LevelWidth.Five) ? true : false;
+        distBetweenBlock = sizeHandler.ArrangeSize(RoadSprite.transform, Lines.transform, block.transform, Runner.transform,is5Line);
+        blockScale = block.transform.localScale;
+
         //For 5 line mode
         if (is5Line)
         {
@@ -335,24 +329,26 @@ public class Platform : MonoBehaviour
         platfotmTiles.Clear();
         blockScripts.Clear();
 
+        //First add initial block that can be seen in editor.
         platfotmTiles.Add(block);
         blockScripts.Add(block.GetComponent<Block>());
 
-        //platfotmTiles[0].GetComponent<Block>().SetBlock();
-
-        int levelStartStraightLine = 5; // start from third block to give full road
-
         platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
+        blockScripts[blockScripts.Count - 1].enabled = true;
         blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
 
+        //platfotmTiles[0].GetComponent<Block>().SetBlock();
+
+        int levelStartStraightLine = 5; // start from third block to give full road at the beginning at level
 
         for (int i = 0; i < levelStartStraightLine; i++)
         {
             distance += distBetweenBlock;
-            platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
+            platfotmTiles.Add((GameObject)Instantiate(block, Blocks.transform));
             platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
 
             blockScripts.Add(platfotmTiles[platfotmTiles.Count - 1].GetComponent<Block>());
+            blockScripts[blockScripts.Count - 1].enabled = true;
             blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
         }
 
@@ -361,18 +357,21 @@ public class Platform : MonoBehaviour
 
         for (int i = 0; i < remainingBlock; i++)
         {
-            platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
+            platfotmTiles.Add((GameObject)Instantiate(block, Blocks.transform));
             platfotmTiles[platfotmTiles.Count - 1].transform.position = BlockPositioner(distBetweenBlock);
 
             blockScripts.Add(platfotmTiles[platfotmTiles.Count - 1].GetComponent<Block>());
+            blockScripts[blockScripts.Count - 1].enabled = true;
             blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
         }
 
-        runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner düz sıranın en sonunda başlıyor
+        Runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner düz sıranın en sonunda başlıyor
         blockToSlide = levelStartStraightLine + 1;
 
         initialStraightRoadLenght = 3 * distBetweenBlock;//platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
-        straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y;//initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
+        straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - Runner.transform.position.y;//initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
+
+        offsetRunnerBtwRoadSprite = RoadSprite.transform.position - Runner.transform.position;
     }
 
 
@@ -383,7 +382,7 @@ public class Platform : MonoBehaviour
 
         foreach(GameObject dragon in Shooters) 
         {
-            if(dragon.transform.position.y < runner.transform.position.y)
+            if(dragon.transform.position.y < Runner.transform.position.y)
             {
                 int r = (Random.Range(0, 3) == 1) ? -1 : 1;
 
@@ -409,9 +408,14 @@ public class Platform : MonoBehaviour
 
     #region SimpleMethods
 
-    public void SetSpeeds() //Set speed for bore 
+    public void SetBoreSpeed(int i = 0) //Set speed for bore if default called withour any parameters setted to playerprefs speed. İf called with animation setted to zero
     {
-        runner.GetComponent<Runner>().CharacterSpeed = GameData.GetBoreSpeed();
+        if (i == 0)
+            Runner.GetComponent<Runner>().CharacterSpeed = GameData.GetBoreSpeed();
+        else if (i == (int)BoostScript.BoostPhase.AnimationSlideDown)
+            Runner.GetComponent<Runner>().CharacterSpeed = 0f;
+        else
+            Debug.LogError("Wrong SetBoreSpeed parameter");
     }
 
     public void CreatePlatformAccordingToLevel() 
@@ -442,12 +446,12 @@ public class Platform : MonoBehaviour
     {
         float  distanceBetweenRunner = (!is5Line) ? 8f : 11f;
 
-        Nightmare.transform.position = new Vector3(runner.transform.position.x, runner.transform.position.y - distanceBetweenRunner, 0f);
+        Nightmare.transform.position = new Vector3(Runner.transform.position.x, Runner.transform.position.y - distanceBetweenRunner, 0f);
     }
 
     private int GetCurrentLevel()
     {
-        return GameData.GetLevel();
+        return GameData.GetLevel(); // or Data.GetLevel();
     }
 
     //This method is used for getting game uı panel. 
@@ -458,9 +462,14 @@ public class Platform : MonoBehaviour
         return uI.GetGamePanel();
     }
 
-    public bool SetBoost(bool to)
+    public BoostScript.BoostPhase GetBoostPhase()
     {
-        return isBoost = to;
+        return boostPhase;
+    }
+
+    public BoostScript.BoostPhase SetBoostPhase(BoostScript.BoostPhase to)
+    {
+        return boostPhase = to;
     }
 
     private void GiveMessage(float time, string message)

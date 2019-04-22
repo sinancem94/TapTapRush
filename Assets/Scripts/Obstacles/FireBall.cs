@@ -28,6 +28,9 @@ public class FireBall : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (Platform.instance.GetBoostPhase() != BoostScript.BoostPhase.None)
+            gameObject.SetActive(false);
+
         if (transform.position.x < Boundary && transform.position.x > -Boundary) 
         {
             transform.Translate(speed * Time.deltaTime, 0f, 0f);

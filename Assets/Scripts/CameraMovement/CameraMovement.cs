@@ -39,7 +39,7 @@ public class CameraMovement : MonoBehaviour
             StopCamera();
         }
 
-        transform.position = Platform.instance.runner.transform.position + offset;
+        transform.position = Platform.instance.Runner.transform.position + offset;
     }
 
 

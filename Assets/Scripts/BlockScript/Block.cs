@@ -13,12 +13,12 @@ public class Block : MonoBehaviour
     private BlockAnimation blockAnimation;
 
     private SpriteRenderer BlockSprite;
-
     private float outlineSize;
-
     bool isShined;
 
     public bool isMoving;
+
+    private Vector2 blockScale;
 
     // private SpriteRenderer blockSprite;
     // private SpriteRenderer ChildBlockSprite;
@@ -42,6 +42,8 @@ public class Block : MonoBehaviour
 
         type = BlockData.blockType.normal;
 
+        blockScale = Platform.instance.blockScale;
+
        /* if (!Data.isAngled) //for mode trial
         {
             transform.GetChild(0).gameObject.SetActive(true);
@@ -55,7 +57,10 @@ public class Block : MonoBehaviour
         if (Mathf.Approximately(this.transform.position.x, 0) && !isShined)
         {
 
-			StartCoroutine (scaleDownBlock (true, 0.75f));
+            isShined = true;
+
+            float smalledSize = blockScale.x / 2.5f;
+			StartCoroutine (ScaleDownBlock (isShined, smalledSize));
 
            /* if (outlineSize < 10f)																burayla
             {
@@ -86,11 +91,10 @@ public class Block : MonoBehaviour
                 blockData.ChangeBlockType(ref type, BlockSprite);
             }
         }
-
-		StartCoroutine (scaleDownBlock (false, 1.85f));
-        outlineSize = 1f;
-        BlockSprite.material.SetFloat("_OutlineSize", outlineSize);
         isShined = false;
+        StartCoroutine (ScaleDownBlock (isShined, blockScale.x));
+        //outlineSize = 1f;
+        //BlockSprite.material.SetFloat("_OutlineSize", outlineSize);
     }
 
     public void MoveTile(float toPosition)
@@ -107,17 +111,25 @@ public class Block : MonoBehaviour
         StartCoroutine(blockAnimation.Fall(fallTo));
     }
 
-	IEnumerator scaleDownBlock(bool isScaledDown, float scaledTo){
-		if (isScaledDown) {
-			while (transform.localScale.x > scaledTo) {
-				transform.localScale -= new Vector3 (0.1f, 0.1f, 0);
-				yield return new WaitForSeconds (1f);
+	IEnumerator ScaleDownBlock(bool isScaledDown, float scaledTo)
+    {
+		if (isScaledDown) 
+        {
+			while (transform.localScale.x > scaledTo) 
+            {
+				transform.localScale -= new Vector3 (0.08f, 0.08f, 0);
+
+                yield return new WaitForSeconds (0.001f);
 			}
-			BlockSprite.material.SetFloat ("_OutlineSize", 0);
-		} else {
-			transform.localScale = new Vector3 (1.95f,1.95f,0);
+            outlineSize = 0;
+			BlockSprite.material.SetFloat ("_OutlineSize", outlineSize);
+		} 
+        else 
+        {
+            transform.localScale = new Vector2(scaledTo,scaledTo);
 
-		}
-
+            outlineSize = 1;
+            BlockSprite.material.SetFloat("_OutlineSize", outlineSize);
+        }
 	}
 }

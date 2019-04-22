@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Platform
   - Runner
-  - Block
   - Lines
   - Background
   - Road
@@ -28,6 +27,8 @@ TagManager:
   - GameEndedMessage
   - LevelPanel
   - Shooter
+  - RoadSprite
+  - Blocks
   layers:
   - Default
   - TransparentFX
