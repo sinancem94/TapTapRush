@@ -51,7 +51,7 @@ public class BoostScript : MonoBehaviour
 
     public void StartBoost() //Phase 1 initiate
     {
-        Platform.instance.SetBoostPhase(BoostPhase.PlayerRunning);
+        //Platform.instance.SetBoostPhase(BoostPhase.PlayerRunning);
 
         //float timeChangeSpeed = 20f;
         timeSlower = StartCoroutine(SlowTime(0.4f,0.4f,BoostPhase.PlayerRunning));
@@ -96,8 +96,6 @@ public class BoostScript : MonoBehaviour
         //StartCoroutine (boreBoostEffects.scaleBore (false));   //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
         //badThingsBoostEffect.nightmareRadius (1f);
 		boreBoostEffects.BoreExitsFromBoost(); 									// only for testing animation right now.
-
-        Platform.instance.inputLock = false;
     }
 
 

@@ -15,7 +15,7 @@ public class CameraMovement : MonoBehaviour
 
     void Start()
     {
-        dynamicCamera = new DynamicCameraMovement(this);
+        dynamicCamera = new DynamicCameraMovement(this,Platform.instance.GetBoreSpeed());
 
         isCamSizeChanging = false;
         CalculateOffset(new Vector3(0f, 3f, -10f));
@@ -39,11 +39,15 @@ public class CameraMovement : MonoBehaviour
             StopCamera();
         }
 
-        transform.position = Platform.instance.Runner.transform.position + offset;
+        if (Platform.instance.GetBoostPhase() != BoostScript.BoostPhase.PlayerRunning)
+            transform.position = Platform.instance.Runner.transform.position + offset;
+        else
+            dynamicCamera.CameraChase();
+
     }
 
 
-    public void CalculateOffset(Vector3 pos) //for mode
+    void CalculateOffset(Vector3 pos) //for mode
     {
         offset = pos;
         //offset = Platform.instance.runner.transform.position - pos;
