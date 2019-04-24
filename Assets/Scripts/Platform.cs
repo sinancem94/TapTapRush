@@ -24,10 +24,10 @@ public class Platform : MonoBehaviour
     public GameObject Blocks; //Pooled Blocks Parent
     public GameObject block; //kırmızı bloklar
     public GameObject Runner; //koşan arkadaş artık neyse
-    public GameObject Lines;
+   // public GameObject Lines;
     public GameObject Road; //Block, RoadSprite ve lines ın Parent ı olan GameObject.
     public GameObject RoadSprite;//Yol sprite ı. Karanlık World için gri düz bir kare. Road un ilk çocuğu 
-    public GameObject background; //rengi değişen arkaPlan. Runner ın child ı.
+    public GameObject Background; //rengi değişen arkaPlan. Runner ın child ı.
     public GameObject Nightmare;
     public GameObject Shooter;
 
@@ -118,14 +118,14 @@ public class Platform : MonoBehaviour
         if(!Runner)
             Runner = GameObject.FindWithTag("Runner");
 
-        if (!Lines)
-            Lines = GameObject.FindWithTag("Lines");
+        //if (!Lines)
+          //  Lines = GameObject.FindWithTag("Lines");
 
         if (!RoadSprite)
             RoadSprite = GameObject.FindWithTag("RoadSprite");
 
-        if (!background)
-            background = GameObject.FindWithTag("Background");
+        if (!Background)
+            Background = GameObject.FindWithTag("Background");
 
         if (!Nightmare)
             Nightmare = GameObject.FindWithTag("Nightmare");
@@ -153,7 +153,7 @@ public class Platform : MonoBehaviour
         BlockNumberInPlatformTiles = 30;
 
         boostTime = 8f;
-        boostLimit = 10f;
+        boostLimit = 12f;
 
         CreatePlatformAccordingToLevel();
 
@@ -201,7 +201,7 @@ public class Platform : MonoBehaviour
                 MoveTile((int)ınput.dirr);
             }
 
-            straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - Runner.transform.position.y; // camera orthogonic size ve runner hızı için uzaklık hesapla
+            straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - Runner.transform.position.y - distBetweenBlock; // camera orthogonic size ve runner hızı için uzaklık hesapla
 
             distanceBtwRunner = Runner.transform.position.y - Nightmare.transform.position.y;
 
@@ -219,7 +219,7 @@ public class Platform : MonoBehaviour
 
             //////////////////////////////
             //Calculate if entered or exited boost
-            if (distanceBtwRunner > boostLimit && !boostLock && isBoostAllowed && GetBoostPhase() == BoostScript.BoostPhase.None)
+            if (distanceBtwRunner > 100 && !boostLock && isBoostAllowed && GetBoostPhase() == BoostScript.BoostPhase.None)
             {
                 boostLock = true;
 
@@ -305,7 +305,7 @@ public class Platform : MonoBehaviour
     {
         //Sizes are changed according to Screen 
         is5Line = (levelManager.levelWidth == LevelManager.LevelWidth.Five) ? true : false;
-        distBetweenBlock = sizeHandler.ArrangeSize(RoadSprite.transform, Lines.transform, block.transform, Runner.transform,is5Line);
+        distBetweenBlock = sizeHandler.ArrangeSize(RoadSprite.transform, block.transform, Runner.transform,is5Line);
         blockScale = block.transform.localScale;
 
         //For 5 line mode
@@ -405,7 +405,7 @@ public class Platform : MonoBehaviour
     #endregion
 
 
-    #region SimpleMethods
+#region SimpleMethods
 
     public void SetBoreSpeed(int i = 0) //Set speed for bore if default called withour any parameters setted to playerprefs speed. İf called with animation setted to zero
     {
@@ -483,7 +483,7 @@ public class Platform : MonoBehaviour
     {
         StartCoroutine(uIGame.GiveInfo(time, message));
     }
-#endregion
+  #endregion
 }
 
 
