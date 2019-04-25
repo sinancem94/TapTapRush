@@ -54,7 +54,7 @@ public class BoostScript : MonoBehaviour
         Platform.instance.SetBoostPhase(BoostPhase.PlayerRunning);
 
         //float timeChangeSpeed = 20f;
-        timeSlower = StartCoroutine(SlowTime(0.4f,0.4f,BoostPhase.PlayerRunning));
+        timeSlower = StartCoroutine(SlowTime(0.3f,0.4f,BoostPhase.PlayerRunning));
 
         //explosionParticleSys.gameObject.SetActive (true);
         boostParticleSystem.EnteringBoost();
@@ -96,8 +96,6 @@ public class BoostScript : MonoBehaviour
         //StartCoroutine (boreBoostEffects.scaleBore (false));   //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
         //badThingsBoostEffect.nightmareRadius (1f);
 		boreBoostEffects.BoreExitsFromBoost(); 									// only for testing animation right now.
-
-        Platform.instance.inputLock = false;
     }
 
 
@@ -120,13 +118,13 @@ public class BoostScript : MonoBehaviour
         boreBoostEffects.ActivateSprite();
         dummyObjects.DisableDummy();
         //float timeChangeSpeed = 100f;
-        timeSlower = StartCoroutine(SlowTime( 0.4f, 0.2f, BoostPhase.AnimationSlideUp)); //first slow time to make player understand camera slidid until bore than bore starts sliding
+        timeSlower = StartCoroutine(SlowTime( 0.4f, 0.15f, BoostPhase.AnimationSlideUp)); //first slow time to make player understand camera slidid until bore than bore starts sliding
 
         yield return new WaitUntil(() => TimeSlowed);
 
         boreBoostEffects.BoreBoostAnimationSlideUp();
 
-        yield return new WaitUntil(() => Platform.instance.straightRoadLenght < 3 * Platform.instance.distBetweenBlock);
+        yield return new WaitUntil(() => Platform.instance.straightRoadLenght < Platform.instance.distBetweenBlock);
 
         StopBoost();
     }

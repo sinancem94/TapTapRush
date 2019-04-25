@@ -9,48 +9,48 @@ public class DynamicCameraMovement
     private MonoBehaviour MainCam;
     private Camera camera;
 
-    public DynamicCameraMovement(MonoBehaviour owner)
+    private float CamChaseSpeed;
+
+    public DynamicCameraMovement(MonoBehaviour owner,float camSpeed)
     {
         MainCam = owner;
         camera = owner.GetComponent<Camera>();
+        CamChaseSpeed = camSpeed;
     }
 
-    public void StartDynamicSizeHandler(float upperCamSizeLimit,float lowerCamSizeLimit)
+
+    #region CamSizeHandling
+
+    public void StartDynamicSizeHandler(float upperCamSizeLimit, float lowerCamSizeLimit)
     {
-        if(DynamicCameraSizer == null)
-            DynamicCameraSizer = MainCam.StartCoroutine(CamSizeCorountine(upperCamSizeLimit, lowerCamSizeLimit));
+        //if (DynamicCameraSizer == null)
+            //DynamicCameraSizer = MainCam.StartCoroutine(CamSizeCorountine(upperCamSizeLimit, lowerCamSizeLimit));
     }
 
     public void StopDynamicSizeHandler()
     {
-        MainCam.StopCoroutine(DynamicCameraSizer);
+        //MainCam.StopCoroutine(DynamicCameraSizer);
     }
 
-
-
-    private IEnumerator CamSizeCorountine(float Upperlimit, float LowerLimit)
+    public void CamSizeCorountine(float Upperlimit, float LowerLimit)
     {
         float camSize = Camera.main.fieldOfView;
 
         //Şimdilik 9.5 la falan başlıyor ilk yolun mesafesi. ondan hardcoded değiştirilcek ama sonra
         float roadLenghtUpperLimit = Platform.instance.initialStraightRoadLenght + (Platform.instance.distBetweenBlock * 3);
-        float roadLengthLowerLimit = Platform.instance.initialStraightRoadLenght - (Platform.instance.distBetweenBlock * 2);
+        float roadLengthLowerLimit = 0f;//Platform.instance.initialStraightRoadLenght - (Platform.instance.distBetweenBlock * 2);
         //Debug.Log(Platform.instance.initialStraightRoadLenght);
         float roadMiddleReferencePoint = Platform.instance.initialStraightRoadLenght;
 
-        //float distanceBtwLowBounds = roadMiddleReferencePoint - roadLengthLowerLimit;
-        //float distanceBtwUpperBounds = roadLenghtUpperLimit - roadMiddleReferencePoint;
 
         float camDiffLowBounds = camSize - LowerLimit; // 60 - lower cam size
         float camDiffUpperBounds = Upperlimit - camSize; // upper cam size - 60
         //Debug.Log(camDiffUpperBounds);
 
-        float camSizeChange = 0f;
+        //yield return new WaitUntil(() => Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning);
 
-        yield return new WaitUntil(() => Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning);
-
-        while (Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
-        {
+      //  while (Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
+        //{
             //Debug.Log(Platform.instance.straightRoadLenght);
             if ((Platform.instance.straightRoadLenght) > roadMiddleReferencePoint) //genişlicekse
             {
@@ -60,21 +60,11 @@ public class DynamicCameraMovement
                 float newCamSize = camSize + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint)));
 
                 //genişle
-                if (camera.fieldOfView < newCamSize && camera.fieldOfView < Upperlimit)
+                if (camera.fieldOfView < newCamSize - (Platform.instance.distBetweenBlock * 2) && camera.fieldOfView < Upperlimit)
                 {
                     camera.fieldOfView = MoveCamSizeTowardsNewSize(newCamSize, camera.fieldOfView);
-
-                    //camSizeChange = ChangeSizeTo(0.1f, camSizeChange);
-
-                    //camera.fieldOfView += camSizeChange;
-                    //Camera.main.fieldOfView += 0.1f;
-                }//daral
-              /*  else if (Camera.main.fieldOfView > newCamSize)
-                {
-                    camSizeChange = ChangeSizeTo(-0.1f, camSizeChange);
-                    Camera.main.fieldOfView += camSizeChange;
-                    //Camera.main.fieldOfView -= 0.1f;
-                } */
+                }
+            
 
                 //Camera.main.fieldOfView = camSize + (camDiffUpperBounds * ((Platform.instance.straightRoadLenght - roadMiddleReferencePoint) / (roadLenghtUpperLimit - roadMiddleReferencePoint)));
             }
@@ -86,30 +76,16 @@ public class DynamicCameraMovement
                 float newCamSize = camSize - (camDiffLowBounds * ((roadMiddleReferencePoint - Platform.instance.straightRoadLenght) / (roadMiddleReferencePoint - roadLengthLowerLimit)));
 
                 //daral
-                if (camera.fieldOfView > newCamSize && camera.fieldOfView > LowerLimit)
+                if (camera.fieldOfView > newCamSize  + (Platform.instance.distBetweenBlock * 2 ) && camera.fieldOfView > LowerLimit)
                 {
                     camera.fieldOfView = MoveCamSizeTowardsNewSize(newCamSize, camera.fieldOfView);
-
-                    //camSizeChange = ChangeSizeTo(-0.1f, camSizeChange);
-
-                    //camera.fieldOfView += camSizeChange;
-                    //Camera.main.fieldOfView -= 0.1f;
-                }//genişle
-             /*   else if (Camera.main.fieldOfView < newCamSize)
-                {
-                    camSizeChange = ChangeSizeTo(0.1f, camSizeChange);
-                    Camera.main.fieldOfView += camSizeChange;
-                    //Camera.main.fieldOfView += 0.1f;
-                }*/
+                }
+             
                 //Camera.main.fieldOfView = camSize - (camDiffLowBounds * ((roadMiddleReferencePoint - Platform.instance.straightRoadLenght) / (roadMiddleReferencePoint - roadLengthLowerLimit)));
             }
-            /*else // düz 60
-            {
-                Camera.main.fieldOfView = camSize;
-            }*/
 
-            yield return new WaitForSeconds(0.0001f);
-        }
+            //yield return new WaitForSeconds(0.0001f);
+       // }
     }
 
     //Moves camera size forward to desired size
@@ -117,27 +93,40 @@ public class DynamicCameraMovement
     {
         if(!Mathf.Approximately(currentCamSize, newCamSize))
         {
-            float delta = (newCamSize > currentCamSize) ? (newCamSize / currentCamSize) * 0.15f : (currentCamSize / newCamSize) *  0.15f;
+            float delta = (newCamSize > currentCamSize) ? (newCamSize / currentCamSize) * 0.1f : (currentCamSize / newCamSize) *  0.1f;
 
             return Mathf.MoveTowards(currentCamSize, newCamSize, delta);
         }
 
         return currentCamSize;
     }
+    #endregion
 
-   /* float ChangeSizeTo(float direction, float changeSize)
+    #region CameraDynamicYAxis
+
+    public float DynamicOffset(float exOffset) //Used when boost starts to make camera chase player
     {
+        float dyOf;
+        float delta;
 
-        if (direction > 0)
-        {
-            changeSize = (changeSize < direction) ? changeSize + 0.02f : changeSize = 0.15f;
-        }
-        else if (direction < 0)
-        {
-            changeSize = (changeSize > direction) ? changeSize - 0.02f : changeSize = -0.15f;
-        }
+        dyOf = Platform.instance.boostTimer;
 
-        return changeSize;
-    }*/
+        return dyOf;
+    }
 
+    public void CameraChase()
+    {
+        float delta = (int)(Platform.instance.boostTimer / 0.5f) / 12f;
+
+        //Runner straight road lengthle çarpılıyor bu ise initialLengthle (yani, hiç değişmeyen bizim verdiğimiz bir değer camera size ve hızı için.) Eğer player hızla straight road length arttırsa geçebilir..
+        float camSpd = Platform.instance.initialStraightRoadLenght * (CamChaseSpeed + delta);
+
+        //Debug.Log(camSpd);
+
+        MainCam.transform.Translate(0f, camSpd * Time.deltaTime, 0f, Space.World);
+
+
+    }
+
+    #endregion
 }

@@ -145,7 +145,7 @@
 
         if(LevelNumber == -1) // İf mode is endless
         {
-            levelBlockType = LevelBlockType.Mixed;
+            levelBlockType = LevelBlockType.Normal;
             levelWidth = LevelWidth.Three;
             isBoostAllowed = true;
             levelFinishtype = LevelFinishtype.None;   

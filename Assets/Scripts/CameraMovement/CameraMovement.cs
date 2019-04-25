@@ -15,7 +15,7 @@ public class CameraMovement : MonoBehaviour
 
     void Start()
     {
-        dynamicCamera = new DynamicCameraMovement(this);
+        dynamicCamera = new DynamicCameraMovement(this,Platform.instance.GetBoreSpeed());
 
         isCamSizeChanging = false;
         CalculateOffset(new Vector3(0f, 3f, -10f));
@@ -24,26 +24,31 @@ public class CameraMovement : MonoBehaviour
         if(Mathf.Approximately(OrthographicLowerSize,0))
             OrthographicLowerSize = 55f;
         if (Mathf.Approximately(OrthographicUpperSize, 0))
-            OrthographicUpperSize = 80f;
+            OrthographicUpperSize = 85f;
     }
 
 
     void LateUpdate()
     {
-        if (!isCamSizeChanging && Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
+        if (/*!isCamSizeChanging && */Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
         {
-            StartCamera();
+            dynamicCamera.CamSizeCorountine(OrthographicUpperSize, OrthographicLowerSize);
+            //StartCamera();
         }
-        else if(isCamSizeChanging && Platform.instance.game.GetGameState() == GameHandler.GameState.GameOver || Platform.instance.game.GetGameState() == GameHandler.GameState.LevelPassed)
+        else if(/*isCamSizeChanging && */Platform.instance.game.GetGameState() == GameHandler.GameState.GameOver || Platform.instance.game.GetGameState() == GameHandler.GameState.LevelPassed)
         {
-            StopCamera();
+            //StopCamera();
         }
 
-        transform.position = Platform.instance.Runner.transform.position + offset;
+        //if (Platform.instance.GetBoostPhase() != BoostScript.BoostPhase.PlayerRunning)
+            transform.position = Platform.instance.Runner.transform.position + offset;
+        //else if(Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
+          //  dynamicCamera.CameraChase();
+
     }
 
 
-    public void CalculateOffset(Vector3 pos) //for mode
+    void CalculateOffset(Vector3 pos) //for mode
     {
         offset = pos;
         //offset = Platform.instance.runner.transform.position - pos;

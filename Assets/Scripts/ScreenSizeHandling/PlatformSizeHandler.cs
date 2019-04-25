@@ -5,21 +5,24 @@ using UnityEngine;
 //Arrange gameObject sizes according to devices screen size
 public class PlatformSizeHandler : SizeHandler{
 	
-    public float ArrangeSize(Transform road,Transform lines,Transform block,Transform runner, bool is5Line) 
+    public float ArrangeSize(Transform road,Transform block,Transform runner, bool is5Line) 
     {
         //Arrange road scale according to screen
         float roadWidth = gameScreenWidth / (float)(5f/3f);
-        float roadLength = 50f;
+        float roadLength = roadWidth * 8;
         //Debug.Log(width + " " + roadWidth);
         road.localScale = new Vector3(roadWidth, roadLength, 1f);
 
-        //Arrange line positions according to roads size
+        //Arrange line positions according to roads size. Lines are roadSprites child now so arrange according to that
+       /* lines.localScale = road.localScale;
+
         float linePosition = road.transform.localScale.x / 2;
+
         lines.GetChild(0).localPosition = new Vector3(linePosition, 0f, 0f);
-        lines.GetChild(0).localScale = new Vector3(lines.GetChild(0).localScale.x, roadLength, 0f);
+        lines.GetChild(0).localScale = new Vector3(lines.localScale.x / 10f, roadLength, 0f);
 
         lines.GetChild(1).localPosition = new Vector3(linePosition * -1,0f,0f);
-        lines.GetChild(1).localScale = new Vector3(lines.GetChild(1).localScale.x, roadLength, 0f);
+        lines.GetChild(1).localScale = new Vector3(lines.localScale.x / 10f, roadLength, 0f);*/
 
         //Arrange block scale according to roads scale. 1.8f for 3 lines , 3f for 5 lines
         float blockScale = roadWidth / 1.8f;

@@ -10,6 +10,9 @@ public class OpenLevelPanel : MonoBehaviour
     private void Start()
     {
         panel = GameObject.FindWithTag("LevelPanel");
+        if (!panel)
+            panel = transform.GetChild(0).GetChild(0).gameObject;
+
         panel.SetActive(false);
     }
 
