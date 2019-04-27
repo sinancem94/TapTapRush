@@ -11,8 +11,8 @@ public class BoostScript : MonoBehaviour
     private DummyBoostObjects dummyObjects;
 
     //public ParticleSystem explosionParticleSys;
-    private BoostParticleSystem boostParticleSystem;
-	private PostProcessingChange postProcessingChange;
+    private BoostParticleSystem boostParticleSystem;                       //boostparticlesystem*****
+    private PostProcessingChange postProcessingChange;
 	private BoreBoostEffects boreBoostEffects;
 	private BadThingsBoostEffect badThingsBoostEffect;
 
@@ -35,8 +35,8 @@ public class BoostScript : MonoBehaviour
 
     private void Start()
     {
-        boostParticleSystem = (BoostParticleSystem)FindObjectOfType(typeof(BoostParticleSystem));
-		postProcessingChange = (PostProcessingChange)FindObjectOfType (typeof(PostProcessingChange));
+        boostParticleSystem = (BoostParticleSystem)FindObjectOfType(typeof(BoostParticleSystem));                      //boostparticlesystem*****
+        postProcessingChange = (PostProcessingChange)FindObjectOfType (typeof(PostProcessingChange));
 		boreBoostEffects = (BoreBoostEffects)FindObjectOfType (typeof(BoreBoostEffects));
 		badThingsBoostEffect = (BadThingsBoostEffect)FindObjectOfType (typeof(BadThingsBoostEffect));
 
@@ -57,7 +57,7 @@ public class BoostScript : MonoBehaviour
         timeSlower = StartCoroutine(SlowTime(0.3f,0.4f,BoostPhase.PlayerRunning));
 
         //explosionParticleSys.gameObject.SetActive (true);
-        boostParticleSystem.EnteringBoost();
+        boostParticleSystem.EnteringBoost();                                       //boostparticlesystem*****
 
         StartCoroutine(postProcessingChange.BoostPostProcessingSettings(true));
 
@@ -86,9 +86,9 @@ public class BoostScript : MonoBehaviour
         timeSlower = StartCoroutine(SlowTime(0.4f, 0.4f, BoostPhase.None)); //Not setting to None before time slowed up because of player input issue.
         //explosionParticleSys.gameObject.SetActive (false);
 
-        boostParticleSystem.ExitingBoost();
+        boostParticleSystem.ExitingBoost();                                                   //boostparticlesystem*****
 
-        StartCoroutine(postProcessingChange.BoostPostProcessingSettings(false));
+        
 
         badThingsBoostEffect.badThingsBoostExit(Platform.instance.Runner.transform.position.y);
 
@@ -112,12 +112,14 @@ public class BoostScript : MonoBehaviour
 
         dummyObjects.SetRoadDummy();
         boreBoostEffects.BoreBoostAnimationSlideDown(BoreDummy.transform.position); //Start sliding down the camera
+        StartCoroutine(postProcessingChange.BoostPostProcessingSettings(false));
 
         yield return new WaitUntil(() => Platform.instance.GetBoostPhase() == BoostPhase.AnimationSlideUp);
        
         boreBoostEffects.ActivateSprite();
         dummyObjects.DisableDummy();
         //float timeChangeSpeed = 100f;
+        
         timeSlower = StartCoroutine(SlowTime( 0.4f, 0.15f, BoostPhase.AnimationSlideUp)); //first slow time to make player understand camera slidid until bore than bore starts sliding
 
         yield return new WaitUntil(() => TimeSlowed);
