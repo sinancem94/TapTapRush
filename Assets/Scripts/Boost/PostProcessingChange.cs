@@ -20,7 +20,7 @@ public class PostProcessingChange : MonoBehaviour
     void Start()
     {
         vignetteChange = 0.01f;
-        postProcessingChangeTimer = 0.05f;
+        postProcessingChangeTimer = 0.01f;
 
         PostProcessVolume postProcessVolume = GetComponent<PostProcessVolume>();
         if (postProcessVolume.profile == null)
