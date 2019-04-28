@@ -60,7 +60,7 @@ public class CameraMovement : MonoBehaviour
            
     void ChaseBore()
     {
-        if(!isChasing)
+        if(!isChasing) //If mode has changed arrange the parameters
         {
             isChasing = true;
             didPassedPlayer = false;
@@ -70,9 +70,14 @@ public class CameraMovement : MonoBehaviour
 
         float diff = dynamicCamera.CameraChase(Platform.instance.Runner.transform.position.y);
 
+
+        //////
+        //Calculate if camera passed player on boost
+        /////
         if(diff >= 0 && didPassedPlayer)
         {
             didPassedPlayer = false;
+            didPassedTooMuch = false;
             playerPassedTime = 0f;
         }
         else if(diff < -Platform.instance.distBetweenBlock)
@@ -91,7 +96,7 @@ public class CameraMovement : MonoBehaviour
 
     void FollowBore()
     {
-        if(isChasing)
+        if(isChasing) // If mode changes arrange parameters
         {
             isChasing = false;
         }

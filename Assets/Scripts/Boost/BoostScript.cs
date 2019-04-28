@@ -13,8 +13,8 @@ public class BoostScript : MonoBehaviour
     //public ParticleSystem explosionParticleSys;
     private BoostParticleSystem boostParticleSystem;
 	private PostProcessingChange postProcessingChange;
-	private BoreBoostEffects boreBoostEffects;
-	private BadThingsBoostEffect badThingsBoostEffect;
+	private RunnerAnimation boreBoostEffects;
+	private BadThingsAnimation badThingsBoostEffect;
 
     private Coroutine timeSlower;
     private bool TimeSlowed = false;
@@ -47,8 +47,9 @@ public class BoostScript : MonoBehaviour
     {
         boostParticleSystem = (BoostParticleSystem)FindObjectOfType(typeof(BoostParticleSystem));
 		postProcessingChange = (PostProcessingChange)FindObjectOfType (typeof(PostProcessingChange));
-		boreBoostEffects = (BoreBoostEffects)FindObjectOfType (typeof(BoreBoostEffects));
-		badThingsBoostEffect = (BadThingsBoostEffect)FindObjectOfType (typeof(BadThingsBoostEffect));
+
+        boreBoostEffects = Platform.instance.Runner.GetComponent<Runner>().BoreAnimationController;
+        badThingsBoostEffect = Platform.instance.Nightmare.GetComponent<BadThingParticleSystem>().BadThingsAnimationController;
 
         dummyObjects = new DummyBoostObjects();  
 
@@ -71,7 +72,7 @@ public class BoostScript : MonoBehaviour
         //  StartCoroutine (boreBoostEffects.scaleBore (true));  //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
         //boreBoostEffects.stopBore ();     // only for testing animation right now.
         currMonsSpeed = badThingsBoostEffect.BadThingBoostEntering();
-        boreBoostEffects.BoreEntersBoost();
+        boreBoostEffects.DisableSprite();
         dummyObjects.SetDummy();
 
         //boreBoostEffects.BoreStartsSliding();   								

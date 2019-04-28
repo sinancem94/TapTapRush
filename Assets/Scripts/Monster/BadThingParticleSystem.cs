@@ -10,20 +10,22 @@ public class BadThingParticleSystem : MonoBehaviour
     //private CameraMovement cameraMovement;
 
     public float BoostBrake; // 0 or 1. when boost is on set to zero
-
     public float monsterSpeed;
     private float speed;
+
+    public BadThingsAnimation BadThingsAnimationController;
+
+    private void Start()
+    {
+        BadThingsAnimationController = new BadThingsAnimation();
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
         {
-
-
             speed = ((Platform.instance.distanceBtwRunner * 3) / 4) * monsterSpeed; //speed whithout boost 
-
-               
             NightmareChase(speed);
         }
     }

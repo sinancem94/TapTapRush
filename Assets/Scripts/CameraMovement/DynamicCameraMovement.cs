@@ -85,7 +85,7 @@ public class DynamicCameraMovement
 
     public Vector3 MoveCamTowardsPos(Vector3 current,Vector3 to)
     {
-        float delta = (current.y < to.y) ? (to.y / current.y) * 0.65f : (current.y / to.y) * 0.65f;
+        float delta = (current.y < to.y) ? (to.y / current.y) * 0.7f : (current.y / to.y) * 0.7f;
         return new Vector3(current.x, Mathf.MoveTowards(current.y, to.y, delta),current.z);
     }
 
@@ -93,7 +93,7 @@ public class DynamicCameraMovement
     {
         Vector3 minCamPos = camera.ViewportToWorldPoint(new Vector3(0.5f, 0.6f, camera.farClipPlane));
         float minCamY = minCamPos.y;
-
+       //Debug.Log("min cam pos is : " + minCamPos + " Difference speed is : " + (rPos - minCamY) * 10);
         if (rPos > minCamY)
             return (rPos - minCamY) * 10;
 
@@ -107,6 +107,9 @@ public class DynamicCameraMovement
         //Runner straight road lengthle çarpılıyor bu ise initialLengthle (yani, hiç değişmeyen bizim verdiğimiz bir değer camera size ve hızı için.) 
         //Eğer player hızla straight road length arttırsa geçebilir..
         float camSpd = Platform.instance.initialStraightRoadLenght * (CamChaseSpeed + delta + CalculateDifference(runnerPos));
+
+        //Debug.Log("Camspd is " + camSpd);
+
         //Debug.Log(camSpd);
 
         OwnerCamera.transform.Translate(0f, camSpd * Time.deltaTime, 0f, Space.World);

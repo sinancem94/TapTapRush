@@ -164,7 +164,7 @@ public class Platform : MonoBehaviour
         //CreatePlatform();
         SetBoostPhase(BoostScript.BoostPhase.None);
 
-        inputLock = false;
+        inputLock = false; //Using for locking input to game
 
         SetCamChase(true);
 

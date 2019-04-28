@@ -41,7 +41,6 @@ public class Block : MonoBehaviour
         isMoving = false;
 
         type = BlockData.blockType.normal;
-
         blockScale = Platform.instance.blockScale;
 
        /* if (!Data.isAngled) //for mode trial
