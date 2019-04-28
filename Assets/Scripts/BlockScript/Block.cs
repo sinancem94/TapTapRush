@@ -106,9 +106,9 @@ public class Block : MonoBehaviour
         }
     }
 
-    public void Fall(Vector2 fallTo)
+    public void Fall(Vector2 fallTo,bool isRollBack)
     {
-        StartCoroutine(blockAnimation.Fall(fallTo));
+        StartCoroutine(blockAnimation.Fall(fallTo, isRollBack));
     }
 
 	IEnumerator ScaleDownBlock(bool isScaledDown, float scaledTo)

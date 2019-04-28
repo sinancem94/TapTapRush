@@ -9,7 +9,7 @@ public class PlatformSizeHandler : SizeHandler{
     {
         //Arrange road scale according to screen
         float roadWidth = gameScreenWidth / (float)(5f/3f);
-        float roadLength = roadWidth * 8;
+        float roadLength = roadWidth * 15;
         //Debug.Log(width + " " + roadWidth);
         road.localScale = new Vector3(roadWidth, roadLength, 1f);
 

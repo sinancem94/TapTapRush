@@ -98,7 +98,7 @@ public class BoreBoostEffects : MonoBehaviour
 
             yield return new WaitForSeconds(0.01f);
         }
-        Platform.instance.SetBoostPhase(BoostScript.BoostPhase.AnimationSlideUp);
+
         this.transform.position = dummyPos;
 
         StopCoroutine(SlideDownBore);

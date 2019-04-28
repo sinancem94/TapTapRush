@@ -22,14 +22,23 @@ public class BadThingsBoostEffect : MonoBehaviour
         Debug.Log("debugbadthing");
     }
 
-    public void badThingBoostEntering()
+    public float BadThingBoostEntering()
     {
+        float monsSpeed = Platform.instance.GetMonsterSpeed();
+        Platform.instance.SetMonsterSpeed(0);
 
+        return monsSpeed;
     }
 
-    public void badThingsBoostExit(float newPos)
-    {                       // henüz kullanmadık boostscripte eklenecek.
-        Vector3 nightmarePos = new Vector3(0f, newPos - 5f, 0);
-        this.transform.position = nightmarePos;
+    public void BadThingsAnimationEnter(float spd)
+    {
+        Platform.instance.SetMonsterSpeed(spd * 4);
+    }
+
+    public void BadThingsBoostExit(float spd)
+    {                      
+        Platform.instance.SetMonsterSpeed(spd);
+      //  Vector3 nightmarePos = new Vector3(0f, newPos - 5f, 0);
+       // this.transform.position = nightmarePos;
     }
 }

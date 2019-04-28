@@ -22,7 +22,8 @@ public class UIHandler : MonoBehaviour {
     //Her bir panel, canvas ın child ı. Ondan sırayla al
     //StartingPanel 0
     //GameOverPanel 1
-    //OnGamelPanel//
+    //OnGamelPanel  2
+    //
 
     private void Start()
     {
@@ -93,6 +94,7 @@ public class UIHandler : MonoBehaviour {
         GameOverPanel.SetActive(true);
         gameOverPage.SetPanel();
     }
+
 
     public void Restart()
     {

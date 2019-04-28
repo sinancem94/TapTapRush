@@ -9,6 +9,8 @@ public class BadThingParticleSystem : MonoBehaviour
     //public GameObject bore;
     //private CameraMovement cameraMovement;
 
+    public float BoostBrake; // 0 or 1. when boost is on set to zero
+
     public float monsterSpeed;
     private float speed;
 
@@ -17,11 +19,11 @@ public class BadThingParticleSystem : MonoBehaviour
     {
         if (Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
         {
-            if(Platform.instance.GetBoostPhase() == BoostScript.BoostPhase.None)
-                speed = ((Platform.instance.distanceBtwRunner * 3) / 4) * monsterSpeed; //speed whithout boost 
-            else
-                speed = ((Platform.instance.distanceBtwRunner) * 4f) * monsterSpeed * 0; // speed with boost,   0 yaptım boosttayken. ama bu boost işlerini badthingsboosteffecte kaydırsak iyi olacak.
 
+
+            speed = ((Platform.instance.distanceBtwRunner * 3) / 4) * monsterSpeed; //speed whithout boost 
+
+               
             NightmareChase(speed);
         }
     }
