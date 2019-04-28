@@ -9,16 +9,19 @@ public class PostProcessingChange : MonoBehaviour
     private Vignette vignette;
     private Color vignetteOldColor;
 
-    public float vignetteChange;
-    public float vignetteIntensityTimer;
-    public float colorGradingTimer;
+    private float vignetteChange;
+    private float postProcessingChangeTimer;
+   
     //public float tempandTintTimer;
     //public Color vignetteNewColor;
 
 
-    // Start is called before the first frame update
+    
     void Start()
     {
+        vignetteChange = 0.01f;
+        postProcessingChangeTimer = 0.05f;
+
         PostProcessVolume postProcessVolume = GetComponent<PostProcessVolume>();
         if (postProcessVolume.profile == null)
         {
@@ -44,17 +47,17 @@ public class PostProcessingChange : MonoBehaviour
 
     public IEnumerator BoostPostProcessingSettings(bool isEntering)
     {                   //boost a girerken ve çıkarkenki vignette ve color grading ayarlamaları burada yapılıyor
-        Debug.Log("enter vignette");
+        //entering vignette
         if (isEntering)
         {
-            //color grading settings for starting boost
-            colorGrading.temperature.value = 100f;
-            colorGrading.tint.value = 60f;
+            /*//color grading settings for starting boost
+            colorGrading.temperature.value = 0f;
+            colorGrading.tint.value = 0;
             colorGrading.saturation.value = 10f;
 
             //vignette.color.value = vignetteNewColor;
 
-            yield return new WaitForSeconds(colorGradingTimer);
+            yield return new WaitForSeconds(colorGradingTimer);*/
 
             //color grading settings during boost
             colorGrading.temperature.value = 100f;
@@ -66,21 +69,47 @@ public class PostProcessingChange : MonoBehaviour
             while (vignette.intensity.value > 0f)
             {
                 vignette.intensity.value -= vignetteChange;
-                yield return new WaitForSeconds(vignetteIntensityTimer);
+                yield return new WaitForSeconds(postProcessingChangeTimer);
             }
         }
         else
         {
+            bool isSaturationContinue;
+            bool isContrastContinue;
+            bool isVignetteContinue;
+
             //color grading settings after exiting from boost & initial vignette settings
             colorGrading.temperature.value = 0f;
             colorGrading.tint.value = 0f;
-            colorGrading.saturation.value = 0f;
 
-            //vignette settings after exiting from boost & initial vignette settings
-            while (vignette.intensity.value < 0.25f)
-            {
-                vignette.intensity.value += vignetteChange;
-                yield return new WaitForSeconds(vignetteIntensityTimer);
+
+            isSaturationContinue = true;
+            isContrastContinue = true;
+            isVignetteContinue = true;
+
+            while (isVignetteContinue || isSaturationContinue || isContrastContinue) {
+
+                if (colorGrading.saturation.value < -54f)
+                {
+                    colorGrading.saturation.value += 1f;
+                }
+                else {isSaturationContinue = false;
+                }
+
+                if (colorGrading.contrast.value > 13f)
+                {
+                    colorGrading.contrast.value -= 1f;
+                }
+                else { isContrastContinue = false;
+                }
+
+                if (vignette.intensity.value < 0.25f) {
+                    vignette.intensity.value += vignetteChange;
+                }
+                else { isVignetteContinue = false;
+                }
+
+                yield return new WaitForSeconds(postProcessingChangeTimer);
             }
         }
     }

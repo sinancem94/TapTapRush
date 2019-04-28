@@ -219,7 +219,7 @@ public class Platform : MonoBehaviour
 
             //////////////////////////////
             //Calculate if entered or exited boost
-            if (distanceBtwRunner > 100 && !boostLock && isBoostAllowed && GetBoostPhase() == BoostScript.BoostPhase.None)
+            if (distanceBtwRunner > 9 && !boostLock && isBoostAllowed && GetBoostPhase() == BoostScript.BoostPhase.None)
             {
                 boostLock = true;
 
