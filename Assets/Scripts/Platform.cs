@@ -232,6 +232,7 @@ public class Platform : MonoBehaviour
 
             //////////////////////////////
             //Calculate if entered or exited boost
+
             if (distanceBtwRunner > boostLimit && !boostLock && isBoostAllowed && GetBoostPhase() == BoostScript.BoostPhase.None)
             {
                 boostLock = true;
