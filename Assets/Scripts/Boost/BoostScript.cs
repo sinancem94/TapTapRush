@@ -48,7 +48,7 @@ public class BoostScript : MonoBehaviour
     private void Start()
     {
         boostParticleSystem = (BoostParticleSystem)FindObjectOfType(typeof(BoostParticleSystem));
-		    postProcessingChange = (PostProcessingChange)FindObjectOfType (typeof(PostProcessingChange));
+        postProcessingChange = (PostProcessingChange)FindObjectOfType (typeof(PostProcessingChange));
 
         boreBoostEffects = Platform.instance.Runner.GetComponent<Runner>().BoreAnimationController;
         badThingsBoostEffect = Platform.instance.Nightmare.GetComponent<BadThingParticleSystem>().BadThingsAnimationController;
@@ -104,7 +104,7 @@ public class BoostScript : MonoBehaviour
         dummyObjects.DestoryRoadDummy();
         //StartCoroutine (boreBoostEffects.scaleBore (false));   //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
         //badThingsBoostEffect.nightmareRadius (1f);
-		    boreBoostEffects.BoreExitsFromBoost(); 									// only for testing animation right now.
+        boreBoostEffects.BoreExitsFromBoost(); 									// only for testing animation right now.
         badThingsBoostEffect.BadThingsBoostExit(currMonsSpeed);
     }
 
@@ -150,21 +150,12 @@ public class BoostScript : MonoBehaviour
     private IEnumerator SlowTime( float minTime , float waitTime, BoostPhase phase)
     {
         TimeSlowed = false;
-      /*  while (Time.timeScale > minTime)
-        {
-            Time.timeScale = Mathf.MoveTowards(Time.timeScale, minTime - 0.1f, Time.deltaTime * changeSpeed);
-            yield return new WaitForSeconds(.01f);
-        }
-        */
+      
         Time.timeScale = minTime;
 
         yield return new WaitForSeconds(waitTime);
 
-      /*  while (Time.timeScale < 1f)
-        {
-            Time.timeScale = Mathf.MoveTowards(Time.timeScale, 1.1f, Time.deltaTime * changeSpeed);
-            yield return new WaitForSeconds(.01f);
-        }*/
+  
         Time.timeScale = 1f;
 
         TimeSlowed = true;
