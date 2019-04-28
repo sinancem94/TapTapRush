@@ -44,15 +44,15 @@
         None
     }
 
-    public void SetParametersForLevel(int lvl,ref float monsSpeed, ref bool boostAllow)
+    public void SetParametersForLevel(int lvl, ref bool boostAllow)
     {
         LevelNumber = lvl;
-        monsSpeed = SetMonsterSpeed();
+        Platform.instance.SetMonsterSpeed(MonsterSpeed());
         boostAllow = SetLevelType();
         SetLevelParamsForEnding();
     }
 
-    private float SetMonsterSpeed()
+    private float MonsterSpeed()
     {
         float speedExtended = initialMonsterSpeed * 100;
 

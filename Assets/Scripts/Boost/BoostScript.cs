@@ -8,26 +8,38 @@ public class BoostScript : MonoBehaviour
     private GameObject BoreDummy; //Enabled when boost starts. Normal runners sprite is disabled and this dummy placed into its place to make it look like runner is stopped.
     private GameObject RoadDummy; //Create a dummy road with sprites. Starting from BoreDummy.transform.position minus few blocks and reaches real roads first block. 
 
+
     private DummyBoostObjects dummyObjects;
 
     //public ParticleSystem explosionParticleSys;
-    private BoostParticleSystem boostParticleSystem;                       //boostparticlesystem*****
-    private PostProcessingChange postProcessingChange;
-	private BoreBoostEffects boreBoostEffects;
-	private BadThingsBoostEffect badThingsBoostEffect;
+    private BoostParticleSystem boostParticleSystem;                      //boostparticlesystem*****
+	private PostProcessingChange postProcessingChange;      
+	private RunnerAnimation boreBoostEffects;
+	private BadThingsAnimation badThingsBoostEffect;
+
 
     private Coroutine timeSlower;
     private bool TimeSlowed = false;
 
     private Coroutine boostAnimation;
 
+    private float currMonsSpeed;
+
+    private BoostEndMode endMode = BoostEndMode.CamChase;
+
 
     public enum BoostPhase
     {
         None,
-        PlayerRunning,
+        OnBoost,
         AnimationSlideDown,
         AnimationSlideUp
+    };
+
+    enum BoostEndMode
+    {
+        Time,
+        CamChase
     };
 
     //public Color newVignetteColor;
@@ -35,10 +47,12 @@ public class BoostScript : MonoBehaviour
 
     private void Start()
     {
-        boostParticleSystem = (BoostParticleSystem)FindObjectOfType(typeof(BoostParticleSystem));                      //boostparticlesystem*****
-        postProcessingChange = (PostProcessingChange)FindObjectOfType (typeof(PostProcessingChange));
-		boreBoostEffects = (BoreBoostEffects)FindObjectOfType (typeof(BoreBoostEffects));
-		badThingsBoostEffect = (BadThingsBoostEffect)FindObjectOfType (typeof(BadThingsBoostEffect));
+        boostParticleSystem = (BoostParticleSystem)FindObjectOfType(typeof(BoostParticleSystem));
+		    postProcessingChange = (PostProcessingChange)FindObjectOfType (typeof(PostProcessingChange));
+
+        boreBoostEffects = Platform.instance.Runner.GetComponent<Runner>().BoreAnimationController;
+        badThingsBoostEffect = Platform.instance.Nightmare.GetComponent<BadThingParticleSystem>().BadThingsAnimationController;
+
 
         dummyObjects = new DummyBoostObjects();  
 
@@ -51,20 +65,18 @@ public class BoostScript : MonoBehaviour
 
     public void StartBoost() //Phase 1 initiate
     {
-        Platform.instance.SetBoostPhase(BoostPhase.PlayerRunning);
-
         //float timeChangeSpeed = 20f;
-        timeSlower = StartCoroutine(SlowTime(0.3f,0.4f,BoostPhase.PlayerRunning));
+        timeSlower = StartCoroutine(SlowTime(0.3f,0.4f,BoostPhase.OnBoost));
 
         //explosionParticleSys.gameObject.SetActive (true);
         boostParticleSystem.EnteringBoost();                                       //boostparticlesystem*****
 
         StartCoroutine(postProcessingChange.BoostPostProcessingSettings(true));
-
         //  StartCoroutine (boreBoostEffects.scaleBore (true));  //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
         //boreBoostEffects.stopBore ();     // only for testing animation right now.
+        currMonsSpeed = badThingsBoostEffect.BadThingBoostEntering();
+        boreBoostEffects.DisableSprite();
 
-        boreBoostEffects.BoreEntersBoost();
         dummyObjects.SetDummy();
 
         //boreBoostEffects.BoreStartsSliding();   								
@@ -73,10 +85,9 @@ public class BoostScript : MonoBehaviour
 
     public void BoostFinish()
     {
-        Platform.instance.SetBoostPhase(BoostPhase.AnimationSlideDown);
         //float timeChangeSpeed = 100f;
-        boostAnimation = StartCoroutine(BoostAnimatonPhase());
 
+        boostAnimation = StartCoroutine(BoostAnimatonPhase());
     }
 
 
@@ -90,12 +101,11 @@ public class BoostScript : MonoBehaviour
 
         
 
-        badThingsBoostEffect.badThingsBoostExit(Platform.instance.Runner.transform.position.y);
-
         dummyObjects.DestoryRoadDummy();
         //StartCoroutine (boreBoostEffects.scaleBore (false));   //boreboosteffectte var büyütüp küçültüyo. boreyi durduracağımız için yoruma aldım işlevsiz olacak büyük iht
         //badThingsBoostEffect.nightmareRadius (1f);
-		boreBoostEffects.BoreExitsFromBoost(); 									// only for testing animation right now.
+		    boreBoostEffects.BoreExitsFromBoost(); 									// only for testing animation right now.
+        badThingsBoostEffect.BadThingsBoostExit(currMonsSpeed);
     }
 
 
@@ -114,8 +124,10 @@ public class BoostScript : MonoBehaviour
         boreBoostEffects.BoreBoostAnimationSlideDown(BoreDummy.transform.position); //Start sliding down the camera
         StartCoroutine(postProcessingChange.BoostPostProcessingSettings(false));
 
-        yield return new WaitUntil(() => Platform.instance.GetBoostPhase() == BoostPhase.AnimationSlideUp);
-       
+
+        yield return new WaitUntil(() => Platform.instance.Runner.transform.position.y <= BoreDummy.transform.position.y + 0.5f);//Platform.instance.GetBoostPhase() == BoostPhase.AnimationSlideUp);
+
+        Platform.instance.SetBoostPhase(BoostScript.BoostPhase.AnimationSlideUp);
         boreBoostEffects.ActivateSprite();
         dummyObjects.DisableDummy();
         //float timeChangeSpeed = 100f;
@@ -124,6 +136,7 @@ public class BoostScript : MonoBehaviour
 
         yield return new WaitUntil(() => TimeSlowed);
 
+        badThingsBoostEffect.BadThingsAnimationEnter(currMonsSpeed);
         boreBoostEffects.BoreBoostAnimationSlideUp();
 
         yield return new WaitUntil(() => Platform.instance.straightRoadLenght < Platform.instance.distBetweenBlock);

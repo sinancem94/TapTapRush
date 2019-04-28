@@ -69,12 +69,18 @@ public class Platform : MonoBehaviour
     public float boostTimer;
     private float boostLimit;
 
+    public float PlayerBehindCamTime; // Using when cam chase bore on boost. If that timer bigger than some value or player is too behind from cam stop Boost
+    public bool PlayerTooBehindCam; // Player is too behind camera stop boost
+    private bool wrongPressedOnBoost;
+
     public int pushBlockForward; //En arkada kalan blok yani o sırada sıranın en sonuna atılcak blok. 
 
     private bool is5Line;
 
     public float straightRoadLenght;
     public float initialStraightRoadLenght; // for refence point of starting size
+
+    public bool cameraChase;
 
     private Vector3 offsetRunnerBtwRoadSprite;
 
@@ -152,18 +158,25 @@ public class Platform : MonoBehaviour
         pushBlockForward = 0;
         BlockNumberInPlatformTiles = 30;
 
-        boostTime = 8f;
-        boostLimit = 12f;
-
         CreatePlatformAccordingToLevel();
 
         SetBoreSpeed(); //Set player speed from playerprefs.
         //CreatePlatform();
         SetBoostPhase(BoostScript.BoostPhase.None);
 
-        uI.OpenHomePage(); //After arranging everything open uı panel for starting game
+        inputLock = false; //Using for locking input to game
 
-        inputLock = false;
+        SetCamChase(true);
+
+        if (GetCamChase())
+            boostTime = 1f;
+        else
+            boostTime = 8f;
+
+        boostLimit = 12f;
+        wrongPressedOnBoost = false;
+
+        uI.OpenHomePage(); //After arranging everything open uı panel for starting game
     }
 
 
@@ -175,7 +188,7 @@ public class Platform : MonoBehaviour
 
         //runnerla en arkada kalan blok arasındaki mesafe 10 bloğu geçerse giriyor buraya.
         //Onları ilerletmişken road ve lines da ileri atılıyor.
-        if (Runner.transform.position.y >= platfotmTiles[pushBlockForward].transform.position.y + (10 * distBetweenBlock))
+        if (Runner.transform.position.y >= platfotmTiles[pushBlockForward].transform.position.y + (15 * distBetweenBlock))
         {
             platfotmTiles[pushBlockForward].transform.position = BlockPositioner(distBetweenBlock);
             blockScripts[pushBlockForward].SetBlock(levelManager.levelBlockType);
@@ -219,30 +232,22 @@ public class Platform : MonoBehaviour
 
             //////////////////////////////
             //Calculate if entered or exited boost
-            if (distanceBtwRunner > 9 && !boostLock && isBoostAllowed && GetBoostPhase() == BoostScript.BoostPhase.None)
+
+            if (distanceBtwRunner > boostLimit && !boostLock && isBoostAllowed && GetBoostPhase() == BoostScript.BoostPhase.None)
             {
                 boostLock = true;
-
-                boostTimer = 0f;
-                gainedPoint += 1;
-
-                Boost.StartBoost();
-
-                GiveMessage(2f, "RUN!!!");
-                Debug.LogWarning("BOOST !! at : " + Time.unscaledTime);
-                Debug.LogWarning("Distance is : " + distanceBtwRunner);
+                InitiateBoost();
             }
             else if(boostLock)
             {
                 boostTimer += Time.deltaTime;
-                if(boostTimer >= boostTime)
+
+                if(IsBoostEnded())
                 {
                     boostLock = false;
-                    inputLock = true;
-                    Boost.BoostFinish();
+                    inputLock = true; // Set to false when boost animation finishes
 
-                    GiveMessage(2f, "SLOWDOWN");
-                    Debug.LogWarning("Boost finished... at : " + Time.unscaledTime);
+                    LostBoost();
                 }
             }
 
@@ -260,7 +265,7 @@ public class Platform : MonoBehaviour
             if (blockScripts[blockToSlide].type == BlockData.blockType.reverse) // eğer ters bloksa -1 le çarp ki ters yöne doğru gitsin
                 direction *= -1;
             
-            if (GetBoostPhase() == BoostScript.BoostPhase.None)
+            if (GetBoostPhase() == BoostScript.BoostPhase.None || GetCamChase())
                 toPos = platfotmTiles[blockToSlide].transform.position.x + (direction * distBetweenBlock); // nereye gitcek onu hesapla
             else
                 toPos = 0; //block will go to zero in either direction
@@ -268,8 +273,16 @@ public class Platform : MonoBehaviour
 
             if(toPos < BlockPos[0] || toPos > BlockPos[BlockPos.Length - 1]) // eğer gitceği yer blockpos sınırları içinde değilse oyunu sonlandır
             {
-                blockScripts[blockToSlide].Fall(new Vector2(direction, 0));
-                GameOver();
+                if (GetBoostPhase() == BoostScript.BoostPhase.None)
+                {
+                    blockScripts[blockToSlide].Fall(new Vector2(direction, 0),false);
+                    GameOver();
+                }
+                else
+                {
+                    wrongPressedOnBoost = true;
+                    blockScripts[blockToSlide].Fall(new Vector2(direction, 0),wrongPressedOnBoost);
+                }
             }
             else // eğer blockPos sınırları içindeyse bloğu haraket ettir
             {
@@ -286,7 +299,47 @@ public class Platform : MonoBehaviour
         }
     }
 
-#region RoadCreating
+    void InitiateBoost()
+    {
+        boostTimer = 0f;
+        gainedPoint += 1;
+
+        SetBoostPhase(BoostScript.BoostPhase.OnBoost);
+        Boost.StartBoost();
+
+        GiveMessage(2f, "RUN!!!");
+        Debug.LogWarning("BOOST !! at : " + Time.unscaledTime);
+        Debug.LogWarning("Distance is : " + distanceBtwRunner);
+    }
+
+    void LostBoost()
+    {
+        SetBoostPhase(BoostScript.BoostPhase.AnimationSlideDown);
+        Boost.BoostFinish();
+
+        if(wrongPressedOnBoost)
+        {
+            wrongPressedOnBoost = false;
+        }
+
+        GiveMessage(2f, "SLOWDOWN");
+        Debug.LogWarning("Boost finished... at : " + Time.unscaledTime);
+    }
+
+    bool IsBoostEnded()
+    {
+        if ((PlayerBehindCamTime > boostTime || PlayerTooBehindCam || wrongPressedOnBoost) && GetCamChase())
+        {
+            return true;
+        }
+        else if (boostTimer >= boostTime && !GetCamChase())
+            return true;
+
+
+        return false;
+    }
+
+    #region RoadCreating
 
     // blokları konumlandıran fonksiyon
     private Vector2 BlockPositioner(float rate)
@@ -422,10 +475,21 @@ public class Platform : MonoBehaviour
         return Runner.GetComponent<Runner>().CharacterSpeed;
     }
 
+
+    public void SetMonsterSpeed(float to)
+    {
+        Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed = to;
+    }
+
+    public float GetMonsterSpeed()
+    {
+        return Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed;
+    }
+
     public void CreatePlatformAccordingToLevel() 
     {
         level_p = GetCurrentLevel();
-        levelManager.SetParametersForLevel(level_p,ref Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed,ref isBoostAllowed);
+        levelManager.SetParametersForLevel(level_p,ref isBoostAllowed);
         foreach(Block b in blockScripts) 
         {
             b.SetBlock(levelManager.levelBlockType);
@@ -458,6 +522,16 @@ public class Platform : MonoBehaviour
         return GameData.GetLevel(); // or Data.GetLevel();
     }
 
+    public bool GetCamChase()
+    {
+        return cameraChase;
+    }
+
+    public bool SetCamChase(bool to)
+    {
+        return cameraChase = to;
+    }
+
     //This method is used for getting game uı panel. 
     //Since this script attached to OnGamePanel which owned by UI handler, UI handler returns this script from OnGamePanel
     //Can only get uıGameHandler this way because gamobject is disabled from uı handler.
@@ -487,196 +561,3 @@ public class Platform : MonoBehaviour
 }
 
 
-/* private void MoveTile(int direction)
-    {
-        float toPos = 0;
-        if (platfotmTiles[blockToSlide].GetComponent<Block>().type == BlockData.blockType.normal) //if block is normal
-        {
-            if (ınput.dirr == InputManager.direction.right)
-            {
-                if (platfotmTiles[blockToSlide].transform.position.x > 0 ) // if pressed right and next tile is on right
-                {
-                    if(explosionParticleSystem != null)
-                    {
-                        explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
-                    }
-                    toPos = platfotmTiles[blockToSlide].transform.position.x - distBetweenBlock;//(!Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, 0)) ? platfotmTiles[blockToSlide].transform.position.x - distBetweenBlock : 0;
-                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(toPos));
-                    blockToSlide = (blockToSlide + 1 < platfotmTiles.Count  && Mathf.Approximately(toPos,0)) ? blockToSlide += 1 : blockToSlide;
-                    point += gainedPoint;
-                    uI.SetPoint(point);
-                    //platfotmTiles[blockToSlide].transform.position = new Vector2(platfotmTiles[blockToSlide].transform.position.x - distBetweenBlock, platfotmTiles[blockToSlide].transform.position.y);
-                }
-                else if(Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x,BlockPos[1])) //if pressed Right but tile is on left
-                {
-                    toPos = platfotmTiles[blockToSlide].transform.position.x - distBetweenBlock;
-                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(toPos));
-                }
-                else // if pressed Right but tile is on leftmost
-                {
-                    game.GameOver();
-                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().Fall(new Vector2(-1f, 0)));
-                    uI.GameOver();
-                }
-            }
-            else if (ınput.dirr == InputManager.direction.left)
-            {
-                if (platfotmTiles[blockToSlide].transform.position.x < 0 ) // if pressed left and tile is on left
-                {
-                    if (explosionParticleSystem != null)
-                    {
-                        explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
-                    }
-                    toPos = platfotmTiles[blockToSlide].transform.position.x + distBetweenBlock;//(!Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, 0)) ? platfotmTiles[blockToSlide].transform.position.x + distBetweenBlock : 0;
-                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(toPos));
-                    blockToSlide = (blockToSlide + 1 < platfotmTiles.Count && Mathf.Approximately(toPos,0)) ? blockToSlide += 1 : blockToSlide;
-                    point += gainedPoint;
-                    uI.SetPoint(point);
-                    //platfotmTiles[blockToSlide].transform.position = new Vector2(platfotmTiles[blockToSlide].transform.position.x + distBetweenBlock, platfotmTiles[blockToSlide].transform.position.y);
-                }
-                else if (Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, BlockPos[2])) // if pressed left but tile is on right most
-                {
-                    toPos = platfotmTiles[blockToSlide].transform.position.x + distBetweenBlock;
-                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(toPos));
-                }
-                else // if pressed left but tile is on right most
-                {
-                    game.GameOver();
-                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().Fall(new Vector2(1f, 0)));
-                   
-                    uI.GameOver();
-                }
-            }
-        }
-        else // if block is reverse NOT usigin DELETE!!!!
-        {
-            if (ınput.dirr == InputManager.direction.right)
-            {
-                if (platfotmTiles[blockToSlide].transform.position.x < 0 )//Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, BlockPos[0])) // if pressed right tile is on left
-                {
-                    if (explosionParticleSystem != null)
-                    {
-                        explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
-                    }
-                    toPos = (!Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, 0)) ? platfotmTiles[blockToSlide].transform.position.x + distBetweenBlock : 0;
-                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(toPos));
-                    //blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
-                    point += gainedPoint;
-                    uI.SetPoint(point);
-                    //platfotmTiles[blockToSlide].transform.position = new Vector2(platfotmTiles[blockToSlide].transform.position.x + distBetweenBlock, platfotmTiles[blockToSlide].transform.position.y);
-                }
-                else // if pressed right but reverse worng
-                {
-                    game.GameOver();
-                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().Fall(new Vector2(1f, 0)));
-                   
-                    uI.GameOver();
-                }
-            }
-            else if (ınput.dirr == InputManager.direction.left) 
-            {
-                if (platfotmTiles[blockToSlide].transform.position.x > 0)//Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, BlockPos[1])) // if pressed left tile is on right
-                {
-                    if (explosionParticleSystem != null)
-                    {
-                        explosionParticleSystem.Explode(platfotmTiles[blockToSlide].transform.position);// xplosion
-                    }
-                    toPos = (!Mathf.Approximately(platfotmTiles[blockToSlide].transform.position.x, 0)) ? platfotmTiles[blockToSlide].transform.position.x - distBetweenBlock : 0;
-                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().MoveTile(toPos));
-                    //blockToSlide = (blockToSlide + 1 < platfotmTiles.Count) ? blockToSlide += 1 : blockToSlide = 0;
-                    point += gainedPoint;
-                    uI.SetPoint(point);
-                    //platfotmTiles[blockToSlide].transform.position = new Vector2(platfotmTiles[blockToSlide].transform.position.x - distBetweenBlock, platfotmTiles[blockToSlide].transform.position.y);
-                }
-                else // if pressed left but reverse worng
-                {
-                    game.GameOver();
-                    StartCoroutine(platfotmTiles[blockToSlide].GetComponent<BlockAnimation>().Fall(new Vector2(-1f, 0)));
-                    uI.GameOver();
-                }
-            }
-        }
-        Debug.Log(toPos);
-    }*/
-
-
-
-//OLD START 
-
-
-/* distBetweenBlock = platformSizeHandler.ArrangeSize(road.transform, lines.transform, block.transform, runner.transform);
-        if (Data.is5Line)
-            BlockPos = new float[] { -2 * distBetweenBlock, -1 * distBetweenBlock, distBetweenBlock, 2 * distBetweenBlock };
-        else
-            BlockPos = new float[] { -1 * distBetweenBlock, distBetweenBlock };
-        distance = -5f; // Start from -5
-        int levelStartStraightLine = 5; // first straight line
-        platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
-        for (int i = 0; i < levelStartStraightLine; i++)
-        {
-            distance += distBetweenBlock;
-            platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
-            platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
-        }
-        blockNum = 28; //total block number is = levelStartghtLine + block num
-        for (int i = 0; i < blockNum; i++)
-        {
-            platfotmTiles.Add((GameObject)Instantiate(block, this.transform));
-            platfotmTiles[platfotmTiles.Count - 1].transform.position = BlockPositioner(distBetweenBlock);
-        }
-        runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner starts from 4rd tile
-        blockToSlide = levelStartStraightLine + 1;
-        initialStraightRoadLenght = 3 * distBetweenBlock;//platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
-        straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y;//initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
-        Debug.Log("Initial length is : " + initialStraightRoadLenght);*/
-
-
-
-
-//Gereksiz function ama camera da ilk başta bununla setliyor şimdilik ondan duruyor
-//TODO: Bu değişcek
-
-/* public void ChangeAngle() //for mode //new Vector3(0f,0f,-10f)new Vector3(0f, -6f, -10f)
- {
-     if (!Data.isAngled)
-     {
-         foreach (GameObject g in platfotmTiles)
-         {
-             g.transform.GetChild(0).gameObject.SetActive(false);
-         }
-         Camera.main.gameObject.transform.eulerAngles = Vector3.zero;
-         Camera.main.gameObject.GetComponent<CameraMovement>().CalculateOffset(runner.transform.position + new Vector3(0f, -3f, 10f));
-         if (Data.is5Line)
-         {
-             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
-             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 80f;
-         }
-         else
-         {
-             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
-             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 90f;
-         }
-
-         //Camera.main.gameObject.transform.position = Vector3.zero;
-     }
-     else
-     {
-         foreach (GameObject g in platfotmTiles)
-         {
-             g.transform.GetChild(0).gameObject.SetActive(true);
-         }
-         Camera.main.gameObject.transform.eulerAngles = new Vector3(-30f, 0f, 0f);
-         Camera.main.gameObject.GetComponent<CameraMovement>().CalculateOffset(runner.transform.position + new Vector3(0f, 3f, 10f));
-         if (Data.is5Line)
-         {
-             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
-             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 70f;
-         }
-         else
-         {
-             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicLowerSize = 55f;
-             Camera.main.gameObject.GetComponent<CameraMovement>().OrthographicUpperSize = 75f;
-         }
-         //Camera.main.gameObject.transform.position = new Vector3(0f, 6f, 0f);
-     }
- }*/

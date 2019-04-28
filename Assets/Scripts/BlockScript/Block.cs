@@ -41,7 +41,6 @@ public class Block : MonoBehaviour
         isMoving = false;
 
         type = BlockData.blockType.normal;
-
         blockScale = Platform.instance.blockScale;
 
        /* if (!Data.isAngled) //for mode trial
@@ -106,9 +105,9 @@ public class Block : MonoBehaviour
         }
     }
 
-    public void Fall(Vector2 fallTo)
+    public void Fall(Vector2 fallTo,bool isRollBack)
     {
-        StartCoroutine(blockAnimation.Fall(fallTo));
+        StartCoroutine(blockAnimation.Fall(fallTo, isRollBack));
     }
 
 	IEnumerator ScaleDownBlock(bool isScaledDown, float scaledTo)

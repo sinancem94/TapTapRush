@@ -128,7 +128,7 @@ public class UIHomePage : MonoBehaviour
     {
         //errorText.gameObject.SetActive(true);
         errorText.text = "Level is : " + (Data.GetLevel() + 1) + "\n";
-        errorText.text += "Monster Speed is : " + Platform.instance.Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed + "\n\n";
+        errorText.text += "Monster Speed is : " + Platform.instance.GetMonsterSpeed() + "\n\n";
 
         if(Platform.instance.levelManager.levelFinishtype == LevelManager.LevelFinishtype.None) 
         {

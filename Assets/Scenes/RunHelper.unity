@@ -1094,9 +1094,12 @@ MonoBehaviour:
   distanceBtwRunner: 0
   boostTime: 0
   boostTimer: 0
+  PlayerBehindCamTime: 0
+  PlayerTooBehindCam: 0
   pushBlockForward: 0
   straightRoadLenght: 0
   initialStraightRoadLenght: 0
+  cameraChase: 0
 --- !u!1 &369911508
 GameObject:
   m_ObjectHideFlags: 0
@@ -1495,7 +1498,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 25
+  far clip plane: 15
   field of view: 60
   orthographic: 0
   orthographic size: 6
@@ -1540,8 +1543,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8294d7c6c5ec4dfeb3b2c1a5ed9b2cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OrthographicUpperSize: 55
-  OrthographicLowerSize: 85
+  OrthographicLowerSize: 55
+  OrthographicUpperSize: 85
 --- !u!114 &546899198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7936,6 +7939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb0551df198143d3810a66353235245, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BoostBrake: 0
   monsterSpeed: 0
 --- !u!114 &1460985071
 MonoBehaviour:

@@ -11,14 +11,26 @@ public class BlockAnimation : MonoBehaviour {
         block = this.GetComponent<Block>();
     }
 
-    public IEnumerator Fall(Vector2 distance)
+    private float MoveTowards(float to)
     {
-        this.transform.Translate(distance, Space.World);
+        return Mathf.MoveTowards(transform.position.x, to, 0.1f);
+    }
+
+    public IEnumerator Fall(Vector2 toPos,bool RollBack)
+    {
+       
+        Vector3 initScale = this.transform.localScale;
+        Vector3 initPos = this.transform.position;
+
         Vector3 xshrink = new Vector2(-0.1f, 0f);
         Vector3 yshrink = new Vector2(0f, -0.1f);
+        
 
         while (this.transform.localScale.x > 0)
         {
+            if(!Mathf.Approximately(transform.position.x,toPos.x))
+                this.transform.Translate(toPos * Time.deltaTime * 3, Space.World);
+
             this.transform.localScale += xshrink;
             yield return new WaitForSecondsRealtime(.02f);
             if (this.transform.localScale.x <= 0.5f)
@@ -27,7 +39,26 @@ public class BlockAnimation : MonoBehaviour {
             }
         }
 
-        this.gameObject.SetActive(false);
+        if(!RollBack)
+            this.gameObject.SetActive(false);
+        else //
+        {
+            while (this.transform.localScale.x < initScale.x)
+            {
+                if (!Mathf.Approximately(transform.position.x, initPos.x))
+                    this.transform.Translate(-toPos * Time.deltaTime * 3, Space.World);
+
+                this.transform.localScale -= xshrink;
+                yield return new WaitForSecondsRealtime(.02f);
+                if (this.transform.localScale.x >= 0.5f)
+                {
+                    this.transform.localScale -= yshrink / 2;
+                }
+            }
+
+            transform.position = initPos;
+            transform.localScale = initScale;
+        }
     }
 
     public IEnumerator MoveTile(float toPosition)

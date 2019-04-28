@@ -16,7 +16,7 @@ public class DummyBoostObjects
         rdDum = RoadDummy;
     }*/
 
-    public GameObject CreateDummy(BoreBoostEffects boreBoostEffects)
+    public GameObject CreateDummy(RunnerAnimation boreBoostEffects)
     {
         BoreDummy = new GameObject
         {
@@ -31,8 +31,8 @@ public class DummyBoostObjects
         Animator d_anim = BoreDummy.AddComponent<Animator>();
         d_anim.runtimeAnimatorController = boreBoostEffects.animator.runtimeAnimatorController;
 
-        BoreDummy.transform.localScale = boreBoostEffects.transform.localScale;
-        BoreDummy.transform.rotation = boreBoostEffects.transform.rotation;
+        BoreDummy.transform.localScale = Platform.instance.Runner.transform.localScale;
+        BoreDummy.transform.rotation = Platform.instance.Runner.transform.rotation;
 
         BoreDummy.SetActive(false);
 
