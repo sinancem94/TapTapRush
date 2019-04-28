@@ -1754,7 +1754,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1776,8 +1776,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d4cc6212d1dec24c8eb4bad78fa7f19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeAmount: 0.1
-  waitTimer: 0.1
+  changeAmount: 0
+  waitTimer: 0
 --- !u!224 &579384798 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6419100091106235810, guid: 3209428e57039443b8b946fa8b43c015,
@@ -3107,7 +3107,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1460985069}
   - component: {fileID: 1460985070}
-  - component: {fileID: 1460985071}
   - component: {fileID: 1460985068}
   - component: {fileID: 1460985067}
   m_Layer: 0
@@ -7941,18 +7940,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BoostBrake: 0
   monsterSpeed: 0
---- !u!114 &1460985071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1460985066}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78458ec25495e6c4c9da7c1443fea144, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1532160264
 GameObject:
   m_ObjectHideFlags: 0
@@ -9055,9 +9042,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05b49699d02abc14db51db3a6e65a145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vignetteChange: 0.01
-  postProcessingChangeTimer: 0.05
-  colorGradingTimer: 0.1
 --- !u!1 &2104914254
 GameObject:
   m_ObjectHideFlags: 0
@@ -9161,7 +9145,6 @@ GameObject:
   - component: {fileID: 2120997776}
   - component: {fileID: 2120997775}
   - component: {fileID: 2120997777}
-  - component: {fileID: 2120997779}
   - component: {fileID: 2120997778}
   - component: {fileID: 2120997780}
   - component: {fileID: 2120997781}
@@ -9247,7 +9230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787d8951f99c148748308c352200321e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 2120997778}
   CharacterSpeed: 0
 --- !u!95 &2120997778
 Animator:
@@ -9268,20 +9250,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2120997779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2120997774}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a32e22db49544c14585084a1628100a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 2120997778}
-  spriteRenderer: {fileID: 0}
 --- !u!61 &2120997780
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9660,11 +9628,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BoostParticleSystem
-      objectReference: {fileID: 0}
-    - target: {fileID: 6832713013374976283, guid: af1df6d5ef6642e468dec0a9d964ad1a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6832713013374976285, guid: af1df6d5ef6642e468dec0a9d964ad1a,
         type: 3}

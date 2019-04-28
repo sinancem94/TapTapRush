@@ -1,0 +1,1899 @@
+fileFormatVersion: 2
+guid: a1d7f6a422a4c0c4380d3eb8a7de03e4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 217822787417121892
+    second: TornadoWBoreSpriteSheet_0
+  - first:
+      213: -741000480816747853
+    second: TornadoWBoreSpriteSheet_1
+  - first:
+      213: -6740266075020182420
+    second: TornadoWBoreSpriteSheet_2
+  - first:
+      213: 4696900832832950653
+    second: TornadoWBoreSpriteSheet_3
+  - first:
+      213: -5171743736203819739
+    second: TornadoWBoreSpriteSheet_4
+  - first:
+      213: -5344950907419624826
+    second: TornadoWBoreSpriteSheet_5
+  - first:
+      213: -3117531655757701137
+    second: TornadoWBoreSpriteSheet_6
+  - first:
+      213: -2318761495409569106
+    second: TornadoWBoreSpriteSheet_7
+  - first:
+      213: -8243017293742910514
+    second: TornadoWBoreSpriteSheet_8
+  - first:
+      213: -2101642767940517869
+    second: TornadoWBoreSpriteSheet_9
+  - first:
+      213: 6908532793604246761
+    second: TornadoWBoreSpriteSheet_10
+  - first:
+      213: 8241593659749049129
+    second: TornadoWBoreSpriteSheet_11
+  - first:
+      213: -280294467358041649
+    second: TornadoWBoreSpriteSheet_12
+  - first:
+      213: -5024300876879054858
+    second: TornadoWBoreSpriteSheet_13
+  - first:
+      213: 2399183959260477795
+    second: TornadoWBoreSpriteSheet_14
+  - first:
+      213: 7903422705648543175
+    second: TornadoWBoreSpriteSheet_15
+  - first:
+      213: -3086347426207917204
+    second: TornadoWBoreSpriteSheet_16
+  - first:
+      213: -5141217661688368601
+    second: TornadoWBoreSpriteSheet_17
+  - first:
+      213: -796957602527799231
+    second: TornadoWBoreSpriteSheet_18
+  - first:
+      213: 1501354378572338386
+    second: TornadoWBoreSpriteSheet_19
+  - first:
+      213: 5652483495257831087
+    second: TornadoWBoreSpriteSheet_20
+  - first:
+      213: -221801256848083458
+    second: TornadoWBoreSpriteSheet_21
+  - first:
+      213: -8209357024307621567
+    second: TornadoWBoreSpriteSheet_22
+  - first:
+      213: 2487542031975753813
+    second: TornadoWBoreSpriteSheet_23
+  - first:
+      213: 2511863902261875913
+    second: TornadoWBoreSpriteSheet_24
+  - first:
+      213: 1979404525375722009
+    second: TornadoWBoreSpriteSheet_25
+  - first:
+      213: -3252228288290761451
+    second: TornadoWBoreSpriteSheet_26
+  - first:
+      213: 4778902144486026172
+    second: TornadoWBoreSpriteSheet_27
+  - first:
+      213: -8308796973472961266
+    second: TornadoWBoreSpriteSheet_28
+  - first:
+      213: 5761520749491853238
+    second: TornadoWBoreSpriteSheet_29
+  - first:
+      213: -54172014254538563
+    second: TornadoWBoreSpriteSheet_30
+  - first:
+      213: -688063314004227780
+    second: TornadoWBoreSpriteSheet_31
+  - first:
+      213: 1574493324328072252
+    second: TornadoWBoreSpriteSheet_32
+  - first:
+      213: 3075479552633513151
+    second: TornadoWBoreSpriteSheet_33
+  - first:
+      213: -4004790489671437803
+    second: TornadoWBoreSpriteSheet_34
+  - first:
+      213: -2669800355083565576
+    second: TornadoWBoreSpriteSheet_35
+  - first:
+      213: 7755305869431609592
+    second: TornadoWBoreSpriteSheet_36
+  - first:
+      213: -6723780918217753467
+    second: TornadoWBoreSpriteSheet_37
+  - first:
+      213: 2926361092020086657
+    second: TornadoWBoreSpriteSheet_38
+  - first:
+      213: -3835683174753114080
+    second: TornadoWBoreSpriteSheet_39
+  - first:
+      213: 8823640001501733592
+    second: TornadoWBoreSpriteSheet_40
+  - first:
+      213: -4659999119645285503
+    second: TornadoWBoreSpriteSheet_41
+  - first:
+      213: 171708092545795869
+    second: TornadoWBoreSpriteSheet_42
+  - first:
+      213: -7966078203287735909
+    second: TornadoWBoreSpriteSheet_43
+  - first:
+      213: -2814940107044758698
+    second: TornadoWBoreSpriteSheet_44
+  - first:
+      213: 3216592965707762712
+    second: TornadoWBoreSpriteSheet_45
+  - first:
+      213: 5859256972768997411
+    second: TornadoWBoreSpriteSheet_46
+  - first:
+      213: -1479187750811082923
+    second: TornadoWBoreSpriteSheet_47
+  - first:
+      213: 4389088536686001978
+    second: TornadoWBoreSpriteSheet_48
+  - first:
+      213: 7252687491245681612
+    second: TornadoWBoreSpriteSheet_49
+  - first:
+      213: 3839514651352253540
+    second: TornadoWBoreSpriteSheet_50
+  - first:
+      213: -6593285107404620835
+    second: TornadoWBoreSpriteSheet_51
+  - first:
+      213: -6413498753091772510
+    second: TornadoWBoreSpriteSheet_52
+  - first:
+      213: -4370083748715935034
+    second: TornadoWBoreSpriteSheet_53
+  - first:
+      213: 5631113815193820649
+    second: TornadoWBoreSpriteSheet_54
+  - first:
+      213: -4009565399514207510
+    second: TornadoWBoreSpriteSheet_55
+  - first:
+      213: 8042626956695501134
+    second: TornadoWBoreSpriteSheet_56
+  - first:
+      213: -3538744809671379090
+    second: TornadoWBoreSpriteSheet_57
+  - first:
+      213: 8151623803807392404
+    second: TornadoWBoreSpriteSheet_58
+  - first:
+      213: 6302579836307743913
+    second: TornadoWBoreSpriteSheet_59
+  - first:
+      213: 8361864818039667659
+    second: TornadoWBoreSpriteSheet_60
+  - first:
+      213: -8743388806619638356
+    second: TornadoWBoreSpriteSheet_61
+  - first:
+      213: 1765016699177575974
+    second: TornadoWBoreSpriteSheet_62
+  - first:
+      213: -1086266182128299709
+    second: TornadoWBoreSpriteSheet_63
+  - first:
+      213: 1556039441781086428
+    second: TornadoWBoreSpriteSheet_64
+  - first:
+      213: 5748307349836948204
+    second: TornadoWBoreSpriteSheet_65
+  - first:
+      213: -2954810156754690357
+    second: TornadoWBoreSpriteSheet_66
+  - first:
+      213: 4409930951441296800
+    second: TornadoWBoreSpriteSheet_67
+  - first:
+      213: -2366785495701386657
+    second: TornadoWBoreSpriteSheet_68
+  - first:
+      213: -7390924732193207006
+    second: TornadoWBoreSpriteSheet_69
+  - first:
+      213: 8442450142154779411
+    second: TornadoWBoreSpriteSheet_70
+  - first:
+      213: 8017866689573242466
+    second: TornadoWBoreSpriteSheet_71
+  - first:
+      213: 8905352459712565016
+    second: TornadoWBoreSpriteSheet_72
+  - first:
+      213: 8739684706816039338
+    second: TornadoWBoreSpriteSheet_73
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_0
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 3769
+        width: 123
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ae29d10bf72b984883ebc733e0b98a6
+      internalID: 217822787417121892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_1
+      rect:
+        serializedVersion: 2
+        x: 628
+        y: 3767
+        width: 121
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6175e74cc5dd4542aa8b891d7ec7038
+      internalID: -741000480816747853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_2
+      rect:
+        serializedVersion: 2
+        x: 1007
+        y: 3761
+        width: 109
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57936cf3841487344aa29e240cbaa5ff
+      internalID: -6740266075020182420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_3
+      rect:
+        serializedVersion: 2
+        x: 1374
+        y: 3759
+        width: 92
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1366a3cbcac0aa840ad35df54b4696de
+      internalID: 4696900832832950653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_4
+      rect:
+        serializedVersion: 2
+        x: 1726
+        y: 3753
+        width: 72
+        height: 123
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20a2922685d1b2d4b930248f88fbf039
+      internalID: -5171743736203819739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_5
+      rect:
+        serializedVersion: 2
+        x: 2087
+        y: 3757
+        width: 58
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3e82c76e26241f42b4e59c3b982ff1a
+      internalID: -5344950907419624826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_6
+      rect:
+        serializedVersion: 2
+        x: 2462
+        y: 3739
+        width: 74
+        height: 123
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d90775aa4b43d2640ad6fd2da97f4fd1
+      internalID: -3117531655757701137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_7
+      rect:
+        serializedVersion: 2
+        x: 2874
+        y: 3745
+        width: 94
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eab7233d4b1cdb6469bd108c4492667a
+      internalID: -2318761495409569106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_8
+      rect:
+        serializedVersion: 2
+        x: 3285
+        y: 3749
+        width: 112
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c9a2300a0efa034ebf74b9cc9b68772
+      internalID: -8243017293742910514
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_9
+      rect:
+        serializedVersion: 2
+        x: 3714
+        y: 3757
+        width: 122
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e37e9c2718cbf349a930fd62f5d0c33
+      internalID: -2101642767940517869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_10
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 3437
+        width: 125
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 781dd5adb3223e64eac32774937c90ba
+      internalID: 6908532793604246761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_11
+      rect:
+        serializedVersion: 2
+        x: 628
+        y: 3444
+        width: 119
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7bfc51ad0a736464b9833e1b5d875efe
+      internalID: 8241593659749049129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_12
+      rect:
+        serializedVersion: 2
+        x: 999
+        y: 3427
+        width: 125
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52bb74edfa7a0c94aa0055d9ad223ba3
+      internalID: -280294467358041649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_13
+      rect:
+        serializedVersion: 2
+        x: 1360
+        y: 3407
+        width: 121
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92c6aa4370698c749bae146e05c76867
+      internalID: -5024300876879054858
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_14
+      rect:
+        serializedVersion: 2
+        x: 1706
+        y: 3382
+        width: 109
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03f80fe635adbc44c92678bca4471d41
+      internalID: 2399183959260477795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_15
+      rect:
+        serializedVersion: 2
+        x: 2054
+        y: 3376
+        width: 90
+        height: 123
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b08cccc4f44828b43a17b12af1f7b0cd
+      internalID: 7903422705648543175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_16
+      rect:
+        serializedVersion: 2
+        x: 2460
+        y: 3366
+        width: 72
+        height: 123
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9228c306f884e56488be8a4c55128c2e
+      internalID: -3086347426207917204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_17
+      rect:
+        serializedVersion: 2
+        x: 2886
+        y: 3374
+        width: 60
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 948ad4ba631148e43bf9897c53f04be8
+      internalID: -5141217661688368601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_18
+      rect:
+        serializedVersion: 2
+        x: 3265
+        y: 3366
+        width: 76
+        height: 125
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0fcba8d5ebf7a646a3eaf2abd86ef06
+      internalID: -796957602527799231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_19
+      rect:
+        serializedVersion: 2
+        x: 3714
+        y: 3354
+        width: 96
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93997db82998bdb4da7e8bf5d80e379b
+      internalID: 1501354378572338386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_20
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 3069
+        width: 113
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dac7da7b8178df543861cb109645154f
+      internalID: 5652483495257831087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_21
+      rect:
+        serializedVersion: 2
+        x: 626
+        y: 3093
+        width: 121
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e310f41a25fad54182c7fd167950d3f
+      internalID: -221801256848083458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_22
+      rect:
+        serializedVersion: 2
+        x: 999
+        y: 3099
+        width: 124
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9b6521036026c734cbe91125123919e5
+      internalID: -8209357024307621567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_23
+      rect:
+        serializedVersion: 2
+        x: 1360
+        y: 3112
+        width: 123
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9c120a6f2dc4284f9541e645540050f
+      internalID: 2487542031975753813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_24
+      rect:
+        serializedVersion: 2
+        x: 1722
+        y: 3105
+        width: 119
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 765b72931ee04cb40972addd0db176d0
+      internalID: 2511863902261875913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_25
+      rect:
+        serializedVersion: 2
+        x: 2019
+        y: 3017
+        width: 193
+        height: 214
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22d9e057c6343e147a76d220f4ff1b8b
+      internalID: 1979404525375722009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_26
+      rect:
+        serializedVersion: 2
+        x: 2402
+        y: 2987
+        width: 193
+        height: 213
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: efba11141be20d74fa038c0a25ae7e1d
+      internalID: -3252228288290761451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_27
+      rect:
+        serializedVersion: 2
+        x: 2812
+        y: 3008
+        width: 205
+        height: 212
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac03dcea4c2e3074eb056b40285c66dc
+      internalID: 4778902144486026172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_28
+      rect:
+        serializedVersion: 2
+        x: 3200
+        y: 2937
+        width: 207
+        height: 212
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c831dd12f6561e645b742e1f73c879ba
+      internalID: -8308796973472961266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_29
+      rect:
+        serializedVersion: 2
+        x: 3669
+        y: 2943
+        width: 214
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d89fecbc408476744936dd0c871be127
+      internalID: 5761520749491853238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_30
+      rect:
+        serializedVersion: 2
+        x: 122
+        y: 2534
+        width: 215
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f47d22c78b431c4a8c13dbf4a6f447f
+      internalID: -54172014254538563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_31
+      rect:
+        serializedVersion: 2
+        x: 581
+        y: 2531
+        width: 216
+        height: 196
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f2f961c86b65b24b9960116b373a705
+      internalID: -688063314004227780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_32
+      rect:
+        serializedVersion: 2
+        x: 954
+        y: 2534
+        width: 215
+        height: 195
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c6c50c4181e0b14db2ced966b7a20bd
+      internalID: 1574493324328072252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_33
+      rect:
+        serializedVersion: 2
+        x: 1314
+        y: 2534
+        width: 214
+        height: 201
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f3f994a093cd504e9bb9f0f69d31d6b
+      internalID: 3075479552633513151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_34
+      rect:
+        serializedVersion: 2
+        x: 1687
+        y: 2521
+        width: 208
+        height: 206
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a9a4afa9132b0645b717ccd5d3b8927
+      internalID: -4004790489671437803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_35
+      rect:
+        serializedVersion: 2
+        x: 2046
+        y: 2515
+        width: 205
+        height: 211
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6230998f80680b444b829871662570d1
+      internalID: -2669800355083565576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_36
+      rect:
+        serializedVersion: 2
+        x: 2423
+        y: 2515
+        width: 205
+        height: 211
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ecdc34fe1ac413742a07db0c86745b67
+      internalID: 7755305869431609592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_37
+      rect:
+        serializedVersion: 2
+        x: 2771
+        y: 2521
+        width: 198
+        height: 214
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0bcf32277f09944f9b9da2b3b5d85ec
+      internalID: -6723780918217753467
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_38
+      rect:
+        serializedVersion: 2
+        x: 3171
+        y: 2519
+        width: 191
+        height: 216
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 626bf1ebac7911443945858271137dca
+      internalID: 2926361092020086657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_39
+      rect:
+        serializedVersion: 2
+        x: 3653
+        y: 2526
+        width: 199
+        height: 215
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 00824c7bebeec654c91675f56ad10c57
+      internalID: -3835683174753114080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_40
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 2062
+        width: 208
+        height: 210
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c1f9e817efe962488182f79cdd22d7f
+      internalID: 8823640001501733592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_41
+      rect:
+        serializedVersion: 2
+        x: 519
+        y: 2077
+        width: 215
+        height: 193
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1a8af866fc5fd549a9c3761b3dfe9c9
+      internalID: -4659999119645285503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_42
+      rect:
+        serializedVersion: 2
+        x: 935
+        y: 2087
+        width: 214
+        height: 194
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68fed7ac2245f43449261b1d52b57134
+      internalID: 171708092545795869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_43
+      rect:
+        serializedVersion: 2
+        x: 1314
+        y: 2085
+        width: 210
+        height: 207
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5609deea5fb9cdb45a3c56c94acb0b26
+      internalID: -7966078203287735909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_44
+      rect:
+        serializedVersion: 2
+        x: 1679
+        y: 2091
+        width: 203
+        height: 214
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8828eab532fd8894b9cb431e4f547154
+      internalID: -2814940107044758698
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_45
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 2081
+        width: 191
+        height: 216
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9bcced0046c467f448ac13490b4c934a
+      internalID: 3216592965707762712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_46
+      rect:
+        serializedVersion: 2
+        x: 2423
+        y: 2077
+        width: 205
+        height: 213
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d5a3346f875b4d4cb53244108187948
+      internalID: 5859256972768997411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_47
+      rect:
+        serializedVersion: 2
+        x: 2771
+        y: 2062
+        width: 208
+        height: 207
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1391f2ce6b2908949a459a611ba6ca75
+      internalID: -1479187750811082923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_48
+      rect:
+        serializedVersion: 2
+        x: 3171
+        y: 2077
+        width: 213
+        height: 204
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43f4a45399631ae44ad297c3ff64be52
+      internalID: 4389088536686001978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_49
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 1569
+        width: 215
+        height: 196
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b55aa8730d053ab4691480ae79d6d6b8
+      internalID: 7252687491245681612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_50
+      rect:
+        serializedVersion: 2
+        x: 476
+        y: 1569
+        width: 216
+        height: 194
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4dc04d1126c5ac488b69ec6c37cc4f6
+      internalID: 3839514651352253540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_51
+      rect:
+        serializedVersion: 2
+        x: 935
+        y: 1563
+        width: 214
+        height: 200
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 040d16f37ff314245b738630d99a27cf
+      internalID: -6593285107404620835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_52
+      rect:
+        serializedVersion: 2
+        x: 1312
+        y: 1563
+        width: 212
+        height: 206
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 860d0e70781e5ac45b037de2dc2e41e8
+      internalID: -6413498753091772510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_53
+      rect:
+        serializedVersion: 2
+        x: 1681
+        y: 1593
+        width: 207
+        height: 211
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e772aa8ea4c56e646a54b9bcb37f1099
+      internalID: -4370083748715935034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_54
+      rect:
+        serializedVersion: 2
+        x: 2036
+        y: 1593
+        width: 203
+        height: 213
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: edc031880d60a8b43b430d58c2a024d3
+      internalID: 5631113815193820649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_55
+      rect:
+        serializedVersion: 2
+        x: 2388
+        y: 1593
+        width: 195
+        height: 215
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 401a11797d7a3be45a96db523017a078
+      internalID: -4009565399514207510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_56
+      rect:
+        serializedVersion: 2
+        x: 2796
+        y: 1564
+        width: 191
+        height: 214
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5238ca78d46f4c245bb010a9a4000c16
+      internalID: 8042626956695501134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_57
+      rect:
+        serializedVersion: 2
+        x: 3200
+        y: 1524
+        width: 207
+        height: 213
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5175a52ed0ecb08499498a37546329c7
+      internalID: -3538744809671379090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_58
+      rect:
+        serializedVersion: 2
+        x: 3655
+        y: 1521
+        width: 192
+        height: 214
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55f00a37ff6a58745af41e5fc06343b9
+      internalID: 8151623803807392404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_59
+      rect:
+        serializedVersion: 2
+        x: 122
+        y: 1054
+        width: 195
+        height: 216
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 282be6f8042ca0141bf8bb66729a7f33
+      internalID: 6302579836307743913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_60
+      rect:
+        serializedVersion: 2
+        x: 546
+        y: 1058
+        width: 201
+        height: 212
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e41a3e4b8508c3478d21d79d2151bcd
+      internalID: 8361864818039667659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_61
+      rect:
+        serializedVersion: 2
+        x: 974
+        y: 1060
+        width: 203
+        height: 214
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c6d872c332c4e243abda0bdc0943678
+      internalID: -8743388806619638356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_62
+      rect:
+        serializedVersion: 2
+        x: 1353
+        y: 1056
+        width: 212
+        height: 205
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fce0f9323a243d4bbe7c7eef9a596e0
+      internalID: 1765016699177575974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_63
+      rect:
+        serializedVersion: 2
+        x: 1718
+        y: 1069
+        width: 212
+        height: 205
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 564a266236efc924c96011705ba35e01
+      internalID: -1086266182128299709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_64
+      rect:
+        serializedVersion: 2
+        x: 2080
+        y: 1058
+        width: 216
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba2b16ee5070d5f41b28acebc0783987
+      internalID: 1556039441781086428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_65
+      rect:
+        serializedVersion: 2
+        x: 2429
+        y: 1065
+        width: 213
+        height: 196
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29c3327ab0c7e75499eae2e8d2ee9802
+      internalID: 5748307349836948204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_66
+      rect:
+        serializedVersion: 2
+        x: 2812
+        y: 1071
+        width: 212
+        height: 201
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3541f8ef0bce0554e987c3d784b5ae7c
+      internalID: -2954810156754690357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_67
+      rect:
+        serializedVersion: 2
+        x: 3242
+        y: 1112
+        width: 101
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8a97c276c6a8134ab7ed0f87005a2bf
+      internalID: 4409930951441296800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_68
+      rect:
+        serializedVersion: 2
+        x: 3690
+        y: 1105
+        width: 96
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06d23027d1ef8e543858307d58f48952
+      internalID: -2366785495701386657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_69
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 690
+        width: 114
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c67621bda259f44fa3054b0733e9524
+      internalID: -7390924732193207006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_70
+      rect:
+        serializedVersion: 2
+        x: 522
+        y: 689
+        width: 122
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f942e7e635a163449cd687c8d41b937
+      internalID: 8442450142154779411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_71
+      rect:
+        serializedVersion: 2
+        x: 946
+        y: 689
+        width: 125
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 833f108c0ee43a149bd32f39cd2c754a
+      internalID: 8017866689573242466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_72
+      rect:
+        serializedVersion: 2
+        x: 1300
+        y: 667
+        width: 123
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42fa208d4c5bc3748b3a068c49f82d45
+      internalID: 8905352459712565016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TornadoWBoreSpriteSheet_73
+      rect:
+        serializedVersion: 2
+        x: 1737
+        y: 688
+        width: 119
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a903cdd493ce72f4f9307900c17837c0
+      internalID: 8739684706816039338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 9030981294660ec4ebb2d853002ff338
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
