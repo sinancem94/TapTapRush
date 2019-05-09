@@ -1,0 +1,483 @@
+fileFormatVersion: 2
+guid: 2e5a5034276902442ba031809f5889c1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6195218596533052944
+    second: BoreCompanionSpriteSheet_0
+  - first:
+      213: 6657918970409694951
+    second: BoreCompanionSpriteSheet_1
+  - first:
+      213: 6979543799570351042
+    second: BoreCompanionSpriteSheet_2
+  - first:
+      213: 2437880860157437699
+    second: BoreCompanionSpriteSheet_3
+  - first:
+      213: -131702651815274269
+    second: BoreCompanionSpriteSheet_4
+  - first:
+      213: 97472419479039838
+    second: BoreCompanionSpriteSheet_5
+  - first:
+      213: -141912357303164324
+    second: BoreCompanionSpriteSheet_6
+  - first:
+      213: 4006099950106373548
+    second: BoreCompanionSpriteSheet_7
+  - first:
+      213: -2662487732439617228
+    second: BoreCompanionSpriteSheet_8
+  - first:
+      213: 8950640311593922541
+    second: BoreCompanionSpriteSheet_9
+  - first:
+      213: -358668988677291124
+    second: BoreCompanionSpriteSheet_10
+  - first:
+      213: 6143206507078647074
+    second: BoreCompanionSpriteSheet_11
+  - first:
+      213: -868781041617524031
+    second: BoreCompanionSpriteSheet_12
+  - first:
+      213: 3178549532950368553
+    second: BoreCompanionSpriteSheet_13
+  - first:
+      213: 8190416267025694217
+    second: BoreCompanionSpriteSheet_14
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: BoreCompanionSpriteSheet_0
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 1838
+        width: 69
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e2b6f97ce7a4ab488074b4bd19805da
+      internalID: -6195218596533052944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoreCompanionSpriteSheet_1
+      rect:
+        serializedVersion: 2
+        x: 557
+        y: 1830
+        width: 90
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a5fc899fe7c65aa448126e6432efa151
+      internalID: 6657918970409694951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoreCompanionSpriteSheet_2
+      rect:
+        serializedVersion: 2
+        x: 961
+        y: 1822
+        width: 79
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 568c5d5c21c74994d93cc15864721998
+      internalID: 6979543799570351042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoreCompanionSpriteSheet_3
+      rect:
+        serializedVersion: 2
+        x: 1403
+        y: 1804
+        width: 91
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7f7b3fa2d71299468b7bd4056db5777
+      internalID: 2437880860157437699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoreCompanionSpriteSheet_4
+      rect:
+        serializedVersion: 2
+        x: 1846
+        y: 1786
+        width: 91
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f807b6e57b68454dab6b589afeaad91
+      internalID: -131702651815274269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoreCompanionSpriteSheet_5
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 1001
+        width: 87
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cbfc5310b38ae424faab4fb287eecc5d
+      internalID: 97472419479039838
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoreCompanionSpriteSheet_6
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 1000
+        width: 87
+        height: 95
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b25a6d8e138a66749b3ff5089091d433
+      internalID: -141912357303164324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoreCompanionSpriteSheet_7
+      rect:
+        serializedVersion: 2
+        x: 978
+        y: 1001
+        width: 87
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb973438b0a7e8f439b3fca44059de22
+      internalID: 4006099950106373548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoreCompanionSpriteSheet_8
+      rect:
+        serializedVersion: 2
+        x: 1405
+        y: 1000
+        width: 87
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5857d1ede85787a49873dbd411678359
+      internalID: -2662487732439617228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoreCompanionSpriteSheet_9
+      rect:
+        serializedVersion: 2
+        x: 1846
+        y: 1000
+        width: 91
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 755cb09a9e8c8914190b0523abbce5b1
+      internalID: 8950640311593922541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoreCompanionSpriteSheet_10
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 119
+        width: 87
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70bfbba90f4cdf6489fc6ed94419c529
+      internalID: -358668988677291124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoreCompanionSpriteSheet_11
+      rect:
+        serializedVersion: 2
+        x: 469
+        y: 130
+        width: 87
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a25c3b744fc944458d04af7bed0577c
+      internalID: 6143206507078647074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoreCompanionSpriteSheet_12
+      rect:
+        serializedVersion: 2
+        x: 934
+        y: 119
+        width: 87
+        height: 95
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab5de5d885bc26f4b8b5402a2f44d010
+      internalID: -868781041617524031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoreCompanionSpriteSheet_13
+      rect:
+        serializedVersion: 2
+        x: 1362
+        y: 123
+        width: 87
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02ec773ccc0010d47a982eebcb1205d7
+      internalID: 3178549532950368553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BoreCompanionSpriteSheet_14
+      rect:
+        serializedVersion: 2
+        x: 1800
+        y: 119
+        width: 91
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d517e589f6bb62e49a25f55d6b23dae0
+      internalID: 8190416267025694217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: c4c12ab3db8c4af4fa0ad9e9fe465178
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
