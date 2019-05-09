@@ -16,7 +16,7 @@ public class Platform : MonoBehaviour
     private GetData GameData; 
     private InputManager ınput;
     private UIHandler uI;
-    private UIGameHandler uIGame;
+    private UIOnGamePage uIGame;
     private BoostScript Boost;
 
 
@@ -93,6 +93,11 @@ public class Platform : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+        }
+        else
+        {
+            Debug.LogError("Platform already exist!");
+            Destroy(this);
         }
     }
 
@@ -183,11 +188,9 @@ public class Platform : MonoBehaviour
 
     private void LateUpdate()
     {
-        //Lines.transform.position = Runner.transform.position + offsetRunnerBtwRoadSprite;
         RoadSprite.transform.position = Runner.transform.position + offsetRunnerBtwRoadSprite;
 
-        //runnerla en arkada kalan blok arasındaki mesafe 10 bloğu geçerse giriyor buraya.
-        //Onları ilerletmişken road ve lines da ileri atılıyor.
+        //runnerla en arkada kalan blok arasındaki mesafe 15 bloğu geçerse giriyor buraya.
         if (Runner.transform.position.y >= platfotmTiles[pushBlockForward].transform.position.y + (15 * distBetweenBlock))
         {
             platfotmTiles[pushBlockForward].transform.position = BlockPositioner(distBetweenBlock);
@@ -195,7 +198,8 @@ public class Platform : MonoBehaviour
             pushBlockForward = (pushBlockForward + 1 < platfotmTiles.Count) ? pushBlockForward += 1 : pushBlockForward = 0;
         }
 
-        //en sondaki engel arkada kaldıysa tüm engellerin yerini tekrar hesaplayıp ileri at.
+        //en sondaki engel arkada kaldıysa tüm engellerin yerini tekrar hesaplayıp ileri at. 
+        //TODO: Şu anda tüm obstacleları aynı anda atıyor. Platform dizilişine karar vercek ayrı bir sınıf olmalı orda tüm bunları yapmalıyız.Engel ve Blok pozisyonlandırma, blok tip karar verme etc.
         if(Shooters[Shooters.Length -1].transform.position.y < Runner.transform.position.y)
             PlaceObstacles();
     }
@@ -281,7 +285,7 @@ public class Platform : MonoBehaviour
                 else
                 {
                     wrongPressedOnBoost = true;
-                    blockScripts[blockToSlide].Fall(new Vector2(direction, 0),wrongPressedOnBoost);
+                    blockScripts[blockToSlide].Fall(new Vector2(direction, 0),wrongPressedOnBoost); //Block will rollback from fall animation
                 }
             }
             else // eğer blockPos sınırları içindeyse bloğu haraket ettir
@@ -386,8 +390,9 @@ public class Platform : MonoBehaviour
         blockScripts.Add(block.GetComponent<Block>());
 
         platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
-        blockScripts[blockScripts.Count - 1].enabled = true;
-        blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
+        //blockScripts[blockScripts.Count - 1].enabled = true;
+        //blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
+        blockScripts[blockScripts.Count - 1].InitiliazeBlock(levelManager.levelBlockType,blockScale);
 
         //platfotmTiles[0].GetComponent<Block>().SetBlock();
 
@@ -400,8 +405,9 @@ public class Platform : MonoBehaviour
             platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
 
             blockScripts.Add(platfotmTiles[platfotmTiles.Count - 1].GetComponent<Block>());
-            blockScripts[blockScripts.Count - 1].enabled = true;
-            blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
+            //blockScripts[blockScripts.Count - 1].enabled = true;
+            //blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
+            blockScripts[blockScripts.Count - 1].InitiliazeBlock(levelManager.levelBlockType, blockScale);
         }
 
         //Platform tiles da buluncak toplam blok sayısından ilk baştaki düz blokları çıkar 
@@ -413,8 +419,9 @@ public class Platform : MonoBehaviour
             platfotmTiles[platfotmTiles.Count - 1].transform.position = BlockPositioner(distBetweenBlock);
 
             blockScripts.Add(platfotmTiles[platfotmTiles.Count - 1].GetComponent<Block>());
-            blockScripts[blockScripts.Count - 1].enabled = true;
-            blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
+            //blockScripts[blockScripts.Count - 1].enabled = true;
+            //blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
+            blockScripts[blockScripts.Count - 1].InitiliazeBlock(levelManager.levelBlockType, blockScale);
         }
 
         Runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner düz sıranın en sonunda başlıyor
@@ -535,7 +542,7 @@ public class Platform : MonoBehaviour
     //This method is used for getting game uı panel. 
     //Since this script attached to OnGamePanel which owned by UI handler, UI handler returns this script from OnGamePanel
     //Can only get uıGameHandler this way because gamobject is disabled from uı handler.
-    private UIGameHandler SetUIGameHandler()
+    private UIOnGamePage SetUIGameHandler()
     {
         return uI.GetGamePanel();
     }

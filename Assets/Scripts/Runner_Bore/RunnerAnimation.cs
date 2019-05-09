@@ -38,14 +38,15 @@ public class RunnerAnimation
 
     public void DisableSprite()
     {
-        spriteRenderer.enabled = false;
+        if(!Data.IsDebug)
+            spriteRenderer.enabled = false;
     }
 
     public void ActivateSprite()
     {
-        spriteRenderer.enabled = true;
+        if (!Data.IsDebug)
+            spriteRenderer.enabled = true;
     }
-
 
     #region BoostEffects
 

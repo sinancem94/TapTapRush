@@ -92,21 +92,27 @@ public class DynamicCameraMovement
     private float CalculateDifference(float rPos)
     {
         Vector3 minCamPos = camera.ViewportToWorldPoint(new Vector3(0.5f, 0.6f, camera.farClipPlane));
+
+        if(uppertest)
+            uppertest.transform.position = minCamPos;
+
         float minCamY = minCamPos.y;
-       //Debug.Log("min cam pos is : " + minCamPos + " Difference speed is : " + (rPos - minCamY) * 10);
+
+        //Debug.Log("min cam pos is : " + minCamPos + " Difference speed is : " + (rPos - minCamY) * 10);
+
         if (rPos > minCamY)
-            return (rPos - minCamY) * 10;
+            return (rPos - minCamY);
 
         return 0f;
     }
 
-    public float CameraChase(float runnerPos)
+    public float CameraChase(float lastBlockPos)
     {
-        float delta = (int)(Platform.instance.boostTimer / 0.3f) / 12f;
+        float delta = ((int)(Platform.instance.boostTimer / 0.3f) / 12f) + CalculateDifference(lastBlockPos);
 
         //Runner straight road lengthle çarpılıyor bu ise initialLengthle (yani, hiç değişmeyen bizim verdiğimiz bir değer camera size ve hızı için.) 
         //Eğer player hızla straight road length arttırsa geçebilir..
-        float camSpd = Platform.instance.initialStraightRoadLenght * (CamChaseSpeed + delta + CalculateDifference(runnerPos));
+        float camSpd = Platform.instance.initialStraightRoadLenght * (CamChaseSpeed + delta);
 
         //Debug.Log("Camspd is " + camSpd);
 
@@ -116,6 +122,9 @@ public class DynamicCameraMovement
 
         Vector3 maxCamPos = camera.ViewportToWorldPoint(new Vector3(0.5f, 0.06f, camera.farClipPlane));
 
+        if(downtest)
+            downtest.transform.position = maxCamPos;
+
         /* if(runnerPos < maxCamPos.y)
          {
              Debug.Log("On Boost and stayed behind on Camera");
@@ -124,8 +133,18 @@ public class DynamicCameraMovement
 
          return false;*/
 
-        return runnerPos - maxCamPos.y;
+        return lastBlockPos - maxCamPos.y;
     }
 
     #endregion
+
+    private GameObject uppertest;
+    private GameObject downtest;
+
+
+    public void ArrangeTestObjects(GameObject up,GameObject down)
+    {
+        uppertest = up;
+        downtest = down;
+    }
 }

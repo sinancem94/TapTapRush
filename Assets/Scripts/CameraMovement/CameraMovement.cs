@@ -18,6 +18,9 @@ public class CameraMovement : MonoBehaviour
 
     private bool didPassedPlayer;
 
+    public GameObject upperCamTest;
+    public GameObject downCamTest;
+
     void Start()
     {
         //ıf not changed from editor change to this values
@@ -28,8 +31,13 @@ public class CameraMovement : MonoBehaviour
             Debug.LogWarning("CameraSize parameters are null. Setting defaults. OrthographicLowerSize : " + OrthographicLowerSize + ". OrthographicUpperSize : " + OrthographicUpperSize);
         }
         dynamicCamera = new DynamicCameraMovement(this,Platform.instance.GetBoreSpeed(),OrthographicLowerSize,OrthographicUpperSize);
-        CalculateOffset(new Vector3(0f, 3f, -10f));
 
+        if (Data.IsDebug)
+            dynamicCamera.ArrangeTestObjects(upperCamTest, downCamTest);
+        else
+            DestroyTestObjects();
+
+        CalculateOffset(new Vector3(0f, 3f, -10f));
         transform.position = Platform.instance.Runner.transform.position + offset;
 
         isChasing = false;
@@ -68,7 +76,7 @@ public class CameraMovement : MonoBehaviour
             playerPassedTime = 0f;
         }
 
-        float diff = dynamicCamera.CameraChase(Platform.instance.Runner.transform.position.y);
+        float diff = dynamicCamera.CameraChase(Platform.instance.platfotmTiles[Platform.instance.blockToSlide - 1].transform.position.y);
 
 
         //////
@@ -110,9 +118,15 @@ public class CameraMovement : MonoBehaviour
         offset = pos;
     }
 
-    void SendPlatformBoostParams()
+    void SendPlatformBoostParams() //Platform checks this values every update 
     {
         Platform.instance.PlayerBehindCamTime = playerPassedTime;
         Platform.instance.PlayerTooBehindCam = didPassedTooMuch;
+    }
+
+    void DestroyTestObjects()
+    {
+        Destroy(upperCamTest);
+        Destroy(downCamTest);
     }
 }

@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-
 using System.Collections;
 using System.Collections.Generic;
 
@@ -19,6 +17,7 @@ public class Block : MonoBehaviour
     public bool isMoving;
 
     private Vector2 blockScale;
+    public Vector2 smalledSize;
 
     // private SpriteRenderer blockSprite;
     // private SpriteRenderer ChildBlockSprite;
@@ -27,7 +26,6 @@ public class Block : MonoBehaviour
     {
         blockData = new BlockData();
         blockAnimation = this.GetComponent<BlockAnimation>();
-
         BlockSprite = GetComponent<SpriteRenderer>();
 
         BlockSprite.sprite = blockData.normalBlock;
@@ -41,7 +39,6 @@ public class Block : MonoBehaviour
         isMoving = false;
 
         type = BlockData.blockType.normal;
-        blockScale = Platform.instance.blockScale;
 
        /* if (!Data.isAngled) //for mode trial
         {
@@ -58,8 +55,7 @@ public class Block : MonoBehaviour
 
             isShined = true;
 
-            float smalledSize = blockScale.x / 2.5f;
-			StartCoroutine (ScaleDownBlock (isShined, smalledSize));
+			StartCoroutine (ScaleDownBlock (isShined, smalledSize.x));
 
            /* if (outlineSize < 10f)																burayla
             {
@@ -72,6 +68,28 @@ public class Block : MonoBehaviour
                 BlockSprite.material.SetFloat("_OutlineSize", 10);									burası arası outline size kullanılmayacağı için çıkartıldı
             }*/
         }
+    }
+
+    public void InitiliazeBlock(LevelManager.LevelBlockType bt,Vector2 bScale)
+    {
+        blockScale = bScale;
+        smalledSize = blockScale / 2.5f;
+
+        if (bt == LevelManager.LevelBlockType.Reverse)
+        {
+            blockData.ChangeBlockType(ref type, BlockSprite);
+        }
+        else if (bt == LevelManager.LevelBlockType.Mixed)
+        {
+            int r = Random.Range(0, 10);
+            //TODO: Create a random reverse generator that deals reverse positions 
+            if (r < 2)
+            {
+                blockData.ChangeBlockType(ref type, BlockSprite);
+            }
+        }
+
+        StartCoroutine(ScaleDownBlock(isShined, blockScale.x));
     }
 
     public void SetBlock(LevelManager.LevelBlockType bt)
@@ -92,8 +110,6 @@ public class Block : MonoBehaviour
         }
         isShined = false;
         StartCoroutine (ScaleDownBlock (isShined, blockScale.x));
-        //outlineSize = 1f;
-        //BlockSprite.material.SetFloat("_OutlineSize", outlineSize);
     }
 
     public void MoveTile(float toPosition)

@@ -14,7 +14,7 @@ public static class Data
     public static int MaxLevel;
     public static int Level; //Level starts from 0 and increases. because 0 is usefull while arranging levels
 
-
+    public static bool IsDebug = false;
     //PlayerPrefs are setted in initilizationScript and than mapped into Data
     public static void SetData()
     {
