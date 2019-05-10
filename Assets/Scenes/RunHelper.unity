@@ -1545,6 +1545,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OrthographicLowerSize: 55
   OrthographicUpperSize: 85
+  upperCamTest: {fileID: 0}
+  downCamTest: {fileID: 0}
 --- !u!114 &546899198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1832,7 +1834,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 589489018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 003de5ebe52e444db94426f888475d68, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ce739152d6094a6e9a6722c58456be4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &684902627
@@ -3443,7 +3445,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1606449058}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9746a4c3b50b4005a00dca1d9721065, type: 3}
+  m_Script: {fileID: 11500000, guid: 1232baf5c947d4c5c96111edf9943f1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1628183290
@@ -4668,13 +4670,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2125352534}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1959f43ba4ddd4c95903a7182249a34c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
   isMoving: 0
+  smalledSize: {x: 0, y: 0}
 --- !u!1001 &3305468092921117084
 PrefabInstance:
   m_ObjectHideFlags: 0

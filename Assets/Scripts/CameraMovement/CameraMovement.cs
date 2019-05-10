@@ -18,6 +18,9 @@ public class CameraMovement : MonoBehaviour
 
     private bool didPassedPlayer;
 
+    public GameObject upperCamTest;
+    public GameObject downCamTest;
+
     void Start()
     {
         //ıf not changed from editor change to this values
@@ -27,9 +30,14 @@ public class CameraMovement : MonoBehaviour
             OrthographicUpperSize = 85f;
             Debug.LogWarning("CameraSize parameters are null. Setting defaults. OrthographicLowerSize : " + OrthographicLowerSize + ". OrthographicUpperSize : " + OrthographicUpperSize);
         }
-        dynamicCamera = new DynamicCameraMovement(this,Platform.instance.GetBoreSpeed(),OrthographicLowerSize,OrthographicUpperSize);
-        CalculateOffset(new Vector3(0f, 3f, -10f));
+        dynamicCamera = new DynamicCameraMovement(this, Platform.instance.GetBoreSpeed(), OrthographicLowerSize, OrthographicUpperSize);
 
+        if (Data.IsDebug)
+            dynamicCamera.ArrangeTestObjects(upperCamTest, downCamTest);
+        else
+            DestroyTestObjects();
+
+        CalculateOffset(new Vector3(0f, 3f, -10f));
         transform.position = Platform.instance.Runner.transform.position + offset;
 
         isChasing = false;
@@ -57,10 +65,10 @@ public class CameraMovement : MonoBehaviour
             }
         }
     }
-           
+
     void ChaseBore()
     {
-        if(!isChasing) //If mode has changed arrange the parameters
+        if (!isChasing) //If mode has changed arrange the parameters
         {
             isChasing = true;
             didPassedPlayer = false;
@@ -68,24 +76,24 @@ public class CameraMovement : MonoBehaviour
             playerPassedTime = 0f;
         }
 
-        float diff = dynamicCamera.CameraChase(Platform.instance.Runner.transform.position.y);
+        float diff = dynamicCamera.CameraChase(Platform.instance.platfotmTiles[Platform.instance.blockToSlide - 1].transform.position.y);
 
 
         //////
         //Calculate if camera passed player on boost
         /////
-        if(diff >= 0 && didPassedPlayer)
+        if (diff >= 0 && didPassedPlayer)
         {
             didPassedPlayer = false;
             didPassedTooMuch = false;
             playerPassedTime = 0f;
         }
-        else if(diff < -Platform.instance.distBetweenBlock)
+        else if (diff < -Platform.instance.distBetweenBlock)
         {
             didPassedTooMuch = true;
             playerPassedTime += Time.deltaTime;
         }
-        else if(diff < 0f)
+        else if (diff < 0f)
         {
             if (!didPassedPlayer)
                 didPassedPlayer = true;
@@ -96,7 +104,7 @@ public class CameraMovement : MonoBehaviour
 
     void FollowBore()
     {
-        if(isChasing) // If mode changes arrange parameters
+        if (isChasing) // If mode changes arrange parameters
         {
             isChasing = false;
         }
@@ -110,9 +118,15 @@ public class CameraMovement : MonoBehaviour
         offset = pos;
     }
 
-    void SendPlatformBoostParams()
+    void SendPlatformBoostParams() //Platform checks this values every update 
     {
         Platform.instance.PlayerBehindCamTime = playerPassedTime;
         Platform.instance.PlayerTooBehindCam = didPassedTooMuch;
+    }
+
+    void DestroyTestObjects()
+    {
+        Destroy(upperCamTest);
+        Destroy(downCamTest);
     }
 }

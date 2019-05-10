@@ -12,8 +12,8 @@ public class UIHandler : MonoBehaviour {
     GameObject GameOverPanel;
     GameObject OnGamePanel;
 
-    UIGameHandler uIGameHandler;
-    GameOverPage gameOverPage;
+    UIOnGamePage uIGameHandler;
+    UIGameOverPage gameOverPage;
     UIHomePage uIHomePage;
     //TrialButtons trialButtons;
 
@@ -43,7 +43,7 @@ public class UIHandler : MonoBehaviour {
         {
             GameOverPanel = transform.GetChild(1).gameObject;
             GameOverPanel.SetActive(false);
-            gameOverPage = GameOverPanel.GetComponent<GameOverPage>();
+            gameOverPage = GameOverPanel.GetComponent<UIGameOverPage>();
         }
         else
         {
@@ -54,7 +54,7 @@ public class UIHandler : MonoBehaviour {
         {
             OnGamePanel = transform.GetChild(2).gameObject;
             OnGamePanel.SetActive(false);
-            uIGameHandler = OnGamePanel.GetComponent<UIGameHandler>();
+            uIGameHandler = OnGamePanel.GetComponent<UIOnGamePage>();
         }
         else
         {
@@ -63,7 +63,7 @@ public class UIHandler : MonoBehaviour {
 
     }
 
-    public UIGameHandler GetGamePanel()
+    public UIOnGamePage GetGamePanel()
     {
         return uIGameHandler;
     }

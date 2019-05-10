@@ -13,7 +13,7 @@ public class DynamicCameraMovement
 
     float camSize = Camera.main.fieldOfView;
 
-    public DynamicCameraMovement(MonoBehaviour owner,float camSpeed,float minCamSize, float maxCamSize)
+    public DynamicCameraMovement(MonoBehaviour owner, float camSpeed, float minCamSize, float maxCamSize)
     {
         OwnerCamera = owner;
         camera = owner.GetComponent<Camera>();
@@ -68,11 +68,11 @@ public class DynamicCameraMovement
     }
 
     //Moves camera size forward to desired size
-    float MoveCamSizeTowardsNewSize(float newCamSize,float currentCamSize )
+    float MoveCamSizeTowardsNewSize(float newCamSize, float currentCamSize)
     {
-        if(!Mathf.Approximately(currentCamSize, newCamSize))
+        if (!Mathf.Approximately(currentCamSize, newCamSize))
         {
-            float delta = (newCamSize > currentCamSize) ? (newCamSize / currentCamSize) * 0.1f : (currentCamSize / newCamSize) *  0.1f;
+            float delta = (newCamSize > currentCamSize) ? (newCamSize / currentCamSize) * 0.1f : (currentCamSize / newCamSize) * 0.1f;
 
             return Mathf.MoveTowards(currentCamSize, newCamSize, delta);
         }
@@ -83,30 +83,36 @@ public class DynamicCameraMovement
 
     #region CameraDynamicYAxis
 
-    public Vector3 MoveCamTowardsPos(Vector3 current,Vector3 to)
+    public Vector3 MoveCamTowardsPos(Vector3 current, Vector3 to)
     {
         float delta = (current.y < to.y) ? (to.y / current.y) * 0.7f : (current.y / to.y) * 0.7f;
-        return new Vector3(current.x, Mathf.MoveTowards(current.y, to.y, delta),current.z);
+        return new Vector3(current.x, Mathf.MoveTowards(current.y, to.y, delta), current.z);
     }
 
     private float CalculateDifference(float rPos)
     {
         Vector3 minCamPos = camera.ViewportToWorldPoint(new Vector3(0.5f, 0.6f, camera.farClipPlane));
+
+        if (uppertest)
+            uppertest.transform.position = minCamPos;
+
         float minCamY = minCamPos.y;
-       //Debug.Log("min cam pos is : " + minCamPos + " Difference speed is : " + (rPos - minCamY) * 10);
+
+        //Debug.Log("min cam pos is : " + minCamPos + " Difference speed is : " + (rPos - minCamY) * 10);
+
         if (rPos > minCamY)
-            return (rPos - minCamY) * 10;
+            return (rPos - minCamY);
 
         return 0f;
     }
 
-    public float CameraChase(float runnerPos)
+    public float CameraChase(float lastBlockPos)
     {
-        float delta = (int)(Platform.instance.boostTimer / 0.3f) / 12f;
+        float delta = ((int)(Platform.instance.boostTimer / 0.3f) / 12f) + CalculateDifference(lastBlockPos);
 
         //Runner straight road lengthle çarpılıyor bu ise initialLengthle (yani, hiç değişmeyen bizim verdiğimiz bir değer camera size ve hızı için.) 
         //Eğer player hızla straight road length arttırsa geçebilir..
-        float camSpd = Platform.instance.initialStraightRoadLenght * (CamChaseSpeed + delta + CalculateDifference(runnerPos));
+        float camSpd = Platform.instance.initialStraightRoadLenght * (CamChaseSpeed + delta);
 
         //Debug.Log("Camspd is " + camSpd);
 
@@ -116,16 +122,28 @@ public class DynamicCameraMovement
 
         Vector3 maxCamPos = camera.ViewportToWorldPoint(new Vector3(0.5f, 0.06f, camera.farClipPlane));
 
+        if (downtest)
+            downtest.transform.position = maxCamPos;
+
         /* if(runnerPos < maxCamPos.y)
          {
              Debug.Log("On Boost and stayed behind on Camera");
              return true;
          }
-
          return false;*/
 
-        return runnerPos - maxCamPos.y;
+        return lastBlockPos - maxCamPos.y;
     }
 
     #endregion
+
+    private GameObject uppertest;
+    private GameObject downtest;
+
+
+    public void ArrangeTestObjects(GameObject up, GameObject down)
+    {
+        uppertest = up;
+        downtest = down;
+    }
 }

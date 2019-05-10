@@ -13,10 +13,10 @@ public class Platform : MonoBehaviour
     public LevelManager levelManager; //Could be private but public for displaying level parameters for now.
     public PlatformSizeHandler sizeHandler;
 
-    private GetData GameData; 
+    private GetData GameData;
     private InputManager ınput;
     private UIHandler uI;
-    private UIGameHandler uIGame;
+    private UIOnGamePage uIGame;
     private BoostScript Boost;
 
 
@@ -24,7 +24,7 @@ public class Platform : MonoBehaviour
     public GameObject Blocks; //Pooled Blocks Parent
     public GameObject block; //kırmızı bloklar
     public GameObject Runner; //koşan arkadaş artık neyse
-   // public GameObject Lines;
+                              // public GameObject Lines;
     public GameObject Road; //Block, RoadSprite ve lines ın Parent ı olan GameObject.
     public GameObject RoadSprite;//Yol sprite ı. Karanlık World için gri düz bir kare. Road un ilk çocuğu 
     public GameObject Background; //rengi değişen arkaPlan. Runner ın child ı.
@@ -94,6 +94,11 @@ public class Platform : MonoBehaviour
         {
             instance = this;
         }
+        else
+        {
+            Debug.LogError("Platform already exist!");
+            Destroy(this);
+        }
     }
 
     private void Start()
@@ -121,11 +126,11 @@ public class Platform : MonoBehaviour
         if (!block)
             block = Blocks.transform.GetChild(0).gameObject;
 
-        if(!Runner)
+        if (!Runner)
             Runner = GameObject.FindWithTag("Runner");
 
         //if (!Lines)
-          //  Lines = GameObject.FindWithTag("Lines");
+        //  Lines = GameObject.FindWithTag("Lines");
 
         if (!RoadSprite)
             RoadSprite = GameObject.FindWithTag("RoadSprite");
@@ -135,7 +140,7 @@ public class Platform : MonoBehaviour
 
         if (!Nightmare)
             Nightmare = GameObject.FindWithTag("Nightmare");
-     
+
 
         Shooters = GameObject.FindGameObjectsWithTag("Shooter");
 
@@ -183,11 +188,9 @@ public class Platform : MonoBehaviour
 
     private void LateUpdate()
     {
-        //Lines.transform.position = Runner.transform.position + offsetRunnerBtwRoadSprite;
         RoadSprite.transform.position = Runner.transform.position + offsetRunnerBtwRoadSprite;
 
-        //runnerla en arkada kalan blok arasındaki mesafe 10 bloğu geçerse giriyor buraya.
-        //Onları ilerletmişken road ve lines da ileri atılıyor.
+        //runnerla en arkada kalan blok arasındaki mesafe 15 bloğu geçerse giriyor buraya.
         if (Runner.transform.position.y >= platfotmTiles[pushBlockForward].transform.position.y + (15 * distBetweenBlock))
         {
             platfotmTiles[pushBlockForward].transform.position = BlockPositioner(distBetweenBlock);
@@ -195,8 +198,9 @@ public class Platform : MonoBehaviour
             pushBlockForward = (pushBlockForward + 1 < platfotmTiles.Count) ? pushBlockForward += 1 : pushBlockForward = 0;
         }
 
-        //en sondaki engel arkada kaldıysa tüm engellerin yerini tekrar hesaplayıp ileri at.
-        if(Shooters[Shooters.Length -1].transform.position.y < Runner.transform.position.y)
+        //en sondaki engel arkada kaldıysa tüm engellerin yerini tekrar hesaplayıp ileri at. 
+        //TODO: Şu anda tüm obstacleları aynı anda atıyor. Platform dizilişine karar vercek ayrı bir sınıf olmalı orda tüm bunları yapmalıyız.Engel ve Blok pozisyonlandırma, blok tip karar verme etc.
+        if (Shooters[Shooters.Length - 1].transform.position.y < Runner.transform.position.y)
             PlaceObstacles();
     }
 
@@ -205,7 +209,7 @@ public class Platform : MonoBehaviour
     {
         if (game.GetGameState() == GameHandler.GameState.GameRunning)
         {
-            if(!inputLock)
+            if (!inputLock)
                 ınput.directionGetter();
 
             if (ınput.directions.Count != 0)
@@ -225,7 +229,7 @@ public class Platform : MonoBehaviour
             {
                 LevelPassed();
             }
-            else if(distanceBtwRunner < 0.8f) 
+            else if (distanceBtwRunner < 0.8f)
             {
                 GameOver();
             }
@@ -238,11 +242,11 @@ public class Platform : MonoBehaviour
                 boostLock = true;
                 InitiateBoost();
             }
-            else if(boostLock)
+            else if (boostLock)
             {
                 boostTimer += Time.deltaTime;
 
-                if(IsBoostEnded())
+                if (IsBoostEnded())
                 {
                     boostLock = false;
                     inputLock = true; // Set to false when boost animation finishes
@@ -264,24 +268,24 @@ public class Platform : MonoBehaviour
         {
             if (blockScripts[blockToSlide].type == BlockData.blockType.reverse) // eğer ters bloksa -1 le çarp ki ters yöne doğru gitsin
                 direction *= -1;
-            
+
             if (GetBoostPhase() == BoostScript.BoostPhase.None || GetCamChase())
                 toPos = platfotmTiles[blockToSlide].transform.position.x + (direction * distBetweenBlock); // nereye gitcek onu hesapla
             else
                 toPos = 0; //block will go to zero in either direction
 
 
-            if(toPos < BlockPos[0] || toPos > BlockPos[BlockPos.Length - 1]) // eğer gitceği yer blockpos sınırları içinde değilse oyunu sonlandır
+            if (toPos < BlockPos[0] || toPos > BlockPos[BlockPos.Length - 1]) // eğer gitceği yer blockpos sınırları içinde değilse oyunu sonlandır
             {
                 if (GetBoostPhase() == BoostScript.BoostPhase.None)
                 {
-                    blockScripts[blockToSlide].Fall(new Vector2(direction, 0),false);
+                    blockScripts[blockToSlide].Fall(new Vector2(direction, 0), false);
                     GameOver();
                 }
                 else
                 {
                     wrongPressedOnBoost = true;
-                    blockScripts[blockToSlide].Fall(new Vector2(direction, 0),wrongPressedOnBoost);
+                    blockScripts[blockToSlide].Fall(new Vector2(direction, 0), wrongPressedOnBoost); //Block will rollback from fall animation
                 }
             }
             else // eğer blockPos sınırları içindeyse bloğu haraket ettir
@@ -317,7 +321,7 @@ public class Platform : MonoBehaviour
         SetBoostPhase(BoostScript.BoostPhase.AnimationSlideDown);
         Boost.BoostFinish();
 
-        if(wrongPressedOnBoost)
+        if (wrongPressedOnBoost)
         {
             wrongPressedOnBoost = false;
         }
@@ -346,7 +350,7 @@ public class Platform : MonoBehaviour
     {
         int tempEx = exRand;
 
-        exRand = MathCalculation.RandomPosition(exRand, sameLine, BlockPos.Length,is5Line);
+        exRand = MathCalculation.RandomPosition(exRand, sameLine, BlockPos.Length, is5Line);
         sameLine = (tempEx == exRand) ? sameLine += 1 : sameLine = 0;
         distance += rate;
 
@@ -358,7 +362,7 @@ public class Platform : MonoBehaviour
     {
         //Sizes are changed according to Screen 
         is5Line = (levelManager.levelWidth == LevelManager.LevelWidth.Five) ? true : false;
-        distBetweenBlock = sizeHandler.ArrangeSize(RoadSprite.transform, block.transform, Runner.transform,is5Line);
+        distBetweenBlock = sizeHandler.ArrangeSize(RoadSprite.transform, block.transform, Runner.transform, is5Line);
         blockScale = block.transform.localScale;
 
         //For 5 line mode
@@ -386,8 +390,9 @@ public class Platform : MonoBehaviour
         blockScripts.Add(block.GetComponent<Block>());
 
         platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
-        blockScripts[blockScripts.Count - 1].enabled = true;
-        blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
+        //blockScripts[blockScripts.Count - 1].enabled = true;
+        //blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
+        blockScripts[blockScripts.Count - 1].InitiliazeBlock(levelManager.levelBlockType, blockScale);
 
         //platfotmTiles[0].GetComponent<Block>().SetBlock();
 
@@ -400,12 +405,13 @@ public class Platform : MonoBehaviour
             platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
 
             blockScripts.Add(platfotmTiles[platfotmTiles.Count - 1].GetComponent<Block>());
-            blockScripts[blockScripts.Count - 1].enabled = true;
-            blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
+            //blockScripts[blockScripts.Count - 1].enabled = true;
+            //blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
+            blockScripts[blockScripts.Count - 1].InitiliazeBlock(levelManager.levelBlockType, blockScale);
         }
 
         //Platform tiles da buluncak toplam blok sayısından ilk baştaki düz blokları çıkar 
-        int remainingBlock = BlockNumberInPlatformTiles - levelStartStraightLine; 
+        int remainingBlock = BlockNumberInPlatformTiles - levelStartStraightLine;
 
         for (int i = 0; i < remainingBlock; i++)
         {
@@ -413,8 +419,9 @@ public class Platform : MonoBehaviour
             platfotmTiles[platfotmTiles.Count - 1].transform.position = BlockPositioner(distBetweenBlock);
 
             blockScripts.Add(platfotmTiles[platfotmTiles.Count - 1].GetComponent<Block>());
-            blockScripts[blockScripts.Count - 1].enabled = true;
-            blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
+            //blockScripts[blockScripts.Count - 1].enabled = true;
+            //blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
+            blockScripts[blockScripts.Count - 1].InitiliazeBlock(levelManager.levelBlockType, blockScale);
         }
 
         Runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner düz sıranın en sonunda başlıyor
@@ -432,33 +439,33 @@ public class Platform : MonoBehaviour
         int lowerYLimit = 10;
         int upperYLimit = 20;
 
-        foreach(GameObject dragon in Shooters) 
+        foreach (GameObject dragon in Shooters)
         {
-            if(dragon.transform.position.y < Runner.transform.position.y)
+            if (dragon.transform.position.y < Runner.transform.position.y)
             {
                 int r = (Random.Range(0, 3) == 1) ? -1 : 1;
 
                 float x = sizeHandler.GetWallPosition() * r;
                 float y = platfotmTiles[blockToSlide].transform.position.y + (Random.Range(lowerYLimit, upperYLimit) * distBetweenBlock);
 
-                Vector3 dragonPos = new Vector3(x,y,0f);
+                Vector3 dragonPos = new Vector3(x, y, 0f);
 
                 dragon.transform.position = dragonPos;
                 dragon.transform.rotation = Quaternion.Euler(0f, 0f, 90 * r);
 
-                if(!dragon.activeInHierarchy)
+                if (!dragon.activeInHierarchy)
                     dragon.SetActive(true);
 
                 lowerYLimit += 15;
                 upperYLimit += 15;
             }
-        }      
+        }
     }
 
     #endregion
 
 
-#region SimpleMethods
+    #region SimpleMethods
 
     public void SetBoreSpeed(int i = 0) //Set speed for bore if default called withour any parameters setted to playerprefs speed. İf called with animation setted to zero
     {
@@ -486,11 +493,11 @@ public class Platform : MonoBehaviour
         return Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed;
     }
 
-    public void CreatePlatformAccordingToLevel() 
+    public void CreatePlatformAccordingToLevel()
     {
         level_p = GetCurrentLevel();
-        levelManager.SetParametersForLevel(level_p,ref isBoostAllowed);
-        foreach(Block b in blockScripts) 
+        levelManager.SetParametersForLevel(level_p, ref isBoostAllowed);
+        foreach (Block b in blockScripts)
         {
             b.SetBlock(levelManager.levelBlockType);
         }
@@ -498,7 +505,7 @@ public class Platform : MonoBehaviour
         SetMonsterPosition();
     }
 
-    public void GameOver() 
+    public void GameOver()
     {
         game.GameOver();
         uI.GameOver();
@@ -510,9 +517,9 @@ public class Platform : MonoBehaviour
         uI.GameOver();
     }
 
-    private void SetMonsterPosition() 
+    private void SetMonsterPosition()
     {
-        float  distanceBetweenRunner = (!is5Line) ? 8f : 11f;
+        float distanceBetweenRunner = (!is5Line) ? 8f : 11f;
 
         Nightmare.transform.position = new Vector3(Runner.transform.position.x, Runner.transform.position.y - distanceBetweenRunner, 0f);
     }
@@ -535,7 +542,7 @@ public class Platform : MonoBehaviour
     //This method is used for getting game uı panel. 
     //Since this script attached to OnGamePanel which owned by UI handler, UI handler returns this script from OnGamePanel
     //Can only get uıGameHandler this way because gamobject is disabled from uı handler.
-    private UIGameHandler SetUIGameHandler()
+    private UIOnGamePage SetUIGameHandler()
     {
         return uI.GetGamePanel();
     }
@@ -557,7 +564,5 @@ public class Platform : MonoBehaviour
     {
         StartCoroutine(uIGame.GiveInfo(time, message));
     }
-  #endregion
+    #endregion
 }
-
-

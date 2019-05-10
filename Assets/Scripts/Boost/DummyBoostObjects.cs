@@ -9,12 +9,12 @@ public class DummyBoostObjects
     private GameObject BoreDummy; //Enabled when boost starts. Normal runners sprite is disabled and this dummy placed into its place to make it look like runner is stopped.
     private GameObject RoadDummy; //Create a dummy road with sprites. Starting from BoreDummy.transform.position minus few blocks and reaches real roads first block. 
 
-
-   /* public DummyBoostObjects(GameObject brDum,GameObject rdDum)
-    {
-        brDum = BoreDummy;
-        rdDum = RoadDummy;
-    }*/
+    private GameObject BlockDummy; //Dummy which will be hold by RoadDummy;
+                                   /* public DummyBoostObjects(GameObject brDum,GameObject rdDum)
+                                    {
+                                        brDum = BoreDummy;
+                                        rdDum = RoadDummy;
+                                    }*/
 
     public GameObject CreateDummy(RunnerAnimation boreBoostEffects)
     {
@@ -60,6 +60,23 @@ public class DummyBoostObjects
 
         RoadDummy.SetActive(false);
 
+        BlockDummy = new GameObject
+        {
+            name = "BlockDummy"
+        };
+
+        SpriteRenderer b_sprite = BlockDummy.AddComponent<SpriteRenderer>();
+        SpriteRenderer o_sprite = Platform.instance.block.GetComponent<SpriteRenderer>();
+
+        b_sprite.sprite = o_sprite.sprite;
+        b_sprite.material = o_sprite.material;
+        b_sprite.color = o_sprite.color;
+        b_sprite.sortingLayerID = o_sprite.sortingLayerID;
+        b_sprite.material.SetFloat("_OutlineSize", 0);
+
+        BlockDummy.transform.localScale = Platform.instance.block.GetComponent<Block>().smalledSize;
+        BlockDummy.SetActive(false);
+
         return RoadDummy;
     }
 
@@ -74,9 +91,9 @@ public class DummyBoostObjects
 
         for (int i = 0; i < blockCount; i++)
         {
-            GameObject b = GameObject.Instantiate(Platform.instance.block, RoadDummy.transform);
-            b.transform.localScale = Platform.instance.blockScale;
+            GameObject b = GameObject.Instantiate(BlockDummy, RoadDummy.transform);
             b.transform.position = blockPos;
+            b.SetActive(true);
 
             blockPos.y += Platform.instance.distBetweenBlock;
         }

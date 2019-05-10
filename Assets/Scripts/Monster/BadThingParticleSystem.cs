@@ -1,6 +1,4 @@
-﻿
-
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,9 +29,9 @@ public class BadThingParticleSystem : MonoBehaviour
     }
 
     //When distance between Camera and bore move particle system to closer
-	private void NightmareChase(float spd)
+    private void NightmareChase(float spd)
     {
-          this.transform.Translate(BadThingsAnimationController.TranslationVector(spd), Space.World);
+        this.transform.Translate(BadThingsAnimationController.TranslationVector(spd), Space.World);
     }
 
     //public void StopOrStartMonster

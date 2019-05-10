@@ -8,13 +8,13 @@ public class RunnerAnimation
 
     private Vector3 scalerVec;
     private float boreScale;
-	public Animator animator;
+    public Animator animator;
     public SpriteRenderer spriteRenderer;
 
     private Coroutine SlideDownBore;
 
     private static RunnerAnimation instance;
-    
+
     public RunnerAnimation(MonoBehaviour runner)
     {
         if (instance == null)
@@ -38,14 +38,15 @@ public class RunnerAnimation
 
     public void DisableSprite()
     {
-        spriteRenderer.enabled = false;
+        if (!Data.IsDebug)
+            spriteRenderer.enabled = false;
     }
 
     public void ActivateSprite()
     {
-        spriteRenderer.enabled = true;
+        if (!Data.IsDebug)
+            spriteRenderer.enabled = true;
     }
-
 
     #region BoostEffects
 
@@ -63,7 +64,7 @@ public class RunnerAnimation
 
     public void BoreExitsFromBoost()
     {
-        animator.SetBool ("isSliding", false);
+        animator.SetBool("isSliding", false);
     }
     #endregion
 
@@ -76,7 +77,7 @@ public class RunnerAnimation
 
         float speed;
 
-        while(Bore.transform.position.y > Pos.y + .5f)
+        while (Bore.transform.position.y > Pos.y + .5f)
         {
             slideSpeed = (slideSpeed < maxSlideSpeed) ? slideSpeed -= 0.0001f : maxSlideSpeed;
 
@@ -84,20 +85,20 @@ public class RunnerAnimation
                 speed = distanceBtwDummy * slideSpeed;
             else
                 speed = 5f * slideSpeed;
-                       
+
             Bore.transform.Translate(0f, speed * Time.deltaTime, 0f, Space.World);
 
             distanceBtwDummy = Bore.transform.position.y - Pos.y;
 
             //if (distanceBtwDummy < Platform.instance.distBetweenBlock * 3f)
-                //Platform.instance.SetBoostPhase(BoostScript.BoostPhase.AnimationSlideUp); //Sliding down almost finishes since there is a slowtime function. Set phase to slideUp earlier
+            //Platform.instance.SetBoostPhase(BoostScript.BoostPhase.AnimationSlideUp); //Sliding down almost finishes since there is a slowtime function. Set phase to slideUp earlier
 
             yield return new WaitForSeconds(0.01f);
         }
 
         Bore.transform.position = Pos;
 
-       Bore.StopCoroutine(SlideDownBore);
+        Bore.StopCoroutine(SlideDownBore);
     }
 
 

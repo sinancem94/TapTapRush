@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameOverPage : MonoBehaviour
+public class UIGameOverPage : MonoBehaviour
 {
     private Button PlayButton;
     private Text GameEndedMessage;

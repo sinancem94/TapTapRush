@@ -14,7 +14,7 @@ public static class Data
     public static int MaxLevel;
     public static int Level; //Level starts from 0 and increases. because 0 is usefull while arranging levels
 
-
+    public static bool IsDebug = false;
     //PlayerPrefs are setted in initilizationScript and than mapped into Data
     public static void SetData()
     {
@@ -26,7 +26,7 @@ public static class Data
         Level = PlayerPrefs.GetInt("Level");
     }
 
-    public static void UpdateLevelData(int currlevel) 
+    public static void UpdateLevelData(int currlevel)
     {
         Level = currlevel;
 
@@ -38,27 +38,27 @@ public static class Data
         PlayerPrefs.SetInt("Level", Level);
     }
 
-    public static int GetMaxLevel() 
+    public static int GetMaxLevel()
     {
         return MaxLevel;
     }
 
-    public static int GetLevel() 
+    public static int GetLevel()
     {
         return Level;
     }
 
-    public static float GetInitialMonsterSpeed() 
+    public static float GetInitialMonsterSpeed()
     {
         return monsSpeed;
     }
 
-    public static void ChangeLevel(int currlevel) 
+    public static void ChangeLevel(int currlevel)
     {
-       // if(currlevel <= MaxLevel) 
+        // if(currlevel <= MaxLevel) 
         //{
-            Level = currlevel;
-            PlayerPrefs.SetInt("Level", Level);
+        Level = currlevel;
+        PlayerPrefs.SetInt("Level", Level);
         //}
     }
 }
