@@ -572,7 +572,7 @@ public class Platform : MonoBehaviour
 
         //map block pos on world to list order of block
 
-        blockPos = 
+//        blockPos = 
 
 
 
