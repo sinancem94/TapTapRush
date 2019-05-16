@@ -82,12 +82,12 @@ public class DummyBoostObjects
 
     public void SetRoadDummy()
     {
-        //First calculate the distance between last block (pushBlockForward) and dummy bore.
-        float roadLength = Platform.instance.platfotmTiles[Platform.instance.pushBlockForward].transform.position.y - BoreDummy.transform.position.y + (5 * Platform.instance.distBetweenBlock);
+        //First calculate the distance between last (en arkadaki) block (pushBlockForward) and dummy bore.
+        float roadLength = Platform.instance.platfotmTiles[Platform.instance.blockOnTail].transform.position.y - BoreDummy.transform.position.y + (5 * Platform.instance.distBetweenBlock);
         //Then calculate how many blocks will be needed in RoadReplica
         int blockCount = (int)(roadLength / Platform.instance.distBetweenBlock);
         //Calculate first blockPos
-        Vector3 blockPos = new Vector2(0f, Platform.instance.platfotmTiles[Platform.instance.pushBlockForward].transform.position.y - (Platform.instance.distBetweenBlock * blockCount));
+        Vector3 blockPos = new Vector2(0f, Platform.instance.platfotmTiles[Platform.instance.blockOnTail].transform.position.y - (Platform.instance.distBetweenBlock * blockCount));
 
         for (int i = 0; i < blockCount; i++)
         {

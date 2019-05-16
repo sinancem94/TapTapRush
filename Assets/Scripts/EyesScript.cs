@@ -1,32 +1,47 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EyesScript : MonoBehaviour
 {
     private Animator animator;
     float borePosDiff;
-    public GameObject bore;                 // bunu platformla değiştirince sıkıntı cıkıyo
+    Quaternion quaternion;
+    public Text perfectText;  //bunu da normal getcomponentinchildrenla almak lazım...
 
-    void Start()
+    private void Awake()
     {
-        initializeEyes();
+        perfectText = gameObject.GetComponentInChildren<Text>();
+        quaternion = transform.rotation;
+    }
+
+
+    void Start()            //eğer buraya yeni bişey eklemek gerekirse onenabled yapmak lazım...
+    {
+       // initializeEyes();
         animator = gameObject.GetComponent<Animator>();
     }
 
     private void Update()
     {
-
-        borePosDiff = bore.transform.position.y - gameObject.transform.position.y;
-        animator.SetFloat("BorePosDiff", borePosDiff);
+        animator.SetFloat("BorePosDiff", Platform.instance.distanceBtwRunner);          //burada sıkıntı var sanırım doğru alamıyor distancebtwrunner ı;;;
     }
 
-
-    public void initializeEyes()
+    private void OnBecameInvisible()
     {
+        gameObject.SetActive(false);
+        transform.rotation = quaternion;
+        transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
+    /*public void initializeEyes()
+    {
+        GameObject eye = ObjectPooler.instance.GetPooledObject();
+        if(eye != null) { 
         bool isEyePositionRight = (Random.value > 0.5f);                           //creates a random boolean 1 or 0
         float dummyVecx;
-        float eyeScaler = Random.Range(-0.2f, 0.1f);
+        float eyeScaler = Random.Range(-0.7f, -0.3f);
 
         if (isEyePositionRight)
         {
@@ -34,13 +49,16 @@ public class EyesScript : MonoBehaviour
         }
         else                                                                      //y de 180 derece rotate etmesi lazım
         {
-            gameObject.transform.Rotate(0, 180f, 0, Space.World);
+            eye.transform.Rotate(0, 180f, 0, Space.World);
             dummyVecx = Random.Range(-2.5f, -4f);
+            perfectText.transform.Rotate(0, 180f, 0, Space.World);
         }
 
-        transform.localScale += new Vector3(eyeScaler, eyeScaler, 0);
+        eye.transform.localScale += new Vector3(eyeScaler, eyeScaler, 0);
         float dummyVecy = Random.Range(1f, 7f);
         Vector3 dummyVec = new Vector3(dummyVecx, dummyVecy, 0);
-        gameObject.transform.position = bore.transform.position + dummyVec;
-    }
+        eye.transform.position = Platform.instance.Runner.transform.position + dummyVec;            //runner ın pozisyonunu alamıyo burda aq
+        eye.SetActive(true);
+        }
+    }*/
 }

@@ -73,7 +73,7 @@ public class Platform : MonoBehaviour
     public bool PlayerTooBehindCam; // Player is too behind camera stop boost
     private bool wrongPressedOnBoost;
 
-    public int pushBlockForward; //En arkada kalan blok yani o sırada sıranın en sonuna atılcak blok. 
+    public int blockOnTail; //En arkada kalan blok yani o sırada sıranın en sonuna atılcak blok. 
 
     private bool is5Line;
 
@@ -160,7 +160,7 @@ public class Platform : MonoBehaviour
         point = 0;
         gainedPoint = 1;
 
-        pushBlockForward = 0;
+        blockOnTail = 0;
         BlockNumberInPlatformTiles = 30;
 
         CreatePlatformAccordingToLevel();
@@ -191,11 +191,11 @@ public class Platform : MonoBehaviour
         RoadSprite.transform.position = Runner.transform.position + offsetRunnerBtwRoadSprite;
 
         //runnerla en arkada kalan blok arasındaki mesafe 15 bloğu geçerse giriyor buraya.
-        if (Runner.transform.position.y >= platfotmTiles[pushBlockForward].transform.position.y + (15 * distBetweenBlock))
+        if (Runner.transform.position.y >= platfotmTiles[blockOnTail].transform.position.y + (15 * distBetweenBlock))
         {
-            platfotmTiles[pushBlockForward].transform.position = BlockPositioner(distBetweenBlock);
-            blockScripts[pushBlockForward].SetBlock(levelManager.levelBlockType);
-            pushBlockForward = (pushBlockForward + 1 < platfotmTiles.Count) ? pushBlockForward += 1 : pushBlockForward = 0;
+            platfotmTiles[blockOnTail].transform.position = BlockPositioner(distBetweenBlock);
+            blockScripts[blockOnTail].SetBlock(levelManager.levelBlockType);
+            blockOnTail = (blockOnTail + 1 < platfotmTiles.Count) ? blockOnTail += 1 : blockOnTail = 0;
         }
 
         //en sondaki engel arkada kaldıysa tüm engellerin yerini tekrar hesaplayıp ileri at. 
@@ -563,6 +563,21 @@ public class Platform : MonoBehaviour
     private void GiveMessage(float time, string message)
     {
         StartCoroutine(uIGame.GiveInfo(time, message));
+    }
+
+    //Get block according to their position on world. Since the block list tails around itself it changes according to block to slide or block on tail
+    public GameObject BlockOnWorldPosition(int blockPos)
+    {
+        blockPos = (blockPos > BlockNumberInPlatformTiles) ? BlockNumberInPlatformTiles : blockPos; //if requested pos is bigger than block number on list set it to last block
+
+        //map block pos on world to list order of block
+
+//        blockPos = 
+
+
+
+        return platfotmTiles[blockPos];
+
     }
     #endregion
 }
