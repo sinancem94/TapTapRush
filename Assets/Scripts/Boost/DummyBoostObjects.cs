@@ -66,7 +66,7 @@ public class DummyBoostObjects
         };
 
         SpriteRenderer b_sprite = BlockDummy.AddComponent<SpriteRenderer>();
-        SpriteRenderer o_sprite = Platform.instance.block.GetComponent<SpriteRenderer>();
+        SpriteRenderer o_sprite = Platform.instance.platfotmTiles[0].GetComponent<SpriteRenderer>();
 
         b_sprite.sprite = o_sprite.sprite;
         b_sprite.material = o_sprite.material;
@@ -74,7 +74,7 @@ public class DummyBoostObjects
         b_sprite.sortingLayerID = o_sprite.sortingLayerID;
         b_sprite.material.SetFloat("_OutlineSize", 0);
 
-        BlockDummy.transform.localScale = Platform.instance.block.GetComponent<Block>().smalledSize;
+        BlockDummy.transform.localScale = Platform.instance.blockScripts[0].smalledSize;
         BlockDummy.SetActive(false);
 
         return RoadDummy;

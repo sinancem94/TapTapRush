@@ -7,8 +7,18 @@ public class ObjectPooler : MonoBehaviour
 
     public static ObjectPooler instance;
 
+    public struct ObjectPoolItem
+    {
+        public int amountToPool;
+        public GameObject objectToPool;
+        public bool shouldExpand;
+        public string objectTag;
+        public Transform parent;
+
+    }
+
     //public List<GameObject> pooledObjects;
-   // public GameObject objectToPool;
+    // public GameObject objectToPool;
     //public int amountToPool;
 
     private void Awake()
@@ -40,16 +50,30 @@ public class ObjectPooler : MonoBehaviour
         return null;
     }
 
-    public List<GameObject> PooltheObjects(GameObject objectToPool, int amountToPool) 
+    public List<GameObject> PooltheObjects(ObjectPoolItem itemToPool) 
     {
         List<GameObject> pooledObjects;
         pooledObjects = new List<GameObject>();
-        for (int i = 0; i < amountToPool; i++)
+        for (int i = 0; i < itemToPool.amountToPool; i++)
         {
-            GameObject obj = (GameObject)Instantiate(objectToPool);
+            GameObject obj = (GameObject)Instantiate(itemToPool.objectToPool);
             obj.SetActive(false);
             pooledObjects.Add(obj);
         }
         return pooledObjects;
     }
+
+    public List<GameObject> PooltheObjects(ObjectPoolItem itemToPool,Transform parent)
+    {
+        List<GameObject> pooledObjects;
+        pooledObjects = new List<GameObject>();
+        for (int i = 0; i < itemToPool.amountToPool; i++)
+        {
+            GameObject obj = (GameObject)Instantiate(itemToPool.objectToPool,parent);
+            obj.SetActive(false);
+            pooledObjects.Add(obj);
+        }
+        return pooledObjects;
+    }
+
 }

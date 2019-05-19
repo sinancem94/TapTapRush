@@ -76,7 +76,8 @@ public class CameraMovement : MonoBehaviour
             playerPassedTime = 0f;
         }
 
-        float diff = dynamicCamera.CameraChase(Platform.instance.platfotmTiles[Platform.instance.blockToSlide - 1].transform.position.y);
+        int lastStraightBlock = (Platform.instance.blockToSlide - 1 > 0) ? Platform.instance.blockToSlide - 1 : 0;
+        float diff = dynamicCamera.CameraChase(Platform.instance.platfotmTiles[lastStraightBlock].transform.position.y);
 
 
         //////

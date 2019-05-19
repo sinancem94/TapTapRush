@@ -53,7 +53,7 @@ public class Block : MonoBehaviour
         if (Mathf.Approximately(this.transform.position.x, 0) && !isShined)
         {
             isShined = true;
-            StartCoroutine(ScaleDownBlock(isShined, smalledSize.x));
+            StartCoroutine(ScaleDownBlock(smalledSize.x));
         }
     }
 
@@ -61,6 +61,8 @@ public class Block : MonoBehaviour
     {
         blockScale = bScale;
         smalledSize = blockScale / 2.5f;
+
+        SetScaleBlock(blockScale.x);
 
         if (bt == LevelManager.LevelBlockType.Reverse)
         {
@@ -75,8 +77,6 @@ public class Block : MonoBehaviour
                 blockData.ChangeBlockType(ref type, BlockSprite);
             }
         }
-
-        StartCoroutine(ScaleDownBlock(isShined, blockScale.x));
     }
 
     public void SetBlock(LevelManager.LevelBlockType bt)
@@ -96,7 +96,7 @@ public class Block : MonoBehaviour
             }
         }
         isShined = false;
-        StartCoroutine(ScaleDownBlock(isShined, blockScale.x));
+        SetScaleBlock(blockScale.x);
     }
 
     public void MoveTile(float toPosition)
@@ -113,25 +113,23 @@ public class Block : MonoBehaviour
         StartCoroutine(blockAnimation.Fall(fallTo, isRollBack));
     }
 
-    IEnumerator ScaleDownBlock(bool isScaledDown, float scaledTo)
+    IEnumerator ScaleDownBlock(float scaledTo)
     {
-        if (isScaledDown)
+        while (transform.localScale.x > scaledTo)
         {
-            while (transform.localScale.x > scaledTo)
-            {
-                transform.localScale -= new Vector3(0.08f, 0.08f, 0);
+            transform.localScale -= new Vector3(0.08f, 0.08f, 0);
 
-                yield return new WaitForSeconds(0.001f);
-            }
-            outlineSize = 0;
-            BlockSprite.material.SetFloat("_OutlineSize", outlineSize);
+            yield return new WaitForSeconds(0.001f);
         }
-        else
-        {
-            transform.localScale = new Vector2(scaledTo, scaledTo);
+        outlineSize = 0;
+        BlockSprite.material.SetFloat("_OutlineSize", outlineSize);
 
-            outlineSize = 1;
-            BlockSprite.material.SetFloat("_OutlineSize", outlineSize);
-        }
+    }
+
+    void SetScaleBlock(float scale)
+    {
+        transform.localScale = new Vector2(scale, scale);
+        outlineSize = 1;
+        BlockSprite.material.SetFloat("_OutlineSize", outlineSize);
     }
 }

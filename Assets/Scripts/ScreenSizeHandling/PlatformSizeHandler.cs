@@ -5,47 +5,35 @@ using UnityEngine;
 //Arrange gameObject sizes according to devices screen size
 public class PlatformSizeHandler : SizeHandler{
 	
-    public float ArrangeSize(Transform road,Transform block,Transform runner, bool is5Line) 
+    public float ArrangeSize(Transform road,ref Vector2 blockScale,Transform runner, bool is5Line) 
     {
         //Arrange road scale according to screen
         float roadWidth = gameScreenWidth / (float)(5f/3f);
         float roadLength = roadWidth * 15;
-        //Debug.Log(width + " " + roadWidth);
+
         road.localScale = new Vector3(roadWidth, roadLength, 1f);
 
-        //Arrange line positions according to roads size. Lines are roadSprites child now so arrange according to that
-       /* lines.localScale = road.localScale;
-
-        float linePosition = road.transform.localScale.x / 2;
-
-        lines.GetChild(0).localPosition = new Vector3(linePosition, 0f, 0f);
-        lines.GetChild(0).localScale = new Vector3(lines.localScale.x / 10f, roadLength, 0f);
-
-        lines.GetChild(1).localPosition = new Vector3(linePosition * -1,0f,0f);
-        lines.GetChild(1).localScale = new Vector3(lines.localScale.x / 10f, roadLength, 0f);*/
-
         //Arrange block scale according to roads scale. 1.8f for 3 lines , 3f for 5 lines
-        float blockScale = roadWidth / 1.8f;
+        float bScale = roadWidth / 1.8f;
         if(is5Line)
         {
-            blockScale = roadWidth / 3f;//1.8f; 
+            bScale = roadWidth / 3f;//1.8f; 
         }
         else
         {
-            blockScale = roadWidth / 1.8f; 
+            bScale = roadWidth / 1.8f; 
         }
 
+        blockScale = new Vector2(bScale, bScale);
 
-        block.localScale = new Vector3(blockScale,blockScale,1f);
         //Arrange runner size
-        runner.localScale = new Vector3(blockScale * 2 / 4, blockScale * 2 / 4, 1f);
+        runner.localScale = new Vector3(bScale * 2 / 4, bScale * 2 / 4, 1f);
         //return the distance between blocks. 3f for 3 lines, 5f for 5 lines
         if(is5Line){
-            return roadWidth / 5f;//3f; //return distance btwn blocks
+            return roadWidth / 5f;//return distance btwn blocks
         }
         else{
             return roadWidth / 3f; //return distance btwn blocks
         }
-
 	}
 }

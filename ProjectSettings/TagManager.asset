@@ -29,6 +29,8 @@ TagManager:
   - Shooter
   - RoadSprite
   - Blocks
+  - Eye
+  - Eyes
   layers:
   - Default
   - TransparentFX

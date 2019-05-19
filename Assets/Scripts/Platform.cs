@@ -18,18 +18,15 @@ public class Platform : MonoBehaviour
     private UIHandler uI;
     private UIOnGamePage uIGame;
     private BoostScript Boost;
-
+    private ObjectManager objectManager;
 
     //GameObjects
-    public GameObject Blocks; //Pooled Blocks Parent
-    public GameObject block; //kırmızı bloklar
     public GameObject Runner; //koşan arkadaş artık neyse
-                              // public GameObject Lines;
-    public GameObject Road; //Block, RoadSprite ve lines ın Parent ı olan GameObject.
+    public GameObject Nightmare;
+
+    //public GameObject Road; //Block, RoadSprite ve lines ın Parent ı olan GameObject.
     public GameObject RoadSprite;//Yol sprite ı. Karanlık World için gri düz bir kare. Road un ilk çocuğu 
     public GameObject Background; //rengi değişen arkaPlan. Runner ın child ı.
-    public GameObject Nightmare;
-    public GameObject Shooter;
 
     public List<GameObject> platfotmTiles; //blokları barındıran liste
     public List<Block> blockScripts;
@@ -45,7 +42,6 @@ public class Platform : MonoBehaviour
     public float[] BlockPos; // blokların oluşabilceği pozisyonlar
 
     private int BlockNumberInPlatformTiles; //Platform tiles listesinde kaç blok olacağı
-
     public int blockToSlide; // o sırada kaydırılcak blok
 
     public int level_p;
@@ -86,6 +82,8 @@ public class Platform : MonoBehaviour
 
     public static Platform instance;
 
+    public ObjectManager Manager1 { get => objectManager; set => objectManager = value; }
+
     private void Awake()
     {
         Application.targetFrameRate = 60;
@@ -111,26 +109,21 @@ public class Platform : MonoBehaviour
         level_p = GetCurrentLevel();
         levelManager = new LevelManager(level_p);
 
+        objectManager = new ObjectManager();
+
         Boost = (BoostScript)FindObjectOfType(typeof(BoostScript));
         uI = (UIHandler)FindObjectOfType(typeof(UIHandler));
         uIGame = SetUIGameHandler();
 
+
+
         //////////////
         //If gameobjects not setted from editor find with tag.
-        if (!Road)
-            Road = GameObject.FindWithTag("Road");
-
-        if (!Blocks)
-            Blocks = GameObject.FindWithTag("Blocks");
-
-        if (!block)
-            block = Blocks.transform.GetChild(0).gameObject;
+        //if (!Road)
+        //  Road = GameObject.FindWithTag("Road");
 
         if (!Runner)
             Runner = GameObject.FindWithTag("Runner");
-
-        //if (!Lines)
-        //  Lines = GameObject.FindWithTag("Lines");
 
         if (!RoadSprite)
             RoadSprite = GameObject.FindWithTag("RoadSprite");
@@ -161,7 +154,7 @@ public class Platform : MonoBehaviour
         gainedPoint = 1;
 
         blockOnTail = 0;
-        BlockNumberInPlatformTiles = 30;
+        BlockNumberInPlatformTiles = objectManager.Generator.block.amountToPool;
 
         CreatePlatformAccordingToLevel();
 
@@ -171,7 +164,7 @@ public class Platform : MonoBehaviour
 
         inputLock = false; //Using for locking input to game
 
-        SetCamChase(true);
+        SetCamChase(true); //used when boost
 
         if (GetCamChase())
             boostTime = 1f;
@@ -193,8 +186,14 @@ public class Platform : MonoBehaviour
         //runnerla en arkada kalan blok arasındaki mesafe 15 bloğu geçerse giriyor buraya.
         if (Runner.transform.position.y >= platfotmTiles[blockOnTail].transform.position.y + (15 * distBetweenBlock))
         {
-            platfotmTiles[blockOnTail].transform.position = BlockPositioner(distBetweenBlock);
+            //platfotmTiles[blockOnTail].transform.position = BlockPositioner(distBetweenBlock);
+
+            distance += distBetweenBlock;
+
+            Vector2 newBlockPos = new Vector2(BlockPos[objectManager.BlockPosition(BlockPos.Length, is5Line)], distance);
+            platfotmTiles[blockOnTail].transform.position = newBlockPos;
             blockScripts[blockOnTail].SetBlock(levelManager.levelBlockType);
+
             blockOnTail = (blockOnTail + 1 < platfotmTiles.Count) ? blockOnTail += 1 : blockOnTail = 0;
         }
 
@@ -345,25 +344,11 @@ public class Platform : MonoBehaviour
 
     #region RoadCreating
 
-    // blokları konumlandıran fonksiyon
-    private Vector2 BlockPositioner(float rate)
-    {
-        int tempEx = exRand;
-
-        exRand = MathCalculation.RandomPosition(exRand, sameLine, BlockPos.Length, is5Line);
-        sameLine = (tempEx == exRand) ? sameLine += 1 : sameLine = 0;
-        distance += rate;
-
-        return new Vector2(BlockPos[exRand], distance);
-    }
-
-
     public void CreatePlatform() //Set initial Road and parameters
     {
         //Sizes are changed according to Screen 
         is5Line = (levelManager.levelWidth == LevelManager.LevelWidth.Five) ? true : false;
-        distBetweenBlock = sizeHandler.ArrangeSize(RoadSprite.transform, block.transform, Runner.transform, is5Line);
-        blockScale = block.transform.localScale;
+        distBetweenBlock = sizeHandler.ArrangeSize(RoadSprite.transform,ref blockScale , Runner.transform, is5Line);
 
         //For 5 line mode
         if (is5Line)
@@ -375,57 +360,23 @@ public class Platform : MonoBehaviour
             BlockPos = new float[] { -1 * distBetweenBlock, distBetweenBlock };
         }
 
-        distance = -5f; // Start from -5
-
         for (int i = 1; i < platfotmTiles.Count; i++)
         {
             Destroy(platfotmTiles[i]);
+            Destroy(blockScripts[i]);
         }
 
         platfotmTiles.Clear();
         blockScripts.Clear();
 
-        //First add initial block that can be seen in editor.
-        platfotmTiles.Add(block);
-        blockScripts.Add(block.GetComponent<Block>());
 
-        platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
-        //blockScripts[blockScripts.Count - 1].enabled = true;
-        //blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
-        blockScripts[blockScripts.Count - 1].InitiliazeBlock(levelManager.levelBlockType, blockScale);
+        int straightRoad = 0;
+        platfotmTiles = objectManager.SetBlocks(distBetweenBlock, BlockPos, is5Line, ref distance, ref straightRoad);
 
-        //platfotmTiles[0].GetComponent<Block>().SetBlock();
+        InitiliazeBlocks();
 
-        int levelStartStraightLine = 5; // start from third block to give full road at the beginning at level
-
-        for (int i = 0; i < levelStartStraightLine; i++)
-        {
-            distance += distBetweenBlock;
-            platfotmTiles.Add((GameObject)Instantiate(block, Blocks.transform));
-            platfotmTiles[platfotmTiles.Count - 1].transform.position = new Vector2(0f, distance);
-
-            blockScripts.Add(platfotmTiles[platfotmTiles.Count - 1].GetComponent<Block>());
-            //blockScripts[blockScripts.Count - 1].enabled = true;
-            //blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
-            blockScripts[blockScripts.Count - 1].InitiliazeBlock(levelManager.levelBlockType, blockScale);
-        }
-
-        //Platform tiles da buluncak toplam blok sayısından ilk baştaki düz blokları çıkar 
-        int remainingBlock = BlockNumberInPlatformTiles - levelStartStraightLine;
-
-        for (int i = 0; i < remainingBlock; i++)
-        {
-            platfotmTiles.Add((GameObject)Instantiate(block, Blocks.transform));
-            platfotmTiles[platfotmTiles.Count - 1].transform.position = BlockPositioner(distBetweenBlock);
-
-            blockScripts.Add(platfotmTiles[platfotmTiles.Count - 1].GetComponent<Block>());
-            //blockScripts[blockScripts.Count - 1].enabled = true;
-            //blockScripts[blockScripts.Count - 1].SetBlock(levelManager.levelBlockType);
-            blockScripts[blockScripts.Count - 1].InitiliazeBlock(levelManager.levelBlockType, blockScale);
-        }
-
-        Runner.transform.position = instance.platfotmTiles[levelStartStraightLine].transform.position; //Runner düz sıranın en sonunda başlıyor
-        blockToSlide = levelStartStraightLine + 1;
+        Runner.transform.position = instance.platfotmTiles[straightRoad - 1].transform.position; //Runner düz sıranın en sonunda başlıyor
+        blockToSlide = straightRoad;
 
         initialStraightRoadLenght = 2 * distBetweenBlock;//platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
         straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - Runner.transform.position.y;//initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
@@ -433,6 +384,14 @@ public class Platform : MonoBehaviour
         offsetRunnerBtwRoadSprite = RoadSprite.transform.position - Runner.transform.position;
     }
 
+    void InitiliazeBlocks()
+    {
+        foreach(GameObject block in platfotmTiles)
+        {
+            blockScripts.Add(block.GetComponent<Block>());
+            blockScripts[blockScripts.Count - 1].InitiliazeBlock(levelManager.levelBlockType, blockScale);
+        }
+    }
 
     public void PlaceObstacles()
     {
@@ -563,21 +522,6 @@ public class Platform : MonoBehaviour
     private void GiveMessage(float time, string message)
     {
         StartCoroutine(uIGame.GiveInfo(time, message));
-    }
-
-    //Get block according to their position on world. Since the block list tails around itself it changes according to block to slide or block on tail
-    public GameObject BlockOnWorldPosition(int blockPos)
-    {
-        blockPos = (blockPos > BlockNumberInPlatformTiles) ? BlockNumberInPlatformTiles : blockPos; //if requested pos is bigger than block number on list set it to last block
-
-        //map block pos on world to list order of block
-
-//        blockPos = 
-
-
-
-        return platfotmTiles[blockPos];
-
     }
     #endregion
 }

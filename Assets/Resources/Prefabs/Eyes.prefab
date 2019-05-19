@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2170478611797858982}
   m_Layer: 0
   m_Name: Eyes
-  m_TagString: Untagged
+  m_TagString: Eye
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -114,7 +114,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 968680f0633b8874d9b7337ae3dbb029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bore: {fileID: 0}
   perfectText: {fileID: 2170478612768335715}
 --- !u!1 &2170478612739716441
 GameObject:
