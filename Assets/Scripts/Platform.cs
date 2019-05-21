@@ -360,13 +360,7 @@ public class Platform : MonoBehaviour
             BlockPos = new float[] { -1 * distBetweenBlock, distBetweenBlock };
         }
 
-        for (int i = 1; i < platfotmTiles.Count; i++)
-        {
-            Destroy(platfotmTiles[i]);
-            Destroy(blockScripts[i]);
-        }
-
-        platfotmTiles.Clear();
+        //Clear block scripts for initiliazing them again
         blockScripts.Clear();
 
 
