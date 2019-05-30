@@ -7,53 +7,128 @@ public class ObjectManager
     public ObjectGenerator Generator;
 
     Transform EyeParent;
-    public List<GameObject> Eyes;
+    List<GameObject> Eyes;
 
     Transform BlockParent;
-    public List<GameObject> Blocks;
+    List<GameObject> Blocks;
+
+    GameObject CheckPointZone; // 5 blocks to be used on checkpoint buffer zones and starting of game.
+    GameObject RoadReplica;
 
     public ObjectManager(int BlockCount = 0)
     {
         BlockParent = GameObject.FindWithTag("Blocks").transform;
         EyeParent = GameObject.FindWithTag("Eyes").transform;
+        CheckPointZone = GameObject.FindWithTag("CheckPointZone");
 
         Generator = new ObjectGenerator(BlockParent,EyeParent);
 
-        Generator.GenerateObjects(ref Blocks,ref Eyes);
+        Generator.GenerateObjects(ref Blocks,ref Eyes,ref CheckPointZone,ref RoadReplica);
     }
 
-
-    public List<GameObject> SetBlocks(float yDistance ,float[] blockPosArray,bool isFiveLine,ref float blockYPos,ref int straightRoad)
+    public float SetCheckPoint(float firstBlockPos, float yDistance, Vector2 b_scale)
     {
-        int StartStraightLine = 5; // start from third block to give full road at the beginning at level
-        float distance = -5f;
+        //Set First border of Checkpoint
+        Transform firstBorder = CheckPointZone.transform.GetChild(0).transform;
 
-        for (int i = 0; i < StartStraightLine; i++)
+        firstBorder.localPosition = new Vector2(0f, firstBlockPos - (yDistance / 2f));
+        firstBorder.localScale = new Vector2(b_scale.x * 1.8f, b_scale.x / 28f);
+        firstBorder.gameObject.SetActive(true);
+
+        foreach (Block block in CheckPointZone.GetComponentsInChildren<Block>()) //Set blocks of checkpoint
         {
-            distance += yDistance;
-            Blocks[i].transform.position = new Vector2(0f, distance);
-            Blocks[i].SetActive(true);
+
+            block.transform.localPosition = new Vector2(0f, firstBlockPos);
+            block.InitiliazeBlock(b_scale);
+            firstBlockPos += yDistance;
         }
 
-        //Platform tiles da buluncak toplam blok sayısından ilk baştaki düz blokları çıkar 
-        //int remainingBlock = Generator.block.amountToPool - StartStraightLine;
+        firstBlockPos -= yDistance; //since its incremented in loop decrease it before sending parameter to platform.
 
-        for (int i = StartStraightLine; i < Generator.block.amountToPool; i++)
-        {
-            distance += yDistance;
-            Vector2 blockPos = new Vector2(blockPosArray[BlockPosition(blockPosArray.Length, isFiveLine)], distance);
-            Blocks[i].transform.position = blockPos;
-            Blocks[i].SetActive(true);
-        }
+        //Set second border of checkpoint
+        Transform secondBorder = CheckPointZone.transform.GetChild(1).transform;
 
-        straightRoad = StartStraightLine;
-        blockYPos = distance;
+        secondBorder.localPosition = new Vector2(0f, firstBlockPos + (yDistance /2f));
+        secondBorder.localScale = new Vector2(b_scale.x * 1.8f, b_scale.x / 28f);
+        secondBorder.gameObject.SetActive(true);
+
+        return firstBlockPos;
+    }
+
+    public float MoveCheckPoint(float toPos, float yDistance)
+    {
+        float checkPointSize = CheckPointZone.GetComponentsInChildren<Block>().Length;
+
+        CheckPointZone.transform.position = new Vector2(0f, toPos + ( (checkPointSize - 1) * yDistance) );
+
+        return CheckPointZone.transform.position.y;
+    }
+
+    public List<GameObject> SetNewLevelBlocks(float yDistance, float[] blockPosArray, bool isFiveLine, ref float blockYPos,Vector2 bScale)
+    {
+        float tmpBlockYPos = blockYPos;
+
+        SetRoadReplica(blockYPos, yDistance, bScale);
+
+        blockYPos = tmpBlockYPos;
+
+        SetBlocks(yDistance, blockPosArray, isFiveLine,ref blockYPos);
+
         return Blocks;
     }
 
+    void SetRoadReplica(float blockYPos,float yDistance,Vector2 bScale)
+    {
+        RoadReplica.SetActive(true);
 
-    private int currBlockPos = 3;
-    private int sameLineLength = 0;
+        blockYPos -= 5 * yDistance;
+
+        foreach(Block b in RoadReplica.GetComponentsInChildren<Block>())
+        {
+            blockYPos -= yDistance;
+
+            Vector2 pos = new Vector2(0f, blockYPos);
+            b.transform.position = pos;
+
+            b.InitiliazeBlock(bScale, Platform.instance.levelManager.levelBlockType, true);
+        }
+    }
+
+    public List<GameObject> SetBlocks(float yDistance ,float[] blockPosArray,bool isFiveLine,ref float blockYPos)
+    {
+        //Platform tiles da buluncak toplam blok sayısından ilk baştaki düz blokları çıkar 
+        //int remainingBlock = Generator.block.amountToPool - StartStraightLine;
+        currBlockPos = 3;
+        sameLineLength = 0;
+
+        for (int i = 0; i < Blocks.Count; i++)
+        {
+            Vector2 blockPos = new Vector2(blockPosArray[BlockPosition(blockPosArray.Length, isFiveLine)], blockYPos);
+            Blocks[i].transform.position = blockPos;
+            Blocks[i].SetActive(true);
+
+            blockYPos += yDistance;
+        }
+
+        return Blocks;
+    }
+
+    public List<Block> InitiliazeBlockScripts(Vector2 blockScale ,LevelManager.LevelBlockType BlockType)
+    {
+        List<Block> blockScripts = new List<Block>();
+
+        foreach (GameObject block in Blocks)
+        {
+            blockScripts.Add(block.GetComponent<Block>());
+            blockScripts[blockScripts.Count - 1].InitiliazeBlock(blockScale, BlockType);
+        }
+
+        return blockScripts;
+    }
+
+
+    private int currBlockPos;
+    private int sameLineLength;
 
     // blokları konumlandıran fonksiyon
     public int BlockPosition(int maxValue,bool isFiveLine)

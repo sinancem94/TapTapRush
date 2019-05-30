@@ -11,8 +11,12 @@ public static class Data
 
     public static int HighScore;
 
+    public static int World;
+
     public static int MaxLevel;
     public static int Level; //Level starts from 0 and increases. because 0 is usefull while arranging levels
+
+    public static Vector2 PlayerProgress; // x represents world and y is level. Used for getting latest position of world
 
     public static bool IsDebug = false;
     //PlayerPrefs are setted in initilizationScript and than mapped into Data
@@ -24,6 +28,14 @@ public static class Data
         HighScore = PlayerPrefs.GetInt("HighScore");
         MaxLevel = PlayerPrefs.GetInt("MaxLevel");
         Level = PlayerPrefs.GetInt("Level");
+        World = PlayerPrefs.GetInt("World");
+
+        PlayerProgress = SetProgressData();
+    }
+
+    static Vector2 SetProgressData()
+    {
+        return PlayerProgress = new Vector2(World,Level);
     }
 
     public static void UpdateLevelData(int currlevel)

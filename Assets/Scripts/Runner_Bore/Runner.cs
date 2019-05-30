@@ -18,7 +18,7 @@ public class Runner : MonoBehaviour
 
     void Update()
     {
-        if (Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
+        if (Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning || Platform.instance.game.GetGameState() == GameHandler.GameState.LevelPassed)
         {
             speed = Platform.instance.straightRoadLenght * CharacterSpeed;              //burası if statementın dışındaydı aşağı aldım boosttan sonra bore kosmaya baslayabilsin diye
             this.transform.Translate(0f, speed * Time.deltaTime, 0f, Space.World);

@@ -57,12 +57,16 @@ public class Block : MonoBehaviour
         }
     }
 
-    public void InitiliazeBlock(LevelManager.LevelBlockType bt, Vector2 bScale)
+    public void InitiliazeBlock(Vector2 bScale, LevelManager.LevelBlockType bt = LevelManager.LevelBlockType.Normal,bool onMiddle = false)
     {
+        StopAllCoroutines();
+        isMoving = false;
+        isShined = false;
+
         blockScale = bScale;
         smalledSize = blockScale / 2.5f;
 
-        SetScaleBlock(blockScale.x);
+        SetScaleBlock((!onMiddle) ? blockScale.x : smalledSize.x);
 
         if (bt == LevelManager.LevelBlockType.Reverse)
         {

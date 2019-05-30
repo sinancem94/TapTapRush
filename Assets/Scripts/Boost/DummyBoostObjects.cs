@@ -55,14 +55,14 @@ public class DummyBoostObjects
     {
         RoadDummy = new GameObject
         {
-            name = "RoadReplica"
+            name = "RoadReplicaBoost"
         };
 
         RoadDummy.SetActive(false);
 
         BlockDummy = new GameObject
         {
-            name = "BlockDummy"
+            name = "BlockDummyBoost"
         };
 
         SpriteRenderer b_sprite = BlockDummy.AddComponent<SpriteRenderer>();

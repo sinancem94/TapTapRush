@@ -34,5 +34,9 @@ public class GameHandler {
     {
         state = GameState.LevelPassed;
     }
+    public void LevelStarted()
+    {
+        state = GameState.GameRunning;
+    }
 
 }

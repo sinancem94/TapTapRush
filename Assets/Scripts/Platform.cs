@@ -33,23 +33,20 @@ public class Platform : MonoBehaviour
     public GameObject[] Shooters;
 
     //Parameters
-    public bool inputLock; //Used when boost is finished and animation begins && maybe in other various states
-
-    private float distance; //bi sonraki bloğun gelceği y mesafesi.  habire artıyor
+    bool inputLock; //Used when boost is finished and animation begins && maybe in other various states
+    bool levelLock;
+    float CheckPointPos;
+    private float CurrentBlockPos; //bi sonraki bloğun gelceği y mesafesi.  habire artıyor
     public float distBetweenBlock; //bloklar arası x ve y mesafesi
     public Vector2 blockScale;
 
-    public float[] BlockPos; // blokların oluşabilceği pozisyonlar
+    float[] BlockPos; // blokların oluşabilceği pozisyonlar
 
-    private int BlockNumberInPlatformTiles; //Platform tiles listesinde kaç blok olacağı
     public int blockToSlide; // o sırada kaydırılcak blok
+    public int blockOnTail; //En arkada kalan blok yani o sırada sıranın en sonuna atılcak blok. 
 
     public int level_p;
     public int passedBlockNumber;
-
-    //For block positioning
-    private int exRand = 3;
-    private int sameLine = 0;
 
     private int point; //Total point
     public int gainedPoint; //Point that player gains under circumtances
@@ -68,8 +65,6 @@ public class Platform : MonoBehaviour
     public float PlayerBehindCamTime; // Using when cam chase bore on boost. If that timer bigger than some value or player is too behind from cam stop Boost
     public bool PlayerTooBehindCam; // Player is too behind camera stop boost
     private bool wrongPressedOnBoost;
-
-    public int blockOnTail; //En arkada kalan blok yani o sırada sıranın en sonuna atılcak blok. 
 
     private bool is5Line;
 
@@ -148,32 +143,13 @@ public class Platform : MonoBehaviour
         platfotmTiles = new List<GameObject>();
         blockScripts = new List<Block>();
         //platfotmTiles.Add(block);
-        passedBlockNumber = 0;
-
-        point = 0;
-        gainedPoint = 1;
-
-        blockOnTail = 0;
-        BlockNumberInPlatformTiles = objectManager.Generator.block.amountToPool;
-
+       
         CreatePlatformAccordingToLevel();
 
-        SetBoreSpeed(); //Set player speed from playerprefs.
         //CreatePlatform();
         SetBoostPhase(BoostScript.BoostPhase.None);
 
-        inputLock = false; //Using for locking input to game
-
         SetCamChase(true); //used when boost
-
-        if (GetCamChase())
-            boostTime = 1f;
-        else
-            boostTime = 8f;
-
-        boostLimit = 12f;
-        wrongPressedOnBoost = false;
-
         uI.OpenHomePage(); //After arranging everything open uı panel for starting game
     }
 
@@ -181,26 +157,28 @@ public class Platform : MonoBehaviour
 
     private void LateUpdate()
     {
-        RoadSprite.transform.position = Runner.transform.position + offsetRunnerBtwRoadSprite;
-
-        //runnerla en arkada kalan blok arasındaki mesafe 15 bloğu geçerse giriyor buraya.
-        if (Runner.transform.position.y >= platfotmTiles[blockOnTail].transform.position.y + (15 * distBetweenBlock))
+        if (game.GetGameState() == GameHandler.GameState.GameRunning)
         {
-            //platfotmTiles[blockOnTail].transform.position = BlockPositioner(distBetweenBlock);
 
-            distance += distBetweenBlock;
+            RoadSprite.transform.position = Runner.transform.position + offsetRunnerBtwRoadSprite;
 
-            Vector2 newBlockPos = new Vector2(BlockPos[objectManager.BlockPosition(BlockPos.Length, is5Line)], distance);
-            platfotmTiles[blockOnTail].transform.position = newBlockPos;
-            blockScripts[blockOnTail].SetBlock(levelManager.levelBlockType);
+            //runnerla en arkada kalan blok arasındaki mesafe 15 bloğu geçerse giriyor buraya. Eğer son atılan blok check pointten önceki sonuncuysa yeni level e geçiyor platform.
+            if (Runner.transform.position.y >= platfotmTiles[blockOnTail].transform.position.y + (15 * distBetweenBlock))
+            {
+                if (!levelLock && !PushTailBlockToHead())
+                {
+                    levelLock = true;
+                    MoveCheckPoint();
+                }
 
-            blockOnTail = (blockOnTail + 1 < platfotmTiles.Count) ? blockOnTail += 1 : blockOnTail = 0;
+            }
+
+            //en sondaki engel arkada kaldıysa tüm engellerin yerini tekrar hesaplayıp ileri at. 
+            //TODO: Şu anda tüm obstacleları aynı anda atıyor. Platform dizilişine karar vercek ayrı bir sınıf olmalı orda tüm bunları yapmalıyız.Engel ve Blok pozisyonlandırma, blok tip karar verme etc.
+            if (Shooters[Shooters.Length - 1].transform.position.y < Runner.transform.position.y)
+                PlaceObstacles();
+
         }
-
-        //en sondaki engel arkada kaldıysa tüm engellerin yerini tekrar hesaplayıp ileri at. 
-        //TODO: Şu anda tüm obstacleları aynı anda atıyor. Platform dizilişine karar vercek ayrı bir sınıf olmalı orda tüm bunları yapmalıyız.Engel ve Blok pozisyonlandırma, blok tip karar verme etc.
-        if (Shooters[Shooters.Length - 1].transform.position.y < Runner.transform.position.y)
-            PlaceObstacles();
     }
 
     // kaycak bloğa karar ver, input al, input varsa ona göre haraket et, yol hesapla, boost moda giriyor mu ona bak
@@ -226,6 +204,7 @@ public class Platform : MonoBehaviour
             //
             if (levelManager.IsEndingConditionSatisfied(distanceBtwRunner, passedBlockNumber))
             {
+                Debug.Log("Level Passed !!! Checkpoint reached.");
                 LevelPassed();
             }
             else if (distanceBtwRunner < 0.8f)
@@ -236,9 +215,9 @@ public class Platform : MonoBehaviour
             //////////////////////////////
             //Calculate if entered or exited boost
 
-            if (distanceBtwRunner > boostLimit && !boostLock && isBoostAllowed && GetBoostPhase() == BoostScript.BoostPhase.None)
+            if (/*distanceBtwRunner > boostLimit*/Input.GetKeyDown("space")   && !boostLock && isBoostAllowed && GetBoostPhase() == BoostScript.BoostPhase.None)
             {
-                boostLock = true;
+                boostLock = true; 
                 InitiateBoost();
             }
             else if (boostLock)
@@ -253,11 +232,22 @@ public class Platform : MonoBehaviour
                     LostBoost();
                 }
             }
+        }
+        else if(game.GetGameState() == GameHandler.GameState.LevelPassed)
+        {
+            straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - Runner.transform.position.y - distBetweenBlock;
 
+            ınput.directionGetter();
+
+            if (ınput.directions.Count != 0)
+            {
+                ınput.dirr = ınput.directions.Dequeue();
+                MoveTile((int)ınput.dirr);
+            
+                game.LevelStarted();
+            }
         }
     }
-
-
 
     private void MoveTile(int direction)
     {
@@ -302,53 +292,41 @@ public class Platform : MonoBehaviour
         }
     }
 
-    void InitiateBoost()
+    bool PushTailBlockToHead()
     {
-        boostTimer = 0f;
-        gainedPoint += 1;
-
-        SetBoostPhase(BoostScript.BoostPhase.OnBoost);
-        Boost.StartBoost();
-
-        GiveMessage(2f, "RUN!!!");
-        Debug.LogWarning("BOOST !! at : " + Time.unscaledTime);
-        Debug.LogWarning("Distance is : " + distanceBtwRunner);
-    }
-
-    void LostBoost()
-    {
-        SetBoostPhase(BoostScript.BoostPhase.AnimationSlideDown);
-        Boost.BoostFinish();
-
-        if (wrongPressedOnBoost)
+        if(CurrentBlockPos - distBetweenBlock >= CheckPointPos + (levelManager.length * distBetweenBlock) )
         {
-            wrongPressedOnBoost = false;
+            return false;
         }
 
-        GiveMessage(2f, "SLOWDOWN");
-        Debug.LogWarning("Boost finished... at : " + Time.unscaledTime);
+        Vector2 newBlockPos = new Vector2(BlockPos[objectManager.BlockPosition(BlockPos.Length, is5Line)], CurrentBlockPos);
+        platfotmTiles[blockOnTail].transform.position = newBlockPos;
+        blockScripts[blockOnTail].SetBlock(levelManager.levelBlockType);
+
+        CurrentBlockPos += distBetweenBlock;
+
+        blockOnTail = (blockOnTail + 1 < platfotmTiles.Count) ? blockOnTail += 1 : blockOnTail = 0;
+
+        return true;
     }
 
-    bool IsBoostEnded()
-    {
-        if ((PlayerBehindCamTime > boostTime || PlayerTooBehindCam || wrongPressedOnBoost) && GetCamChase())
-        {
-            return true;
-        }
-        else if (boostTimer >= boostTime && !GetCamChase())
-            return true;
-
-
-        return false;
-    }
 
     #region RoadCreating
 
-    public void CreatePlatform() //Set initial Road and parameters
+    public void CreatePlatformAccordingToLevel()
+    {
+        level_p = GetCurrentLevel();
+        levelManager.SetParametersForLevel(level_p, ref isBoostAllowed);
+
+        SetPlatformVaraibles();
+        CreatePlatform();
+    }
+
+    void SetPlatformVaraibles(float headPos = 0,int p = 0)
     {
         //Sizes are changed according to Screen 
         is5Line = (levelManager.levelWidth == LevelManager.LevelWidth.Five) ? true : false;
-        distBetweenBlock = sizeHandler.ArrangeSize(RoadSprite.transform,ref blockScale , Runner.transform, is5Line);
+        distBetweenBlock = sizeHandler.ArrangeSize(RoadSprite.transform, ref blockScale, Runner.transform, is5Line);
 
         //For 5 line mode
         if (is5Line)
@@ -360,31 +338,74 @@ public class Platform : MonoBehaviour
             BlockPos = new float[] { -1 * distBetweenBlock, distBetweenBlock };
         }
 
+        initialStraightRoadLenght = 2 * distBetweenBlock;
+        passedBlockNumber = 0;
+
+        point = p;
+        gainedPoint = 1;
+
+        blockOnTail = 0;
+        blockToSlide = 0;
+        CurrentBlockPos = headPos;
+
+        inputLock = false; //Using for locking input to game
+
+        if (GetCamChase())
+            boostTime = 1f;
+        else
+            boostTime = 8f;
+
+        boostLimit = 12f;
+        wrongPressedOnBoost = false;
+
+    }
+
+    void CreatePlatform() //Set initial Road and parameters
+    {
         //Clear block scripts for initiliazing them again
         blockScripts.Clear();
 
+        CheckPointPos = objectManager.SetCheckPoint(CurrentBlockPos - (5 * distBetweenBlock), distBetweenBlock, blockScale);
 
-        int straightRoad = 0;
-        platfotmTiles = objectManager.SetBlocks(distBetweenBlock, BlockPos, is5Line, ref distance, ref straightRoad);
+        platfotmTiles = objectManager.SetBlocks(distBetweenBlock, BlockPos, is5Line, ref CurrentBlockPos);
 
-        InitiliazeBlocks();
+        blockScripts = objectManager.InitiliazeBlockScripts(blockScale, levelManager.levelBlockType);
 
-        Runner.transform.position = instance.platfotmTiles[straightRoad - 1].transform.position; //Runner düz sıranın en sonunda başlıyor
-        blockToSlide = straightRoad;
-
-        initialStraightRoadLenght = 2 * distBetweenBlock;//platfotmTiles[blockToSlide].transform.position.y - runner.transform.position.y; // camera ve kombo için uzaklık hesapla
-        straightRoadLenght = platfotmTiles[blockToSlide].transform.position.y - Runner.transform.position.y;//initialStraightRoadLenght; // camera ve kombo için uzaklık hesapla
-
+        Runner.transform.position = new Vector2(0f, CheckPointPos); //Runner düz sıranın en sonunda başlıyor
         offsetRunnerBtwRoadSprite = RoadSprite.transform.position - Runner.transform.position;
+
+        SetMonsterPosition();
+
+        SetBoreSpeed(); //Set player speed from playerprefs.
     }
 
-    void InitiliazeBlocks()
+    void MoveCheckPoint()
     {
-        foreach(GameObject block in platfotmTiles)
-        {
-            blockScripts.Add(block.GetComponent<Block>());
-            blockScripts[blockScripts.Count - 1].InitiliazeBlock(levelManager.levelBlockType, blockScale);
-        }
+        CheckPointPos = objectManager.MoveCheckPoint(CurrentBlockPos + distBetweenBlock, distBetweenBlock);
+    }
+
+    bool CreateNewLevel()
+    {
+        level_p = GetCurrentLevel();
+        levelManager.SetParametersForLevel(level_p, ref isBoostAllowed);
+
+        //platfotmTiles.Clear();
+        //platfotmTiles = null;
+        //platfotmTiles = new List<GameObject>();
+
+        CurrentBlockPos = CheckPointPos;
+
+        //platfotmTiles = objectManager.SetBlocks(distBetweenBlock, BlockPos, is5Line, ref CurrentBlockPos);
+
+        platfotmTiles = objectManager.SetNewLevelBlocks(distBetweenBlock, BlockPos, is5Line, ref CurrentBlockPos, blockScale);
+
+        //blockScripts = null;
+
+        blockScripts = objectManager.InitiliazeBlockScripts(blockScale, levelManager.levelBlockType);
+
+        SetPlatformVaraibles(CurrentBlockPos,point);
+
+        return true;
     }
 
     public void PlaceObstacles()
@@ -418,6 +439,64 @@ public class Platform : MonoBehaviour
     #endregion
 
 
+    #region Boost
+
+    public BoostScript.BoostPhase GetBoostPhase()
+    {
+        return boostPhase;
+    }
+
+    public BoostScript.BoostPhase SetBoostPhase(BoostScript.BoostPhase to)
+    {
+        if (to == BoostScript.BoostPhase.None && inputLock)
+            inputLock = false;
+
+        return boostPhase = to;
+    }
+
+    void InitiateBoost()
+    {
+        boostTimer = 0f;
+        gainedPoint += 1;
+
+        SetBoostPhase(BoostScript.BoostPhase.OnBoost);
+        Boost.StartBoost();
+
+        uIGame.GiveMessage(2f, "RUN!!!");
+        Debug.LogWarning("BOOST !! at : " + Time.unscaledTime);
+        Debug.LogWarning("Distance is : " + distanceBtwRunner);
+    }
+
+    void LostBoost()
+    {
+        SetBoostPhase(BoostScript.BoostPhase.AnimationSlideDown);
+        Boost.BoostFinish();
+
+        if (wrongPressedOnBoost)
+        {
+            wrongPressedOnBoost = false;
+        }
+
+        uIGame.GiveMessage(2f, "SLOWDOWN");
+        Debug.LogWarning("Boost finished... at : " + Time.unscaledTime);
+    }
+
+    bool IsBoostEnded()
+    {
+        if ((PlayerBehindCamTime > boostTime || PlayerTooBehindCam || wrongPressedOnBoost) && GetCamChase())
+        {
+            return true;
+        }
+        else if (boostTimer >= boostTime && !GetCamChase())
+            return true;
+
+
+        return false;
+    }
+    #endregion
+
+   
+
     #region SimpleMethods
 
     public void SetBoreSpeed(int i = 0) //Set speed for bore if default called withour any parameters setted to playerprefs speed. İf called with animation setted to zero
@@ -435,7 +514,6 @@ public class Platform : MonoBehaviour
         return Runner.GetComponent<Runner>().CharacterSpeed;
     }
 
-
     public void SetMonsterSpeed(float to)
     {
         Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed = to;
@@ -444,18 +522,6 @@ public class Platform : MonoBehaviour
     public float GetMonsterSpeed()
     {
         return Nightmare.GetComponent<BadThingParticleSystem>().monsterSpeed;
-    }
-
-    public void CreatePlatformAccordingToLevel()
-    {
-        level_p = GetCurrentLevel();
-        levelManager.SetParametersForLevel(level_p, ref isBoostAllowed);
-        foreach (Block b in blockScripts)
-        {
-            b.SetBlock(levelManager.levelBlockType);
-        }
-        CreatePlatform();
-        SetMonsterPosition();
     }
 
     public void GameOver()
@@ -467,7 +533,9 @@ public class Platform : MonoBehaviour
     public void LevelPassed()
     {
         game.LevelPassed();
-        uI.GameOver();
+        CreateNewLevel();
+        levelLock = false;
+        //uI.GameOver();
     }
 
     private void SetMonsterPosition()
@@ -500,22 +568,5 @@ public class Platform : MonoBehaviour
         return uI.GetGamePanel();
     }
 
-    public BoostScript.BoostPhase GetBoostPhase()
-    {
-        return boostPhase;
-    }
-
-    public BoostScript.BoostPhase SetBoostPhase(BoostScript.BoostPhase to)
-    {
-        if (to == BoostScript.BoostPhase.None && inputLock)
-            inputLock = false;
-
-        return boostPhase = to;
-    }
-
-    private void GiveMessage(float time, string message)
-    {
-        StartCoroutine(uIGame.GiveInfo(time, message));
-    }
     #endregion
 }

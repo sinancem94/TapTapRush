@@ -17,7 +17,7 @@
     public LevelManager(int lvl)
     {
         LevelNumber = lvl;
-        initialLength = 50;
+        initialLength = 43;
         initialDistance = 12f;
         initialMonsterSpeed = Data.GetInitialMonsterSpeed();
     }
@@ -56,7 +56,7 @@
     {
         float speedExtended = initialMonsterSpeed * 100;
 
-        float coefficient =  (LevelNumber != 0 && LevelNumber < 7) ? (float)(LevelNumber) / 12 : (LevelNumber == 0) ? 0 : (float)(LevelNumber) / 30;
+        float coefficient =  (LevelNumber != 0 && LevelNumber < 7) ? (float)(LevelNumber) / 30 : (LevelNumber == 0) ? 0 : (float)(LevelNumber) / 12;
         speedExtended = MathCalculation.GetCoeffNum(coefficient, speedExtended, 120f);
 
         return speedExtended / 100f;
@@ -70,7 +70,7 @@
     private void SetLengthOfRoad()
     {
         float coefficient = (LevelNumber != 0) ? (float)(LevelNumber) / 12 : 0;
-        length =(int)MathCalculation.GetCoeffNum(coefficient, initialLength, 200);
+        length =(int)MathCalculation.GetCoeffNum(coefficient, initialLength, 150);
     }
 
     private void SetDistanceForPassCondition() 
@@ -99,7 +99,7 @@
         }
     }
 
-    //Level finishing parameters END.
+    //Level finishing parameters END.  //!!!!!!!!!!_____ESKİ AYARLAMA AŞAĞIDA YORUMDA__________!!!!!!!!!!!!!!!!
 
     //Is road width will be 3 or 5.
     //Is blocks will be reverse or normal.
@@ -131,19 +131,80 @@
 
     private bool SetLevelType()
     {
-       /*switch((int)(LevelNumber / 3))
+        if(LevelNumber == -1) //if endless set parameters and return
+        {
+            levelBlockType = LevelBlockType.Mixed;
+            levelWidth = LevelWidth.Three;
+            isBoostAllowed = true;
+            levelFinishtype = LevelFinishtype.None;
+
+            return isBoostAllowed;
+        }
+
+        switch ((int)(LevelNumber / 3))
         {
             case 0: // If first three level
-                break;
             case 1: // If second three level
-                break;
             case 2: // If third three level
-                break;
             case 3: // If fourth three level
+            default:
+            {
+                levelWidth = LevelWidth.Three;
+                levelBlockType = LevelBlockType.Normal;
+                levelFinishtype = LevelFinishtype.Length;
+                isBoostAllowed = true;
                 break;
-        }*/
+            }
+        }
+      
 
-        if(LevelNumber == -1) // İf mode is endless
+        return isBoostAllowed;
+    }
+
+
+
+
+    public bool IsEndingConditionSatisfied(float distanceBtwMonster, int PassedRoadLength)
+    {
+        bool didPassed = false;
+
+        switch (levelFinishtype) 
+        {
+            case LevelFinishtype.Length:
+                didPassed = (PassedRoadLength >= length) ? true : false;
+                if (didPassed)
+                    IncreaseLevelNumber();
+                break;
+            case LevelFinishtype.Distance:
+                didPassed = (distanceBtwMonster >= distanceThreshold) ? true : false;
+                if (didPassed)
+                    IncreaseLevelNumber();
+                break;
+            case LevelFinishtype.Boost:
+                didPassed = false;
+                if (didPassed)
+                    IncreaseLevelNumber();
+                break;
+            case LevelFinishtype.None: //endless sa hep devam ediyor
+                didPassed = false;
+                break;
+            default:
+                break;
+        }
+
+        return didPassed;
+    }
+
+    public void IncreaseLevelNumber()
+    {
+        LevelNumber += 1;
+        Data.UpdateLevelData(LevelNumber);
+    }
+}
+
+
+
+/*  if(LevelNumber == -1) // İf mode is endless
         {
             levelBlockType = LevelBlockType.Normal;
             levelWidth = LevelWidth.Three;
@@ -240,48 +301,4 @@
                 levelFinishtype = LevelFinishtype.Length;
                 isBoostAllowed = true;
             }
-        }
-
-        return isBoostAllowed;
-    }
-
-
-
-
-    public bool IsEndingConditionSatisfied(float distanceBtwMonster, int PassedRoadLength)
-    {
-        bool didPassed = false;
-
-        switch (levelFinishtype) 
-        {
-            case LevelFinishtype.Length:
-                didPassed = (PassedRoadLength >= length) ? true : false;
-                if (didPassed)
-                    IncreaseLevelNumber();
-                break;
-            case LevelFinishtype.Distance:
-                didPassed = (distanceBtwMonster >= distanceThreshold) ? true : false;
-                if (didPassed)
-                    IncreaseLevelNumber();
-                break;
-            case LevelFinishtype.Boost:
-                didPassed = false;
-                if (didPassed)
-                    IncreaseLevelNumber();
-                break;
-            case LevelFinishtype.None: //endless sa hep devam ediyor
-                didPassed = false;
-                break;
-            default:
-                break;
-        }
-
-        return didPassed;
-    }
-
-    public void IncreaseLevelNumber()
-    {
-        LevelNumber += 1;
-        Data.UpdateLevelData(LevelNumber);
-    }
-}
+        }*/

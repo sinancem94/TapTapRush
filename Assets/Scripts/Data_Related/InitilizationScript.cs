@@ -24,12 +24,11 @@ public class InitilizationScript : MonoBehaviour
 
             PlayerPrefs.SetInt("MaxLevel", 0);
             PlayerPrefs.SetInt("Level", 0);
-            PlayerPrefs.Save();
+            PlayerPrefs.SetInt("World", 1);
         }
         else if(PlayerPrefs.HasKey("TapTapRush")) //Count Game Activity
         {
             PlayerPrefs.SetInt("TapTapRush", Data.AppLaunchCount + 1);
-            PlayerPrefs.Save();
         }
     
     }
@@ -48,6 +47,7 @@ public class InitilizationScript : MonoBehaviour
     private void SetParameters()
     {
         Data.SetData();
+        PlayerPrefs.Save();
     }
 
 

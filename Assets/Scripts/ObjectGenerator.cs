@@ -24,13 +24,47 @@ public class ObjectGenerator
         block.objectTag = block.objectToPool.tag;
     }
 
-    public void GenerateObjects(ref List<GameObject> Blocks, ref List<GameObject> Eyes,int BlockCount = 0)
+    public void GenerateObjects(ref List<GameObject> Blocks, ref List<GameObject> Eyes, ref GameObject checkPointZone,ref GameObject roadReplica ,int BlockCount = 0)
     {
-        Eyes = ObjectPooler.instance.PooltheObjects(eye, eye.parent);
+        Eyes = ObjectPooler.instance.PooltheObjects(eye, eye.parent); //Pool 5 eyes
 
         if(BlockCount != 0)
-            block.amountToPool = BlockCount;
+            block.amountToPool = BlockCount;  //if block amount is NOT empty (0) change amount to that
 
-        Blocks = ObjectPooler.instance.PooltheObjects(block, block.parent);
+        Blocks = ObjectPooler.instance.PooltheObjects(block, block.parent); //Pool blocks
+
+        //Generate CheckPoint
+        GenerateCheckPoint(ref checkPointZone);
+        roadReplica = GenerateRoadReplica();
+    }
+
+
+    void GenerateCheckPoint(ref GameObject cp)
+    {
+        GameObject CPBOrder = new GameObject("CPBORDER");
+
+        SpriteRenderer borderRenderer = CPBOrder.AddComponent<SpriteRenderer>();
+        borderRenderer.sortingLayerID = block.objectToPool.GetComponent<SpriteRenderer>().sortingLayerID;
+        borderRenderer.sprite = Resources.Load<Sprite>("Sprites/Square");
+
+        ObjectPooler.instance.PooltheObjects(CPBOrder, 2, cp.transform); //First Set Borders
+        GameObject.Destroy(CPBOrder);
+
+        block.amountToPool = 5; //Change amount to pool for checkpoint blocks. 
+        ObjectPooler.instance.PooltheObjects(block, cp.transform, true);
+    }
+
+    GameObject GenerateRoadReplica()
+    {
+        GameObject repRoad = new GameObject
+        {
+            name = "RoadReplica"
+        };
+
+        ObjectPooler.instance.PooltheObjects(block.objectToPool, 10, repRoad.transform,true);
+
+        repRoad.SetActive(false);
+
+        return repRoad;
     }
 }

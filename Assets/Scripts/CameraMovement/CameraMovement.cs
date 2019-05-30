@@ -49,21 +49,24 @@ public class CameraMovement : MonoBehaviour
 
     void LateUpdate()
     {
-        if (/*!isCamSizeChanging && */Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
+        //if (/*!isCamSizeChanging && */Platform.instance.game.GetGameState() == GameHandler.GameState.GameRunning)
         {
             dynamicCamera.CamSizeController();
-
-
-            if (Platform.instance.GetBoostPhase() != BoostScript.BoostPhase.OnBoost || !Platform.instance.GetCamChase()) //Not on boost or camchase mode is closed
-            {
-                FollowBore();
-            }
-            else if (Platform.instance.GetBoostPhase() == BoostScript.BoostPhase.OnBoost) // if Chase mode open and OnBoost
-            {
-                ChaseBore();
-                SendPlatformBoostParams();
-            }
         }
+
+
+        if (Platform.instance.GetBoostPhase() != BoostScript.BoostPhase.OnBoost || !Platform.instance.GetCamChase()) //Not on boost or camchase mode is closed
+        {
+            FollowBore();
+        }
+        else if (Platform.instance.GetBoostPhase() == BoostScript.BoostPhase.OnBoost) // if Chase mode open and OnBoost
+        {
+            ChaseBore();
+            SendPlatformBoostParams();
+        }
+
+
+        //}
     }
 
     void ChaseBore()

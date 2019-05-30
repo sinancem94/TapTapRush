@@ -125,21 +125,26 @@ public class BoostScript : MonoBehaviour
         StartCoroutine(postProcessingChange.BoostPostProcessingSettings(false));
 
 
-        yield return new WaitUntil(() => Platform.instance.Runner.transform.position.y <= BoreDummy.transform.position.y + 0.5f);//Platform.instance.GetBoostPhase() == BoostPhase.AnimationSlideUp);
+        yield return new WaitUntil(() => Platform.instance.Runner.transform.position.y <= BoreDummy.transform.position.y + 0.5f);//Slide camera down until it reaches dummy bores positon
 
-        Platform.instance.SetBoostPhase(BoostScript.BoostPhase.AnimationSlideUp);
         boreBoostEffects.ActivateSprite();
         dummyObjects.DisableDummy();
         //float timeChangeSpeed = 100f;
         
-        timeSlower = StartCoroutine(SlowTime( 0.4f, 0.15f, BoostPhase.AnimationSlideUp)); //first slow time to make player understand camera slidid until bore than bore starts sliding
+        timeSlower = StartCoroutine(SlowTime( 0.4f, 0.15f, BoostPhase.AnimationSlideUp)); //first slow time to make player understand camera slided until bore than bore starts sliding
 
         yield return new WaitUntil(() => TimeSlowed);
 
         badThingsBoostEffect.BadThingsAnimationEnter(currMonsSpeed);
         boreBoostEffects.BoreBoostAnimationSlideUp();
 
-        yield return new WaitUntil(() => Platform.instance.straightRoadLenght < Platform.instance.distBetweenBlock);
+        Camera cam = Camera.main;
+
+        yield return new WaitUntil(() => cam.ViewportToWorldPoint(new Vector3(0.5f,0.8f,cam.farClipPlane)).y >= Platform.instance.platfotmTiles[Platform.instance.blockToSlide].transform.position.y);
+
+        //Platform.instance.OpenInputLock();
+
+        //yield return new WaitUntil(() => Platform.instance.straightRoadLenght <  Platform.instance.distBetweenBlock);
 
         StopBoost();
     }
@@ -149,6 +154,10 @@ public class BoostScript : MonoBehaviour
 
     private IEnumerator SlowTime( float minTime , float waitTime, BoostPhase phase)
     {
+
+        if(phase == BoostPhase.None && phase != Platform.instance.GetBoostPhase()) // eğer boost mod none oluyorsa zamanı yavaşlatmadan none a eşitle. Input lock erken açılması için
+            Platform.instance.SetBoostPhase(phase);
+
         TimeSlowed = false;
       
         Time.timeScale = minTime;

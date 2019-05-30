@@ -7,12 +7,25 @@ public class UIOnGamePage : MonoBehaviour
 {
     Text infoText;
     Text point;
+    Coroutine Message;
+    Text distance;
     //Start is called before the first frame update
     void Start()
     {
         point = GameObject.FindWithTag("Point").GetComponent<Text>();//this.transform.GetChild(2).GetComponent<Text>();
         infoText = GameObject.FindWithTag("InfoText").GetComponent<Text>();
+        distance = GameObject.FindWithTag("DistanceText").GetComponent<Text>();
         //this.gameObject.SetActive(false);
+    }
+
+    private void LateUpdate()
+    {
+        //SetDistance()
+    }
+
+    public void SetDistance(float dist)
+    {
+        distance.text = dist.ToString("0");
     }
 
     public void SetPoint(int pnt)
@@ -20,7 +33,12 @@ public class UIOnGamePage : MonoBehaviour
         point.text = pnt.ToString();
     }
 
-    public IEnumerator GiveInfo(float time, string message)
+    public void GiveMessage(float time,string msg)
+    {
+        Message = StartCoroutine(GiveInfo(time, msg));
+    }
+
+    IEnumerator GiveInfo(float time, string message)
     {
         infoText.text = message;
         while (infoText.color.a < 1)
@@ -40,6 +58,6 @@ public class UIOnGamePage : MonoBehaviour
 
         infoText.color = new Color(infoText.color.r, infoText.color.g, infoText.color.b, 0);
 
-        StopCoroutine(GiveInfo(time, message));
+        StopCoroutine(Message);
     }
 }
